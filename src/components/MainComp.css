@@ -1,0 +1,21 @@
+.features {
+  display: flex;
+  justify-content: space-around;
+}
+
+.box {
+  text-align: center;
+  width: 250px;
+  border: 2px solid white;
+  gap: 2px;
+  margin: 5px;
+  padding: 5px;
+}
+
+img {
+  width: 70px;
+}
+
+.learn{
+   background-color: teal;
+}

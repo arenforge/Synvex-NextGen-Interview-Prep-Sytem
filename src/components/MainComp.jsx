@@ -3,7 +3,7 @@ import "./MainComp.css";
 
 function MainComp() {
   return (
-    <div>
+    <>
       <h2>Synvex Features</h2>
 
       <div className="features">
@@ -30,7 +30,7 @@ function MainComp() {
         </div>
       </div><button className="learn"> Start Learning</button>
 
-    </div>
+    </>
   );
 }
 

@@ -1,5 +1,7 @@
 import React from "react";
 import "./MainComp.css";
+import AuthBox from "./AuthBox";
+
 
 function MainComp() {
   return (
@@ -10,14 +12,14 @@ function MainComp() {
 
         <div className="box">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"/>
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
           <h3>Role Based Interview</h3>
           <p>Practice using real voice interviewer for specific job roles.</p>
         </div>
 
         <div className="box">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png"/>
+            src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" />
           <h3>Resume Based Interviews</h3>
           <p>Interview questions generated directly from your resume.</p>
         </div>
@@ -29,6 +31,8 @@ function MainComp() {
           <p>Prepare with curated questions like real interview practice.</p>
         </div>
       </div><button className="learn"> Start Learning</button>
+
+      <AuthBox/>
 
     </>
   );

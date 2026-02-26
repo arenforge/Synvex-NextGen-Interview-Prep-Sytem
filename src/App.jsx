@@ -1,18 +1,17 @@
-
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import MainComp from './components/MainComp'
 import Footer from './components/Footer'
-import { auth } from "./firebase";
+import Dashboard from './pages/Dashboard'
 
-console.log(auth);
 function App() {
-  return <>
-  <Header/>
-  <MainComp/>
-  <Footer/>
-  </>
+  return (
+    <Routes>
+      <Route path="/" element={<><Header /><MainComp /><Footer /></>} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
+  )
 }
-  
 
 export default App;

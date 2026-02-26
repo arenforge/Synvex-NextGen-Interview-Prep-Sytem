@@ -1,9 +1,15 @@
 import React from "react";
 import "./MainComp.css";
-import AuthBox from "./AuthBox";
-
+import { useNavigate } from "react-router-dom";
 
 function MainComp() {
+  const navigate = useNavigate();
+
+  function routeAuthBox() {
+    navigate('/AuthBox');
+    console.log("Hello");
+  }
+
   return (
     <>
       <h2>Synvex Features</h2>
@@ -30,9 +36,9 @@ function MainComp() {
           <h3>Question Bank for Prep</h3>
           <p>Prepare with curated questions like real interview practice.</p>
         </div>
-      </div><button className="learn"> Start Learning</button>
+      </div><button onClick={routeAuthBox} className="learn"> Start Learning</button>
 
-      <AuthBox/>
+
 
     </>
   );

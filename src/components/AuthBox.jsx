@@ -32,7 +32,7 @@ function AuthBox() {
     }
 
     return (
-        <div style={{border:'3px solid white'}}>
+        <div className="login">
             <h3>Login/Signup</h3>
             <input placeholder="email"
                 onChange={(e) => setEmail(e.target.value)} />

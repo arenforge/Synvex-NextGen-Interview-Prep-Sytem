@@ -5,6 +5,7 @@ import {
     signInWithEmailAndPassword
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import "./AuthBox.css";
 
 function AuthBox() {
     const [email, setEmail] = useState("")
@@ -34,12 +35,12 @@ function AuthBox() {
     return (
         <div className="login">
             <h3>Login/Signup</h3>
-            <input placeholder="email"
+            <input type ="email" placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)} />
 
             <br></br>
 
-            <input placeholder="password"
+            <input type="password" placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)} />
 
             <br></br>

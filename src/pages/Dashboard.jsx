@@ -4,7 +4,7 @@ function Dashboard() {
         <>
         <h2>Synvex</h2>
         <p>(Next Gen Interview Preparation System)</p>
-            <h1>Welcome to the Dashboard</h1>
+            <h1>✋🏻Welcome to the Dashboard</h1>
         </>
     )
 }

@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA5cZmAcKAdNpNVX7JMScHI_TZ4KmslR1Y",
-  authDomain: "synvex-auth.firebaseapp.com",
-  projectId: "synvex-auth",
-  storageBucket: "synvex-auth.firebasestorage.app",
-  messagingSenderId: "596398658222",
-  appId: "1:596398658222:web:d3e1ba37550ac2149e933f"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

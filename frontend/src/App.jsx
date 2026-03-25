@@ -8,7 +8,7 @@ import Footer from './components/Footer'
 import Dashboard from './pages/Dashboard'
 import AuthBox from './pages/AuthBox'
 
-//  ADD THESE IMPORTS
+ 
 import Resume from './pages/Resume'
 import Interview from './pages/Interview'
 
@@ -17,7 +17,7 @@ function App() {
   return (
     <Routes>
 
-      {/* Existing Home Page */}
+       
       <Route
         path="/"
         element={
@@ -29,11 +29,10 @@ function App() {
         }
       />
 
-      {/* Existing Routes */}
+      
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/AuthBox" element={<AuthBox />} />
-
-      {/*  NEW ROUTES ADDED */}
+ 
       <Route path="/resume" element={<Resume />} />
       <Route path="/interview" element={<Interview />} />
 

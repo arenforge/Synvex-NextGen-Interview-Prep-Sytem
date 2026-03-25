@@ -1,0 +1,15 @@
+/* Very basic placeholder CSS for Interview.jsx */
+
+.interview-container {
+  padding: 20px;
+  color: beige; /
+}
+
+.input-area {
+  margin-bottom: 20px;
+}
+
+.response-area {
+  margin-top: 20px;
+  white-space: pre-wrap; /*ye api responses ke break  and formatiing ko intact rakhega*/
+}

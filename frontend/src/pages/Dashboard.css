@@ -1,0 +1,102 @@
+/* PAGE */
+.page {
+  font-family: Arial, sans-serif;
+  background: #f7f7f5;
+  min-height: 100vh;
+}
+
+/* NAVBAR */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.nav-btn.primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+/* HERO */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 80px;
+}
+
+/* TEXT SIDE */
+
+.hero-text h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.hero-text p {
+  font-size: 18px;
+  color: #555;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+/* BUTTONS */
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.cta {
+  padding: 14px 28px;
+  font-size: 17px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+}
+
+.resume {
+  background: #2563eb;
+  color: white;
+}
+
+.interview {
+  background: #16a34a;
+  color: white;
+}
+
+/* IMAGE SIDE */
+
+.hero-image img {
+  width: 420px;
+  border-radius: 20px;
+}

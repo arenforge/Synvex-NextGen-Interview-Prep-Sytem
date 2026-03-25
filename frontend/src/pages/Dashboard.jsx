@@ -1,11 +1,56 @@
 import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
-    return (
-        <>
-        <h2>Synvex</h2>
-        <p>(Next Gen Interview Preparation System)</p>
-            <h1>✋🏻Welcome to the Dashboard</h1>
-        </>
-    )
+  const navigate = useNavigate();
+
+  return (
+    <div className="page">
+
+       
+
+      {/* HERO SECTION */}
+      <section className="hero">
+
+        <div className="hero-text">
+          <h1>
+            Crack Your Dream Job <br />
+            With AI-Powered Practice
+          </h1>
+
+          <p>
+            Upload your resume, get personalized questions,
+            and simulate real interviews — all in one place.
+          </p>
+
+          <div className="hero-buttons">
+            <button
+              className="cta resume"
+              onClick={() => navigate("/resume")}
+            >
+              Upload Resume
+            </button>
+
+            <button
+              className="cta interview"
+              onClick={() => navigate("/interview")}
+            >
+              Start Interview
+            </button>
+          </div>
+        </div>
+
+        {/* IMAGE SIDE */}
+        <div className="hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978"
+            alt="Interview preparation"
+          />
+        </div>
+
+      </section>
+    </div>
+  );
 }
+
 export default Dashboard;

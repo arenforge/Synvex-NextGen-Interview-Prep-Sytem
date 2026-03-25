@@ -9,7 +9,7 @@ AI-powered platform for mock interviews, resume-based questions, and performance
 - **Auth** — Firebase
 - **AI** — Gemini API
 
-## Setup
+## Setup of That
 
 ### Frontend
 ```bash

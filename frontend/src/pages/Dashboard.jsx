@@ -9,12 +9,12 @@ function Dashboard() {
 
        
 
-      {/* HERO SECTION */}
+       
       <section className="hero">
 
         <div className="hero-text">
           <h1>
-            Crack Your Dream Job <br />
+            Crack Your Dream Job! <br />
             With AI-Powered Practice
           </h1>
 
@@ -40,7 +40,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* IMAGE SIDE */}
+        
         <div className="hero-image">
           <img
             src="https://images.unsplash.com/photo-1552664730-d307ca884978"

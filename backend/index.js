@@ -7,11 +7,11 @@ import pool from './db.js'; // Import our parking lot!
 dotenv.config();
 const app = express();
 
-// Middleware: Allows React to talk to Node.js, and enables JSON reading
+// Cors ye hai Middleware -> Node aur React baat kar sakte to each other
 app.use(cors());
 app.use(express.json());
 
-// --- THIS IS THE ROUTE THAT RECEIVES DATA FROM REACT ---
+// frontend react se data receive karega
 app.post('/api/save-interview', async (req, res) => {
   // 1. Grab the exact data React sent us
   const { userName, email, question, aiResponse } = req.body;
@@ -23,7 +23,7 @@ app.post('/api/save-interview', async (req, res) => {
       [userName, email, question, aiResponse]
     );
     
-    // 3. Tell React it worked!
+    
     console.log("Data saved successfully!");
     res.json({ success: true, message: "Saved to database!" });
 

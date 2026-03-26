@@ -5,12 +5,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// We create the "Parking Lot" of database connections here
+// pool database connections ko parking lots banadeta hai
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// A quick test to ensure our password and database URL are correct
+// It will check like database ka url sahi hai ya nhi , nhi hua to it wil return error
 pool.connect()
   .then(() => console.log('Connected to PostgreSQL successfully!'))
   .catch(err => console.error('Database connection error:', err.stack));

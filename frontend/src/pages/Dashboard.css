@@ -1,13 +1,22 @@
-/* PAGE */
+/* RESET — VERY IMPORTANT */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* PAGE — FULL WIDTH */
 .page {
   font-family: Arial, sans-serif;
   background: #f7f7f5;
   min-height: 100vh;
+  width: 100%;
 }
 
 /* NAVBAR */
 
 .navbar {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,13 +49,16 @@
   border: none;
 }
 
-/* HERO */
+/* HERO — FULL WIDTH LAYOUT */
 
 .hero {
+  width: 100%;
+  max-width: 1200px;   /* keeps content centered but page full */
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 80px;
+  padding: 80px 40px;
 }
 
 /* TEXT SIDE */
@@ -98,5 +110,6 @@
 
 .hero-image img {
   width: 420px;
+  max-width: 100%;
   border-radius: 20px;
 }

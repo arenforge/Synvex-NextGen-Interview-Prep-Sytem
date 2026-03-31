@@ -7,7 +7,7 @@ AI-powered platform for mock interviews, resume-based questions, and performance
 - **Backend** — Node.js + Express
 - **Database** — PostgreSQL
 - **Auth** — Firebase
-- **AI** — Gemini API
+- **AI** — Gemini API, Deepgram API
 
 ## Setup of That
 

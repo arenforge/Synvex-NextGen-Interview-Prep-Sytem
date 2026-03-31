@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import './Interview.css';
+import { auth } from '../firebase';
 
 const Interview = () => {
   const [userInput, setUserInput] = useState("");
@@ -23,6 +24,23 @@ const Interview = () => {
 
       console.log("Gemini API Response:", text); // Console logging the response
       setResponse(text);
+      //yaha pe wm trying to get  the realEmail from firebase so that it ca be uploaded to firebase
+      const currentUser = auth.currentUser;
+      const realEmail = currentUser ? currentUser.email : "guest@example.com";
+      
+      // yaha pe we will send the api responses to the backend
+            // Send the data to your Node.js backend
+      await fetch("http://localhost:5000/api/save-interview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userName: "Test User",       // Hardcoded for now
+          email: realEmail,   // Hardcoded for now
+          question: userInput,         // What the user typed
+          aiResponse: text             // What the AI said back
+        })
+      });
+
     } catch (err) {
       console.error("Error calling Gemini API:", err);
       setResponse("Something went wrong!");

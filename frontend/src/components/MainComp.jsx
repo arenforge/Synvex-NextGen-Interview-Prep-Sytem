@@ -6,41 +6,57 @@ function MainComp() {
   const navigate = useNavigate();
 
   function routeAuthBox() {
-    navigate('/AuthBox');
-    console.log("Hello");
+    navigate("/AuthBox");
   }
 
   return (
-    <>
-      <h2>Synvex Features</h2>
+    <div className="main-wrapper">
+      <div className="overlay"></div>
 
-      <div className="features">
+      <div className="hero-content">
+        <p className="brand">Synvex AI</p>
+        <h1>
+          Master Your <span>Dream Interviews</span>
+        </h1>
+        <p className="subtitle">
+          Practice role-based AI interviews, resume-driven questions, and
+          real-world interview preparation with immersive voice simulations.
+        </p>
 
-        <div className="box">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
-          <h3>Role Based Interview</h3>
-          <p>Practice using real voice interviewer for specific job roles.</p>
+        <div className="features">
+          <div className="box">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+              alt="Role interview"
+            />
+            <h3>Role Based Interview</h3>
+            <p>AI voice interviews tailored for your target role.</p>
+          </div>
+
+          <div className="box">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png"
+              alt="Resume interview"
+            />
+            <h3>Resume Based Interviews</h3>
+            <p>Questions intelligently generated from your resume.</p>
+          </div>
+
+          <div className="box">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
+              alt="Question bank"
+            />
+            <h3>Question Bank</h3>
+            <p>Curated interview questions for strong preparation.</p>
+          </div>
         </div>
 
-        <div className="box">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/2920/2920277.png" />
-          <h3>Resume Based Interviews</h3>
-          <p>Interview questions generated directly from your resume.</p>
-        </div>
-
-        <div className="box">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" />
-          <h3>Question Bank for Prep</h3>
-          <p>Prepare with curated questions like real interview practice.</p>
-        </div>
-      </div><button onClick={routeAuthBox} className="learn"> Start Learning</button>
-
-
-
-    </>
+        <button onClick={routeAuthBox} className="learn">
+          Start Learning
+        </button>
+      </div>
+    </div>
   );
 }
 

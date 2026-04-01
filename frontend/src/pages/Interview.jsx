@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import './Interview.css';
+import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
 
 const Interview = () => {
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Initialize Gemini API
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+  
+  // NEW: Keep track of chat history so the AI remembers the conversation
+  const [history, setHistory] = useState([]);
 
   const makeApiCall = async () => {
     if (!userInput) return;
@@ -18,31 +17,48 @@ const Interview = () => {
     setResponse("");
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-      const result = await model.generateContent(userInput);
-      const text = result.response.text();
+      // 1. Call your Node.js backend instead of Gemini directly
+      const apiRes = await fetch("http://localhost:5000/api/interview/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userInput,
+          history: history,
+          role: "Full Stack Developer", // isko baadme dashboard se lena hai
+          level: "Junior"               // isko bhi dashboard se lena hai
+        })
+      });
+      
+      const data = await apiRes.json();
+      const text = data.reply; // Extract the reply from backend
 
-      console.log("Gemini API Response:", text); // Console logging the response
+      console.log("Backend API Response:", text);
       setResponse(text);
-      //yaha pe wm trying to get  the realEmail from firebase so that it ca be uploaded to firebase
+      
+      // 2. Update the history so next question remembers what was said
+      setHistory(prev => [
+        ...prev,
+        { role: 'user', parts: [{ text: userInput }] },
+        { role: 'model', parts: [{ text: text }] }
+      ]);
+      
+      // 3. Your exact code from before to save to the database!
       const currentUser = auth.currentUser;
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
       
-      // yaha pe we will send the api responses to the backend
-            // Send the data to your Node.js backend
       await fetch("http://localhost:5000/api/save-interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userName: "Test User",       // Hardcoded for now
-          email: realEmail,   // Hardcoded for now
-          question: userInput,         // What the user typed
-          aiResponse: text             // What the AI said back
+          userName: "Test User",       
+          email: realEmail,   
+          question: userInput,         
+          aiResponse: text             
         })
       });
 
     } catch (err) {
-      console.error("Error calling Gemini API:", err);
+      console.error("Error calling Backend API:", err);
       setResponse("Something went wrong!");
     } finally {
       setLoading(false);

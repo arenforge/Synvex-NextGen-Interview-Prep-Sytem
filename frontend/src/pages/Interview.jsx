@@ -6,7 +6,7 @@ const Interview = () => {
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   // NEW: Keep track of chat history so the AI remembers the conversation
   const [history, setHistory] = useState([]);
 
@@ -28,32 +28,32 @@ const Interview = () => {
           level: "Junior"               // isko bhi dashboard se lena hai
         })
       });
-      
+
       const data = await apiRes.json();
       const text = data.reply; // Extract the reply from backend
 
       console.log("Backend API Response:", text);
       setResponse(text);
-      
+
       // 2. Update the history so next question remembers what was said
       setHistory(prev => [
         ...prev,
         { role: 'user', parts: [{ text: userInput }] },
         { role: 'model', parts: [{ text: text }] }
       ]);
-      
+
       // 3. Your exact code from before to save to the database!
       const currentUser = auth.currentUser;
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
-      
+
       await fetch("http://localhost:5000/api/save-interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userName: "Test User",       
-          email: realEmail,   
-          question: userInput,         
-          aiResponse: text             
+          userName: "Test User",
+          email: realEmail,
+          question: userInput,
+          aiResponse: text
         })
       });
 
@@ -67,14 +67,16 @@ const Interview = () => {
 
   return (
     <div className="interview-container">
-      <h2>Interview Chatbot</h2>
+      <h2>Synvex Interview Engine</h2>
 
       <div className="input-area">
         <input
           type="text"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Ask a question..."
+          placeholder={loading ? "Loading..." : "Give Your Response"}
+          disabled={loading}
+
         />
         <button onClick={makeApiCall} disabled={loading}>
           {loading ? "Loading..." : "Submit"}

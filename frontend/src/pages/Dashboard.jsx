@@ -13,7 +13,8 @@ function Dashboard() {
 
   const handleStartInterview = () => {
     // Navigate with preferences (in a real app, this would use context or state)
-    navigate("/interview");
+    navigate(`/interview?role=${role}&level=${difficulty}&type=${type}`);
+
   };
 
   return (

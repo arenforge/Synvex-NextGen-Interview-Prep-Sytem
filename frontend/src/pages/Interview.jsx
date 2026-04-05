@@ -10,8 +10,9 @@ const Interview = () => {
   // NEW: Keep track of chat history so the AI remembers the conversation
   const [history, setHistory] = useState([]);
 
-  const makeApiCall = async () => {
-    if (!userInput) return;
+  const makeApiCall = async (msg) => {
+  if (!msg && !userInput) return; // Check if BOTH are empty
+
 
     setLoading(true);
     setResponse("");
@@ -22,7 +23,7 @@ const Interview = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: userInput,
+          message: msg||userInput,
           history: history,
           role: "Full Stack Developer", // isko baadme dashboard se lena hai
           level: "Junior"               // isko bhi dashboard se lena hai
@@ -50,7 +51,7 @@ const Interview = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userName: "Test User",
+          name: auth.currentUser?.displayName || "Guest",
           email: realEmail,
           question: userInput,
           aiResponse: text
@@ -64,6 +65,8 @@ const Interview = () => {
       setLoading(false);
     }
   };
+// Start as soon as page loads
+React.useEffect(() => { makeApiCall("Hi"); }, []); 
 
   return (
     <div className="interview-container">

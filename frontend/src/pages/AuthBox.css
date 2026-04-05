@@ -4,15 +4,91 @@
   box-sizing: border-box;
 }
 
+/* Styling for the New Social Login Section */
+.social-login {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider:not(:empty)::before {
+  margin-right: 15px;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 15px;
+}
+
+/* Updated Social Buttons Layout */
+.social-btns {
+  display: flex;
+  flex-direction: column; /* Stack them like in the image */
+  gap: 12px;
+}
+
+.google-btn, .github-btn {
+  width: 100%; /* Full width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #111; /* Dark background like your image */
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.google-btn:hover {
+  background: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.github-btn:hover {
+  background: #24292e;
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+
+/* Fix for the new input icons */
+.input-group .input-icon {
+  font-size: 18px;
+  top: 18px;
+}
+
+/* Smooth transition for the whole box height change */
+.auth-box {
+  transition: height 0.3s ease;
+}
+
 .auth-page {
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(
-      rgba(5, 10, 25, 0.7),
-      rgba(5, 10, 25, 0.9)
-    ),
-    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1600&auto=format&fit=crop")
-      center/cover no-repeat;
+  background: linear-gradient(rgba(5, 10, 25, 0.7),
+      rgba(5, 10, 25, 0.9)),
+    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1600&auto=format&fit=crop") center/cover no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;

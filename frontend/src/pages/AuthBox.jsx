@@ -69,7 +69,7 @@ function AuthBox() {
   };
   const handleGoogleSignIn = async () => {
     try {
-     const userCredential= await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
       await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {
@@ -79,7 +79,7 @@ function AuthBox() {
 
   const handleGithubSignIn = async () => {
     try {
-     const userCredential= await signInWithPopup(auth, githubProvider);
+      const userCredential = await signInWithPopup(auth, githubProvider);
       await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {

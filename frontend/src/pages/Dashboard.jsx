@@ -41,7 +41,7 @@ function Dashboard() {
       <main className="main">
         {/* Navbar */}
         <nav className="navbar glass">
-          <h1>Welcome, Jamal 👋</h1>
+          <h1>{use} 👋</h1>
           <div className="nav-actions">
             <button onClick={() => navigate("/profile")}>Edit Profile</button>
           </div>

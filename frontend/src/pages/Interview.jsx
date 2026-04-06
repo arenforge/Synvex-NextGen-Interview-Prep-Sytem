@@ -6,12 +6,14 @@ const Interview = () => {
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // NEW: Keep track of chat history so the AI remembers the conversation
   const [history, setHistory] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
 
-  const makeApiCall = async () => {
-    if (!userInput) return;
+  const makeApiCall = async (msg) => {
+    if (!msg && !userInput) return; // Check if BOTH are empty
+
 
     setLoading(true);
     setResponse("");
@@ -22,7 +24,7 @@ const Interview = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: userInput,
+          message: msg || userInput,
           history: history,
           role: "Full Stack Developer", // isko baadme dashboard se lena hai
           level: "Junior"               // isko bhi dashboard se lena hai
@@ -31,6 +33,32 @@ const Interview = () => {
 
       const data = await apiRes.json();
       const text = data.reply; // Extract the reply from backend
+
+
+      console.log("Backend API Response:", text);
+      setResponse(text);
+
+      // --- NEW BLOCK: Detect End of Interview ---
+      if (text.toLowerCase().includes("concludes our interview") || text.toLowerCase().includes("terminated")) {
+        setEvaluating(true);
+        try {
+          const evalRes = await fetch("http://localhost:5000/api/interview/evaluate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId: sessionId }) // Use dynamic session ID!
+          });
+          const evalData = await evalRes.json();
+          setFeedback(evalData.feedback);
+        } catch (evalErr) {
+          console.error("Evaluation error:", evalErr);
+        } finally {
+          setEvaluating(false);
+        }
+      }
+      // ------------------------------------------
+
+      // 2. Update the history ...
+
 
       console.log("Backend API Response:", text);
       setResponse(text);
@@ -50,12 +78,12 @@ const Interview = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userName: "Test User",
-          email: realEmail,
-          question: userInput,
-          aiResponse: text
+          sessionId: sessionId, // We will dynamically set this in the next step, hardcode 1 for now
+          aiQue: response, // The AI's previous question
+          userAns: userInput // The user's answer
         })
       });
+
 
     } catch (err) {
       console.error("Error calling Backend API:", err);
@@ -64,6 +92,40 @@ const Interview = () => {
       setLoading(false);
     }
   };
+  // Start as soon as page loads
+  // Start session and launch interview as soon as page loads
+  React.useEffect(() => {
+    const startSession = async () => {
+      const currentUser = auth.currentUser;
+      const realEmail = currentUser ? currentUser.email : "guest@example.com";
+
+      try {
+        const sessionRes = await fetch("http://localhost:5000/api/start-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: realEmail,
+            role: "Full Stack Developer", // Hardcoded for now
+            level: "Junior"               // Hardcoded for now
+          })
+        });
+
+        const data = await sessionRes.json();
+        if (data.success) {
+          setSessionId(data.sessionId); // Save the session ID to state!
+        }
+
+        // Kick off the interview questions after creating the session
+        makeApiCall("Hi");
+
+      } catch (error) {
+        console.error("Failed to start session", error);
+      }
+    };
+
+    startSession();
+  }, []);
+
 
   return (
     <div className="interview-container">
@@ -78,14 +140,26 @@ const Interview = () => {
           disabled={loading}
 
         />
-        <button onClick={makeApiCall} disabled={loading}>
+   <button onClick={() => makeApiCall()} disabled={loading}>
+
           {loading ? "Loading..." : "Submit"}
         </button>
       </div>
 
       <div className="response-area">
-        <p>{response}</p>
+        {feedback ? (
+          <div className="feedback-box">
+            <h3>Interview Completed! 🎉</h3>
+            <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{feedback}</pre>
+          </div>
+        ) : (
+          <div>
+            <p>{response}</p>
+            {evaluating && <p style={{ color: "#f59e0b", marginTop: "10px" }}>⏳ Interview finished. Generating your scores and feedback...</p>}
+          </div>
+        )}
       </div>
+
     </div>
   );
 };

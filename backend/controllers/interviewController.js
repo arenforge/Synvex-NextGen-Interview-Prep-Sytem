@@ -1,20 +1,46 @@
 // controllers/interviewController.js
 import genAI from '../config/gemini.js';
-import { createInterview } from '../models/interviewModel.js';
-
-// POST /api/save-interview
-export const saveInterview = async (req, res, next) => {
-  const { userName, email, question, aiResponse } = req.body;
-
+import { syncUser,
+  startSession,
+  addMessage,
+  updateFeedback,
+  getSessionMessages
+ } from '../models/interviewModel.js';
+// A. Sync User Data (Login/Signup)
+export const syncUserData = async (req, res, next) => {
+  const { email, name } = req.body;
   try {
-    const saved = await createInterview(userName, email, question, aiResponse);
-    console.log("Data saved successfully!");
-    res.json({ success: true, message: "Saved to database!", data: saved });
+    const user = await syncUser(email, name);
+    res.json({ success: true, user });
   } catch (error) {
-    console.error('Error saving data:', error);
     next(error);
   }
 };
+
+// B. Start a New Session
+export const startInterviewSession = async (req, res, next) => {
+  const { email, role, level } = req.body;
+  try {
+    const sessionId = await startSession(email, role, level);
+    res.json({ success: true, sessionId });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// POST /api/save-interview
+// C. Save Individual Message
+export const saveInterview = async (req, res, next) => {
+  const { sessionId, aiQue, userAns } = req.body; // <--- Now needs sessionId
+  try {
+    const saved = await addMessage(sessionId, aiQue, userAns);
+    res.json({ success: true, message: "Saved to messages table!", data: saved });
+  } catch (error) {
+    console.error('Error saving message:', error);
+    next(error);
+  }
+};
+
 
 // POST /api/interview/chat
 export const chatWithAI = async (req, res, next) => {
@@ -75,4 +101,33 @@ You must ask exactly 6 questions, one at a time, in this order:
     next(err);
   }
 };
+// POST /api/interview/evaluate
+export const evaluateInterview = async (req, res, next) => {
+  try {
+    const { sessionId } = req.body;
+    
+    // 1. Get the conversation from Postgres
+    const messages = await getSessionMessages(sessionId);
+    if (!messages || messages.length === 0) return res.json({ feedback: "No answers to evaluate." });
+
+    // 2. Format the conversation into a readable string
+    const transcript = messages.map(m => `Interviewer: ${m.aique}\nCandidate: ${m.userans}`).join('\n\n');
+    
+    const prompt = `You are an expert technical interviewer. Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
+    
+    // 3. Ask Gemini for an evaluation
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const result = await model.generateContent(prompt);
+    const feedback = result.response.text();
+    
+    // 4. Save feedback to database
+    await updateFeedback(sessionId, feedback);
+    
+    res.json({ success: true, feedback });
+  } catch (err) {
+    console.error('Feedback Error:', err);
+    next(err);
+  }
+};
+
 

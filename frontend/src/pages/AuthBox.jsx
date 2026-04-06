@@ -8,18 +8,35 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock, FaUserShield, FaGoogle, FaGithub, FaAt, FaUser } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc"; 
+import { FcGoogle } from "react-icons/fc";
 import "./AuthBox.css";
 
 function AuthBox() {
-  const [userName, setUserName] = useState("")
-  const [fullName, setFullName] = useState("")
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+
   const navigate = useNavigate();
+  // NEW: Helper function to save the user to PostgreSQL
+  const syncUserToDB = async (user, fallbackName = "") => {
+    try {
+      const nameToSave = user.displayName || fallbackName || "Guest User";
+      await fetch("http://localhost:5000/api/sync-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          name: nameToSave
+        })
+      });
+    } catch (err) {
+      console.error("Failed to sync user to database:", err);
+    }
+  };
 
   const handleSignup = async () => {
-    if (!email || !password || !fullName) {
+    if (!email || !password || !name) {
       alert("Please fill in Full Name, Email, and Password!");
       return;
     }
@@ -29,10 +46,11 @@ function AuthBox() {
 
       // 2. Add their Full Name to their profile
       await updateProfile(userCredential.user, {
-        displayName: fullName
+        displayName: name
       });
+      await syncUserToDB(userCredential.user, name)
 
-      alert("Signup Successful! Welcome " + fullName);
+      alert("Signup Successful! Welcome " + name);
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -42,7 +60,8 @@ function AuthBox() {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await syncUserToDB(userCredential.user)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -50,7 +69,8 @@ function AuthBox() {
   };
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+     const userCredential= await signInWithPopup(auth, googleProvider);
+      await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -59,7 +79,8 @@ function AuthBox() {
 
   const handleGithubSignIn = async () => {
     try {
-      await signInWithPopup(auth, githubProvider);
+     const userCredential= await signInWithPopup(auth, githubProvider);
+      await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -74,32 +95,28 @@ function AuthBox() {
       <div className="auth-box">
         <div className="auth-header">
           <FaUserShield className="shield-icon" />
-          <h2>Welcome Back</h2>
-          <p>Login to continue your AI interview journey</p>
+          <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
+          <p>{isLogin ? "Login to continue your AI interview journey" : "Join us to start your AI interview journey"}</p>
         </div>
-        <div className="input-group">
-          <FaUser className="input-icon" />
-          <input
-            type="text"
-            placeholder="Enter your Full Name"
-            onChange={(e) => setFullName(e.target.value)}
-          />
-        </div>
-        {/* 2. Unique Username Input */}
-        <div className="input-group">
-          <FaAt className="input-icon" />
-          <input
-            type="text"
-            placeholder="Create a Unique Username"
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
+
+        {!isLogin && (
+          <>
+            <div className="input-group">
+              <FaUser className="input-icon" />
+              <input
+                type="text"
+                placeholder="Enter your Full Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+          </>
+        )}
 
         <div className="input-group">
           <FaEnvelope className="input-icon" />
           <input
             type="email"
-            placeholder="Enter your Email/Username"
+            placeholder="Enter your Email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -114,21 +131,23 @@ function AuthBox() {
         </div>
 
         <div className="btn-group">
-          <button className="signup-btn" onClick={handleSignup}>
-            Sign Up
-          </button>
-          <button className="login-btn" onClick={handleLogin}>
-            Login
+          <button className="login-btn" onClick={isLogin ? handleLogin : handleSignup} style={{ width: '100%' }}>
+            {isLogin ? "Login" : "Sign Up"}
           </button>
         </div>
+
+        <p className="toggle-text" onClick={() => setIsLogin(!isLogin)} style={{ textAlign: "center", marginTop: "15px", cursor: "pointer", color: "#60a5fa", fontSize: "14px" }}>
+          {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+        </p>
+
         <div className="social-login">
           <p className="divider"><span>OR CONTINUE WITH</span></p>
           <div className="social-btns">
             <button className="google-btn" onClick={handleGoogleSignIn}>
-              <FaGoogle style={{fontSize:'20px'}} /> Continue with Google
+              <FcGoogle style={{ fontSize: '20px' }} /> Continue with Google
             </button>
             <button className="github-btn" onClick={handleGithubSignIn}>
-              <FaGithub /> Continue with Github
+              <FaGithub /> Continue with GitHub
             </button>
           </div>
         </div>

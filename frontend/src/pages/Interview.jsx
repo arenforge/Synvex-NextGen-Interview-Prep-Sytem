@@ -34,6 +34,11 @@ const Interview = () => {
       const data = await apiRes.json();
       const text = data.reply; // Extract the reply from backend
 
+      if (!text) {
+        console.error("Backend Error:", data.error || "No reply text");
+        setResponse(data.error || "Failed to get response from AI. Please wait 10 seconds and try again.");
+        return; // Exit early so we don't crash or save bad history
+      }
 
       console.log("Backend API Response:", text);
       setResponse(text);
@@ -57,16 +62,11 @@ const Interview = () => {
       }
       // ------------------------------------------
 
-      // 2. Update the history ...
-
-
-      console.log("Backend API Response:", text);
-      setResponse(text);
-
       // 2. Update the history so next question remembers what was said
+      const currentMessage = msg || userInput;
       setHistory(prev => [
         ...prev,
-        { role: 'user', parts: [{ text: userInput }] },
+        { role: 'user', parts: [{ text: currentMessage }] },
         { role: 'model', parts: [{ text: text }] }
       ]);
 

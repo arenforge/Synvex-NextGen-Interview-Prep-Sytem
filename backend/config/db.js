@@ -7,6 +7,9 @@ dotenv.config();
 // pool database connections ko multiple parking lots banadeta hai taaki eksath alag alag database connections create ho sake
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com') 
+    ? { rejectUnauthorized: false } 
+    : false
 });
 
 // It will check like database ka url sahi hai ya nhi , nhi hua to it wil return error

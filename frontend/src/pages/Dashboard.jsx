@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { auth } from '../firebase'
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Dashboard() {
         <div>
           <h2 className="logo">Synvex</h2>
           <div className="menu">
-            <button onClick={() => navigate("/dashboard")} style={{background: 'rgba(255,255,255,0.2)'}}>Dashboard</button>
+            <button onClick={() => navigate("/dashboard")} style={{ background: 'rgba(255,255,255,0.2)' }}>Dashboard</button>
             <button onClick={() => navigate("/resume")}>Resume Data</button>
             <button onClick={() => navigate("/interview")}>Mock Interviews</button>
             <button onClick={() => navigate("/reports")}>Performance Reports</button>
@@ -41,7 +42,7 @@ function Dashboard() {
       <main className="main">
         {/* Navbar */}
         <nav className="navbar glass">
-          <h1>{use} 👋</h1>
+          <h1>Welcome, {auth.currentUser?.displayName || "User"} 👋</h1>
           <div className="nav-actions">
             <button onClick={() => navigate("/profile")}>Edit Profile</button>
           </div>
@@ -49,7 +50,7 @@ function Dashboard() {
 
         {/* Dashboard Grid Container */}
         <div className="dashboard-grid">
-          
+
           {/* Left Column - Interview Preferences */}
           <section className="preferences-section glass">
             <h3 className="section-title">
@@ -62,20 +63,20 @@ function Dashboard() {
             <div className="form-row">
               <div className="form-group">
                 <label>Target Job Role</label>
-                <input 
-                  type="text" 
-                  value={role} 
-                  onChange={(e) => setRole(e.target.value)} 
-                  placeholder="e.g. Frontend Developer" 
+                <input
+                  type="text"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  placeholder="e.g. Frontend Developer"
                 />
               </div>
               <div className="form-group">
                 <label>Key Topic / Tech Stack</label>
-                <input 
-                  type="text" 
-                  value={topic} 
-                  onChange={(e) => setTopic(e.target.value)} 
-                  placeholder="e.g. System Design, React" 
+                <input
+                  type="text"
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  placeholder="e.g. System Design, React"
                 />
               </div>
             </div>
@@ -110,15 +111,15 @@ function Dashboard() {
             <h3 className="section-title">
               <span role="img" aria-label="chart">📊</span> Last Session Analytics
             </h3>
-            
+
             <div className="score-circle">
               <span>91%</span>
             </div>
-            
+
             <div className="feedback-pill">
               Excellent Progress 🚀
             </div>
-            
+
             <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '15px' }}>
               AI Feedback: "Strong grasp of architectural principles, but needs more confidence when explaining edge cases."
             </p>
@@ -155,7 +156,7 @@ function Dashboard() {
               Update Resume
             </button>
           </div>
-          
+
           <p style={{ color: '#cbd5e1', marginBottom: '25px', fontSize: '14px' }}>
             System has extracted the following key metrics from your active resume (jamal_resume_ai_v4.pdf). These will be used to generate personalized questions.
           </p>
@@ -182,11 +183,11 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          
+
           <div className="data-group">
             <h4>Experience Highlight</h4>
             <p style={{ color: '#e2e8f0', fontSize: '14px', lineHeight: '1.6' }}>
-              • Full Stack Developer with 3+ years experience building scalable web applications.<br/>
+              • Full Stack Developer with 3+ years experience building scalable web applications.<br />
               • Led the migration to a microservices architecture improving performance by 40%.
             </p>
           </div>

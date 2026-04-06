@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock, FaUserShield, FaGoogle, FaGithub, FaAt, FaUser } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc"; 
+import { FcGoogle } from "react-icons/fc";
 import "./AuthBox.css";
 
 function AuthBox() {
@@ -18,6 +18,22 @@ function AuthBox() {
   const [isLogin, setIsLogin] = useState(true);
 
   const navigate = useNavigate();
+  // NEW: Helper function to save the user to PostgreSQL
+  const syncUserToDB = async (user, fallbackName = "") => {
+    try {
+      const nameToSave = user.displayName || fallbackName || "Guest User";
+      await fetch("http://localhost:5000/api/sync-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          name: nameToSave
+        })
+      });
+    } catch (err) {
+      console.error("Failed to sync user to database:", err);
+    }
+  };
 
   const handleSignup = async () => {
     if (!email || !password || !name) {
@@ -32,6 +48,7 @@ function AuthBox() {
       await updateProfile(userCredential.user, {
         displayName: name
       });
+      await syncUserToDB(userCredential.user, name)
 
       alert("Signup Successful! Welcome " + name);
       navigate("/dashboard");
@@ -43,7 +60,8 @@ function AuthBox() {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await syncUserToDB(userCredential.user)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -51,7 +69,8 @@ function AuthBox() {
   };
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+     const userCredential= await signInWithPopup(auth, googleProvider);
+      await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);
@@ -60,7 +79,8 @@ function AuthBox() {
 
   const handleGithubSignIn = async () => {
     try {
-      await signInWithPopup(auth, githubProvider);
+     const userCredential= await signInWithPopup(auth, githubProvider);
+      await syncUserToDB(userCredential.user, name)
       navigate("/dashboard");
     } catch (err) {
       alert(err.message);

@@ -20,7 +20,7 @@ const Interview = () => {
 
     try {
       // 1. Call your Node.js backend instead of Gemini directly
-      const apiRes = await fetch("http://localhost:5000/api/interview/chat", {
+      const apiRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/interview/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -42,7 +42,7 @@ const Interview = () => {
       if (text.toLowerCase().includes("concludes our interview") || text.toLowerCase().includes("terminated")) {
         setEvaluating(true);
         try {
-          const evalRes = await fetch("http://localhost:5000/api/interview/evaluate", {
+          const evalRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/interview/evaluate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sessionId: sessionId }) // Use dynamic session ID!
@@ -74,7 +74,7 @@ const Interview = () => {
       const currentUser = auth.currentUser;
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
 
-      await fetch("http://localhost:5000/api/save-interview", {
+      await fetch("https://synvex-backend-ioc4.onrender.com/api/save-interview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -100,7 +100,7 @@ const Interview = () => {
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
 
       try {
-        const sessionRes = await fetch("http://localhost:5000/api/start-session", {
+        const sessionRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/start-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

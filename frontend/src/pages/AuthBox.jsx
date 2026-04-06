@@ -22,7 +22,7 @@ function AuthBox() {
   const syncUserToDB = async (user, fallbackName = "") => {
     try {
       const nameToSave = user.displayName || fallbackName || "Guest User";
-      await fetch("http://localhost:5000/api/sync-user", {
+      await fetch("https://synvex-backend-ioc4.onrender.com/api/sync-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

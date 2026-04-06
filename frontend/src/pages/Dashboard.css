@@ -7,28 +7,24 @@
 .dashboard-page {
   min-height: 100vh;
   display: flex;
-  color: white;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(rgba(8, 12, 20, 0.75), rgba(8, 12, 20, 0.85)),
-    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1600&auto=format&fit=crop")
-    center/cover no-repeat;
+  color: #000000;
+  font-family: "Inter", "Poppins", sans-serif;
+  background: #ffffff;
   position: relative;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0px #000000;
+  transition: all 0.2s ease;
+  color: #000000;
 }
 
 .glass:hover {
-  transform: translateY(-4px);
-  border-color: rgba(96, 165, 250, 0.6);
-  box-shadow: 0 0 25px rgba(96, 165, 250, 0.25);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0px #000000;
 }
 
 .sidebar {
@@ -39,22 +35,30 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 20px;
+  background: transparent;
 }
 
 /* Sidebar Logo */
 .logo {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   margin-bottom: 30px;
-  color: #7dd3fc;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  color: #000000;
+  background-color: #b4f056;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  padding: 15px;
+  text-align: center;
+  transform: rotate(-2deg);
+  display: inline-block;
+  align-self: flex-start;
+  margin-left: 10px;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 /* Base button styling inheriting from generic sidebar buttons */
@@ -62,43 +66,68 @@
 .nav-actions button,
 .resume-btn {
   padding: 14px;
-  border: none;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: #4b5563;
   cursor: pointer;
   font-family: inherit;
   font-size: 15px;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
   text-align: left;
-  padding-left: 20px;
+  padding-left: 15px;
+}
+
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .nav-actions button, .resume-btn {
   text-align: center;
-  padding-left: 14px;
+  padding: 10px 20px;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  background: #ffffff;
+  color: #000000;
 }
 
-.menu button:hover,
-.nav-actions button:hover,
-.resume-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.02);
+.menu button:hover {
+  background: #f3f4f6;
+  color: #000000;
+}
+
+.menu button.active, .menu button:first-child {
+  background: #b4f056;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  color: #000000;
+}
+
+.nav-actions button:active,
+.resume-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000;
 }
 
 .logout {
   padding: 14px;
-  border: none;
-  border-radius: 14px;
-  background: rgba(239, 68, 68, 0.2);
-  color: #fca5a5;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: #ef4444;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 15px;
   transition: all 0.3s ease;
+  text-align: left;
+  padding-left: 15px;
 }
 
 .logout:hover {
-  background: rgba(239, 68, 68, 0.4);
+  background: #fef2f2;
 }
 
 .main {
@@ -113,16 +142,17 @@
 
 /* Top Navbar */
 .navbar {
-  padding: 20px 25px;
+  padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
 }
 
 .navbar h1 {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000000;
 }
 
 .nav-actions {
@@ -140,16 +170,16 @@
 
 /* Hero Section (Interview Preferences) */
 .preferences-section {
-  padding: 35px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #60a5fa;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -164,7 +194,8 @@
 
 .form-group label {
   font-size: 14px;
-  color: #cbd5e1;
+  color: #4b5563;
+  font-weight: 600;
 }
 
 .form-row {
@@ -175,48 +206,49 @@
 
 select, input[type="text"] {
   width: 100%;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
   font-family: inherit;
   font-size: 15px;
+  font-weight: 500;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   appearance: none;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 select:focus, input[type="text"]:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 15px rgba(96, 165, 250, 0.2);
+  box-shadow: 3px 3px 0px #000000;
 }
 
 select option {
-  background: #1e293b;
-  color: white;
+  background: #ffffff;
+  color: #000000;
   padding: 10px;
 }
 
 .primary-btn {
   padding: 16px 40px;
-  border: none;
-  border-radius: 40px;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
-  color: white;
+  border: 3px solid #000000;
+  border-radius: 12px;
+  background: #b4f056;
+  color: #000000;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
+  transition: all 0.1s ease;
+  box-shadow: 6px 6px 0px #000000;
   margin-top: 15px;
   font-family: inherit;
-  align-self: flex-start;
+  width: 100%;
 }
 
-.primary-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 35px rgba(59, 130, 246, 0.55);
+.primary-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px #000000;
 }
 
 /* Candidate Responses / Metrics Section */
@@ -227,13 +259,19 @@ select option {
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: #111827; /* Dark card from image */
+  color: #ffffff;
+}
+
+.metrics-section .section-title {
+  color: #ffffff;
 }
 
 .score-circle {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  background: conic-gradient(#3b82f6 91%, rgba(255,255,255,0.1) 0);
+  background: conic-gradient(#b4f056 91%, rgba(255,255,255,0.2) 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -244,29 +282,27 @@ select option {
 .score-circle::before {
   content: "";
   position: absolute;
-  width: 120px;
-  height: 120px;
-  background: #0f172a; /* match approx dashboard background */
+  width: 110px;
+  height: 110px;
+  background: #111827;
   border-radius: 50%;
 }
 
 .score-circle span {
   position: relative;
   font-size: 2.5rem;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  font-weight: 800;
+  color: #b4f056;
 }
 
 .feedback-pill {
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  padding: 8px 16px;
-  border-radius: 20px;
+  color: #9ca3af;
+  padding: 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 20px;
   display: inline-block;
+  background: transparent;
 }
 
 .metrics-grid {
@@ -278,20 +314,23 @@ select option {
 }
 
 .metric-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,0.1);
   padding: 15px;
-  border-radius: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
 .metric-item h4 {
-  font-size: 1rem;
-  color: #60a5fa;
+  font-size: 1.5rem;
+  color: #b4f056;
   margin-bottom: 5px;
+  font-weight: 700;
 }
 
 .metric-item p {
   font-size: 0.85rem;
-  color: #cbd5e1;
+  color: #9ca3af;
+  font-weight: 500;
 }
 
 /* Resume Data Section */
@@ -307,11 +346,12 @@ select option {
 }
 
 .data-group h4 {
-  color: #cbd5e1;
+  color: #4b5563;
   font-size: 0.9rem;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-weight: 700;
 }
 
 .skills-list, .projects-list {
@@ -321,18 +361,18 @@ select option {
 }
 
 .skill-tag, .project-tag {
-  background: rgba(59, 130, 246, 0.2);
-  color: #93c5fd;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  padding: 8px 14px;
+  border-radius: 20px;
   font-size: 0.85rem;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  font-weight: 600;
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
 }
 
 .project-tag {
-  background: rgba(139, 92, 246, 0.2);
-  color: #c4b5fd;
-  border-color: rgba(139, 92, 246, 0.3);
+  background: #e5e7eb;
 }
 
 .resume-header {
@@ -343,13 +383,14 @@ select option {
 }
 
 .resume-btn {
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.5);
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
 }
 
 .resume-btn:hover {
-  background: rgba(59, 130, 246, 0.4);
+  background: #1f2937;
+  color: #ffffff;
 }
 
 @media (max-width: 1024px) {

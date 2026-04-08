@@ -86,7 +86,7 @@ You must ask exactly 6 questions, one at a time, in this order:
 - Never repeat a question`;
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-3.1-flash-lite-preview',
+      model: 'gemini-2.5-flash',
       systemInstruction: systemPrompt
     });
 
@@ -119,7 +119,7 @@ export const evaluateInterview = async (req, res, next) => {
     const prompt = `You are an expert technical interviewer. Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
 
     // 3. Ask Gemini for an evaluation
-    const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const result = await model.generateContent(prompt);
     const feedback = result.response.text();
 

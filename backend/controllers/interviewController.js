@@ -1,11 +1,12 @@
 // controllers/interviewController.js
 import genAI from '../config/gemini.js';
-import { syncUser,
+import {
+  syncUser,
   startSession,
   addMessage,
   updateFeedback,
   getSessionMessages
- } from '../models/interviewModel.js';
+} from '../models/interviewModel.js';
 // A. Sync User Data (Login/Signup)
 export const syncUserData = async (req, res, next) => {
   const { email, name } = req.body;
@@ -85,7 +86,7 @@ You must ask exactly 6 questions, one at a time, in this order:
 - Never repeat a question`;
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash-latest',
+      model: 'gemini-3.1-flash-lite-preview',
       systemInstruction: systemPrompt
     });
 
@@ -107,24 +108,24 @@ You must ask exactly 6 questions, one at a time, in this order:
 export const evaluateInterview = async (req, res, next) => {
   try {
     const { sessionId } = req.body;
-    
+
     // 1. Get the conversation from Postgres
     const messages = await getSessionMessages(sessionId);
     if (!messages || messages.length === 0) return res.json({ feedback: "No answers to evaluate." });
 
     // 2. Format the conversation into a readable string
     const transcript = messages.map(m => `Interviewer: ${m.aique}\nCandidate: ${m.userans}`).join('\n\n');
-    
+
     const prompt = `You are an expert technical interviewer. Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
-    
+
     // 3. Ask Gemini for an evaluation
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
     const result = await model.generateContent(prompt);
     const feedback = result.response.text();
-    
+
     // 4. Save feedback to database
     await updateFeedback(sessionId, feedback);
-    
+
     res.json({ success: true, feedback });
   } catch (err) {
     console.error('Feedback Error:', err);

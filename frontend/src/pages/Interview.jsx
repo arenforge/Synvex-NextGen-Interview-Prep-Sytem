@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
 
+// Auto-detect backend URL
+const API_BASE_URL = window.location.hostname === "localhost" 
+  ? "http://localhost:5000" 
+  : "https://synvex-backend-ioc4.onrender.com";
+
 const Interview = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userRole = queryParams.get("role") || "Software Engineer";
+  const userTopic = queryParams.get("topic") || "React & Node.js";
+  const userLevel = queryParams.get("level") || "Medium";
+  const userType = queryParams.get("type") || "Technical";
+
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,14 +33,16 @@ const Interview = () => {
 
     try {
       // 1. Call your Node.js backend instead of Gemini directly
-      const apiRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/interview/chat", {
+      const apiRes = await fetch(`${API_BASE_URL}/api/interview/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: msg || userInput,
           history: history,
-          role: "Full Stack Developer", // isko baadme dashboard se lena hai
-          level: "Junior"               // isko bhi dashboard se lena hai
+          role: userRole,
+          level: userLevel,
+          topic: userTopic,
+          type: userType
         })
       });
 
@@ -47,7 +62,7 @@ const Interview = () => {
       if (text.toLowerCase().includes("concludes our interview") || text.toLowerCase().includes("terminated")) {
         setEvaluating(true);
         try {
-          const evalRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/interview/evaluate", {
+          const evalRes = await fetch(`${API_BASE_URL}/api/interview/evaluate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sessionId: sessionId }) // Use dynamic session ID!
@@ -74,7 +89,7 @@ const Interview = () => {
       const currentUser = auth.currentUser;
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
 
-      await fetch("https://synvex-backend-ioc4.onrender.com/api/save-interview", {
+      await fetch(`${API_BASE_URL}/api/save-interview`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -100,13 +115,15 @@ const Interview = () => {
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
 
       try {
-        const sessionRes = await fetch("https://synvex-backend-ioc4.onrender.com/api/start-session", {
+        const sessionRes = await fetch(`${API_BASE_URL}/api/start-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: realEmail,
-            role: "Full Stack Developer", // Hardcoded for now
-            level: "Junior"               // Hardcoded for now
+            role: userRole,
+            level: userLevel,
+            topic: userTopic,
+            type: userType
           })
         });
 
@@ -140,7 +157,7 @@ const Interview = () => {
           disabled={loading}
 
         />
-   <button onClick={() => makeApiCall()} disabled={loading}>
+        <button onClick={() => makeApiCall()} disabled={loading}>
 
           {loading ? "Loading..." : "Submit"}
         </button>

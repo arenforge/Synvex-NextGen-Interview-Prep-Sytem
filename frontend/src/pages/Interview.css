@@ -45,7 +45,7 @@
   color: #000000;
   outline: none;
   font-weight: 500;
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
@@ -92,14 +92,16 @@
 /* Response box */
 .response-area {
   margin-top: 30px;
-  width: 500px;
-  max-width: 100%;
-  min-height: 120px;
+  width: 800px;
+  max-width: 90vw;
+  min-height: 150px;
   padding: 24px;
   border-radius: 12px;
   background-color: #ffffff;
   border: 3px solid #000000;
   box-shadow: 8px 8px 0px #000000;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Response text */

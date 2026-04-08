@@ -13,9 +13,8 @@ function Dashboard() {
   const [type, setType] = useState("Technical");
 
   const handleStartInterview = () => {
-    // Navigate with preferences (in a real app, this would use context or state)
-    navigate(`/interview?role=${role}&level=${difficulty}&type=${type}`);
-
+    // Navigate with preferences
+    navigate(`/interview?role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}`);
   };
 
   return (

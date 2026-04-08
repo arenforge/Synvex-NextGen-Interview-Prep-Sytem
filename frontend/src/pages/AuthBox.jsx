@@ -11,6 +11,11 @@ import { FaEnvelope, FaLock, FaUserShield, FaGoogle, FaGithub, FaAt, FaUser } fr
 import { FcGoogle } from "react-icons/fc";
 import "./AuthBox.css";
 
+// Auto-detect backend URL
+const API_BASE_URL = window.location.hostname === "localhost" 
+  ? "http://localhost:5000" 
+  : "https://synvex-backend-ioc4.onrender.com";
+
 function AuthBox() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("");
@@ -22,7 +27,7 @@ function AuthBox() {
   const syncUserToDB = async (user, fallbackName = "") => {
     try {
       const nameToSave = user.displayName || fallbackName || "Guest User";
-      await fetch("https://synvex-backend-ioc4.onrender.com/api/sync-user", {
+      await fetch(`${API_BASE_URL}/api/sync-user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

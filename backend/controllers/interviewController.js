@@ -45,9 +45,11 @@ export const saveInterview = async (req, res, next) => {
 // POST /api/interview/chat
 export const chatWithAI = async (req, res, next) => {
   try {
-    const { message, history, role, level } = req.body;
+    const { message, history, role, level, topic, type } = req.body;
 
-    const systemPrompt = `You are a senior technical interviewer at a top tech company conducting a real job interview for a ${role} position at ${level} level.
+    const systemPrompt = `You are a senior interviewer at a top tech company conducting a real job interview for a ${role} position at ${level} level.
+The primary focus topic for this interview is: ${topic}.
+The interview round is of type: ${type}.
 
 ## Your Persona
 - Professional, calm, and neutral — like a real interviewer
@@ -59,7 +61,7 @@ You must ask exactly 6 questions, one at a time, in this order:
 
 1. "Tell me about yourself."
 2. "Why are you interested in this ${role} role?"
-3-6. Strictly technical questions for a ${role} at ${level} level. These must test real depth — not surface-level definitions. Ask about trade-offs, real-world scenarios, debugging, architecture, or problem-solving depending on the role.
+3-6. Strictly generate questions aligned with the interview type (${type}) and primarily focused on the topic (${topic}). If technical, ask deep technical questions testing real depth, trade-offs, and architecture. If HR/Behavioral, ask situational and behavioral questions.
 
 ## Rules
 - Ask ONE question at a time. Wait for the answer before proceeding.
@@ -83,7 +85,7 @@ You must ask exactly 6 questions, one at a time, in this order:
 - Never repeat a question`;
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash-latest',
       systemInstruction: systemPrompt
     });
 
@@ -116,7 +118,7 @@ export const evaluateInterview = async (req, res, next) => {
     const prompt = `You are an expert technical interviewer. Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
     
     // 3. Ask Gemini for an evaluation
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
     const result = await model.generateContent(prompt);
     const feedback = result.response.text();
     

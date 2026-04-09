@@ -22,6 +22,7 @@ export const syncUserData = async (req, res, next) => {
 export const startInterviewSession = async (req, res, next) => {
   const { email, role, level } = req.body;
   try {
+    await syncUser(email, "Interview Candidate"); 
     const sessionId = await startSession(email, role, level);
     res.json({ success: true, sessionId });
   } catch (error) {
@@ -32,12 +33,11 @@ export const startInterviewSession = async (req, res, next) => {
 // POST /api/save-interview
 // C. Save Individual Message
 export const saveInterview = async (req, res, next) => {
-  const { sessionId, aiQue, userAns } = req.body; // <--- Now needs sessionId
+  const { sessionId, aique, userans } = req.body; 
   try {
-    const saved = await addMessage(sessionId, aiQue, userAns);
+    const saved = await addMessage(sessionId, aique, userans);
     res.json({ success: true, message: "Saved to messages table!", data: saved });
   } catch (error) {
-    console.error('Error saving message:', error);
     next(error);
   }
 };
@@ -46,12 +46,12 @@ export const saveInterview = async (req, res, next) => {
 // POST /api/interview/chat
 export const chatWithAI = async (req, res, next) => {
   try {
-    const { message, history, role, level, topic, type } = req.body;
+    const { message, history, role, level, topic, type, name } = req.body;
 
     const systemPrompt = `You are a senior interviewer at a top tech company conducting a real job interview for a ${role} position at ${level} level.
 The primary focus topic for this interview is: ${topic}.
 The interview round is of type: ${type}.
-
+Candidate Name is ${name}
 ## Your Persona
 - Professional, calm, and neutral — like a real interviewer
 - Slightly formal but not robotic. Occasionally use natural filler phrases like "Great.", "Alright.", "Got it." — but keep it brief
@@ -107,7 +107,7 @@ You must ask exactly 6 questions, one at a time, in this order:
 // POST /api/interview/evaluate
 export const evaluateInterview = async (req, res, next) => {
   try {
-    const { sessionId } = req.body;
+    const { sessionId, name } = req.body;
 
     // 1. Get the conversation from Postgres
     const messages = await getSessionMessages(sessionId);
@@ -116,7 +116,7 @@ export const evaluateInterview = async (req, res, next) => {
     // 2. Format the conversation into a readable string
     const transcript = messages.map(m => `Interviewer: ${m.aique}\nCandidate: ${m.userans}`).join('\n\n');
 
-    const prompt = `You are an expert technical interviewer. Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
+    const prompt = `You are an expert technical interviewer. Candidate Name is ${name} Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
 
     // 3. Ask Gemini for an evaluation
     const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });

@@ -4,7 +4,7 @@ import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
 
 // Auto-detect backend URL
-const API_BASE_URL = window.location.hostname === "localhost" 
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:5000" 
   : "https://synvex-backend-ioc4.onrender.com";
 
@@ -24,7 +24,7 @@ const Interview = () => {
   const [feedback, setFeedback] = useState(null);
   const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
 
-  const makeApiCall = async (msg) => {
+  const makeApiCall = async (msg, forcedSessionId = null) => {
     if (!msg && !userInput) return; // Check if BOTH are empty
 
 
@@ -33,16 +33,20 @@ const Interview = () => {
 
     try {
       // 1. Call your Node.js backend instead of Gemini directly
+      const currentInput = msg || userInput;
+      if (!msg) setUserInput(""); // Clear input early for better UX
+
       const apiRes = await fetch(`${API_BASE_URL}/api/interview/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: msg || userInput,
+          message: currentInput,
           history: history,
           role: userRole,
           level: userLevel,
           topic: userTopic,
-          type: userType
+          type: userType,
+          name: auth.currentUser?.displayName || "Candidate"
         })
       });
 
@@ -65,7 +69,10 @@ const Interview = () => {
           const evalRes = await fetch(`${API_BASE_URL}/api/interview/evaluate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sessionId: sessionId }) // Use dynamic session ID!
+            body: JSON.stringify({ 
+              sessionId: sessionId,
+              name: auth.currentUser?.displayName || "Candidate"
+            }) // Use dynamic session ID and name!
           });
           const evalData = await evalRes.json();
           setFeedback(evalData.feedback);
@@ -85,19 +92,20 @@ const Interview = () => {
         { role: 'model', parts: [{ text: text }] }
       ]);
 
-      // 3. Your exact code from before to save to the database!
-      const currentUser = auth.currentUser;
-      const realEmail = currentUser ? currentUser.email : "guest@example.com";
-
-      await fetch(`${API_BASE_URL}/api/save-interview`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: sessionId, // We will dynamically set this in the next step, hardcode 1 for now
-          aiQue: response, // The AI's previous question
-          userAns: userInput // The user's answer
-        })
-      });
+      // 3. Save the interaction to the database
+      // SKIP saving if it's the initial "Hi" (msg is "Hi") to avoid empty entries
+      const currentSessionId = forcedSessionId || sessionId;
+      if (currentSessionId && msg !== "Hi") {
+        await fetch(`${API_BASE_URL}/api/save-interview`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: currentSessionId,
+            aique: response, // The AI's previous question (before the one just received)
+            userans: currentInput // The candidate's current answer
+          })
+        });
+      }
 
 
     } catch (err) {
@@ -133,7 +141,7 @@ const Interview = () => {
         }
 
         // Kick off the interview questions after creating the session
-        makeApiCall("Hi");
+        makeApiCall("Hi", data.sessionId);
 
       } catch (error) {
         console.error("Failed to start session", error);

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
+import { useDeepgram } from '../hooks/useDeepgram';
 
 // Auto-detect backend URL
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000" 
+  ? "http://localhost:5000"
   : "https://synvex-backend-ioc4.onrender.com";
+
 
 const Interview = () => {
   const location = useLocation();
@@ -23,6 +25,40 @@ const Interview = () => {
   const [sessionId, setSessionId] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
+  const { isListening, toggleListening } = useDeepgram(setUserInput);
+  
+  // Reference for stopping audio if needed
+  const currentAudioRef = React.useRef(null);
+
+  const playDeepgramVoice = async (text) => {
+    try {
+      // 1. Fetch token
+      const tokenRes = await fetch(`${API_BASE_URL}/api/speech-token`);
+      const { key } = await tokenRes.json();
+      
+      // 2. Fetch TTS Audio from Deepgram Aura
+      const response = await fetch("https://api.deepgram.com/v1/speak?model=aura-asteria-en", {
+        method: "POST",
+        headers: {
+          "Authorization": `Token ${key}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text })
+      });
+
+      if (!response.ok) throw new Error("Failed to get audio from Deepgram");
+
+      const blob = await response.blob();
+      const audioUrl = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrl);
+      
+      // Save to ref and play
+      currentAudioRef.current = audio;
+      audio.play();
+    } catch (err) {
+      console.error("TTS Error:", err);
+    }
+  };
 
   const makeApiCall = async (msg, forcedSessionId = null) => {
     if (!msg && !userInput) return; // Check if BOTH are empty
@@ -30,8 +66,21 @@ const Interview = () => {
 
     setLoading(true);
     setResponse("");
+    setUserInput('');
+      
+
+
 
     try {
+      // Auto-turn off the mic if it's currently on when the user clicks submit
+      if (isListening) toggleListening();
+
+      // Stop any currently playing TTS audio
+      if (currentAudioRef.current) {
+        currentAudioRef.current.pause();
+        currentAudioRef.current.currentTime = 0;
+      }
+
       // 1. Call your Node.js backend instead of Gemini directly
       const currentInput = msg || userInput;
       if (!msg) setUserInput(""); // Clear input early for better UX
@@ -62,6 +111,9 @@ const Interview = () => {
       console.log("Backend API Response:", text);
       setResponse(text);
 
+      // Play the AI Voice natively!
+      playDeepgramVoice(text);
+
       // --- NEW BLOCK: Detect End of Interview ---
       if (text.toLowerCase().includes("concludes our interview") || text.toLowerCase().includes("terminated")) {
         setEvaluating(true);
@@ -69,7 +121,7 @@ const Interview = () => {
           const evalRes = await fetch(`${API_BASE_URL}/api/interview/evaluate`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
               sessionId: sessionId,
               name: auth.currentUser?.displayName || "Candidate"
             }) // Use dynamic session ID and name!
@@ -150,41 +202,63 @@ const Interview = () => {
 
     startSession();
   }, []);
-
-
   return (
     <div className="interview-container">
       <h2>Synvex Interview Engine</h2>
-
-      <div className="input-area">
-        <input
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder={loading ? "Loading..." : "Give Your Response"}
-          disabled={loading}
-
-        />
-        <button onClick={() => makeApiCall()} disabled={loading}>
-
-          {loading ? "Loading..." : "Submit"}
-        </button>
-      </div>
 
       <div className="response-area">
         {feedback ? (
           <div className="feedback-box">
             <h3>Interview Completed! 🎉</h3>
-            <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{feedback}</pre>
+            <div className="feedback-content">{feedback}</div>
           </div>
         ) : (
-          <div>
-            <p>{response}</p>
-            {evaluating && <p style={{ color: "#f59e0b", marginTop: "10px" }}>⏳ Interview finished. Generating your scores and feedback...</p>}
+          <div className="chat-content">
+            {loading ? (
+              <div className="typing-indicator">
+                 <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span> Interviewer is typing
+              </div>
+            ) : response ? (
+              <p>{response}</p>
+            ) : (
+              <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
+            )}
+            {evaluating && (
+              <div className="evaluating-loader">
+                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+                Preparing your performance feedback...
+              </div>
+            )}
           </div>
         )}
       </div>
 
+      <div className="input-area">
+        <div className="input-wrapper">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder={isListening ? "I'm listening..." : (loading ? "AI is thinking..." : "Type your response...")}
+            disabled={loading}
+          />
+          <button 
+            type="button"
+            className={`mic-btn ${isListening ? 'listening' : ''}`}
+            onClick={toggleListening}
+            disabled={loading}
+          >
+            {isListening ? "🛑" : "🎤"}
+          </button>
+        </div>
+        <button 
+          className="submit-btn" 
+          onClick={() => makeApiCall()} 
+          disabled={loading || !userInput.trim()}
+        >
+          {loading ? "..." : "Send"}
+        </button>
+      </div>
     </div>
   );
 };

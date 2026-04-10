@@ -7,6 +7,7 @@ import {
   updateFeedback,
   getSessionMessages
 } from '../models/interviewModel.js';
+
 // A. Sync User Data (Login/Signup)
 export const syncUserData = async (req, res, next) => {
   const { email, name } = req.body;
@@ -22,7 +23,7 @@ export const syncUserData = async (req, res, next) => {
 export const startInterviewSession = async (req, res, next) => {
   const { email, role, level } = req.body;
   try {
-    await syncUser(email, "Interview Candidate"); 
+    await syncUser(email, "Interview Candidate");
     const sessionId = await startSession(email, role, level);
     res.json({ success: true, sessionId });
   } catch (error) {
@@ -33,7 +34,7 @@ export const startInterviewSession = async (req, res, next) => {
 // POST /api/save-interview
 // C. Save Individual Message
 export const saveInterview = async (req, res, next) => {
-  const { sessionId, aique, userans } = req.body; 
+  const { sessionId, aique, userans } = req.body;
   try {
     const saved = await addMessage(sessionId, aique, userans);
     res.json({ success: true, message: "Saved to messages table!", data: saved });
@@ -132,5 +133,22 @@ export const evaluateInterview = async (req, res, next) => {
     next(err);
   }
 };
+
+// --- DEEPGRAM LOGIC ---
+export const getSpeechToken = async (req, res) => {
+  try {
+    // Return the API key directly to frontend
+    // This avoids the 'keys:write' permission error with the Deepgram Scoped Keys API
+    if (process.env.DEEPGRAM_API_KEY) {
+      res.json({ key: process.env.DEEPGRAM_API_KEY });
+    } else {
+      res.status(500).json({ error: "DEEPGRAM_API_KEY not found in backend .env" });
+    }
+  } catch (err) {
+    console.error("Server Error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveInterview, chatWithAI,syncUserData,startInterviewSession ,evaluateInterview} from '../controllers/interviewController.js';
+import { saveInterview, chatWithAI,syncUserData,startInterviewSession ,evaluateInterview, getSpeechToken} from '../controllers/interviewController.js';
 
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.post('/start-session', startInterviewSession);
 router.post('/interview/chat', chatWithAI);
 router.post('/save-interview', saveInterview);
 router.post('/interview/evaluate', evaluateInterview);
+router.get('/speech-token', getSpeechToken);
 
 
 

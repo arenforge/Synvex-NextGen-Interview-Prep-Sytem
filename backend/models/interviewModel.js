@@ -15,10 +15,10 @@ export const startSession = async (email, role, level) => {
   );
   return result.rows[0].id; // We need this ID for the next step!
 };
-export const addMessage = async (sessionId, aiQue, userAns) => {
+export const addMessage = async (sessionId, aique, userans) => {
   const result = await pool.query(
-    'INSERT INTO messages (session_id, aiQue, userAns) VALUES ($1, $2, $3) RETURNING *',
-    [sessionId, aiQue, userAns]
+    'INSERT INTO messages (session_id, aique, userans) VALUES ($1, $2, $3) RETURNING *',
+    [sessionId, aique, userans]
   );
   return result.rows[0];
 };

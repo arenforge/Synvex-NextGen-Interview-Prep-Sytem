@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase'
+import ResumeAnalyzer from "../components/ResumeAnalyzer";
+
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,8 +16,21 @@ function Dashboard() {
 
   const handleStartInterview = () => {
     // Navigate with preferences
-    navigate(`/interview?role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}`);
+    navigate(`/interview?mode=role&role=${encodeURIComponent(role)}
+     &topic=${encodeURIComponent(topic)}
+     &level=${encodeURIComponent(difficulty)}&
+     type=${encodeURIComponent(type)}`);
   };
+  const handleStartResumeInterview = () => {
+    // First, check if the user actually uploaded a resume!
+    const savedResume = localStorage.getItem('resumeData');
+    if (!savedResume) {
+      alert("Please upload and parse your resume using the Analyzer below before starting a Resume-Based interview.");
+      return;
+    }
+    navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}`);
+  };
+
 
   return (
     <div className="dashboard-page">
@@ -100,9 +115,14 @@ function Dashboard() {
               </div>
             </div>
 
-            <button className="primary-btn" onClick={handleStartInterview}>
-              Start AI Interview
-            </button>
+            <div style={{ display: 'flex', gap: '15px', marginTop: '20px', flexWrap: 'wrap' }}>
+              <button className="primary-btn" onClick={handleStartInterview}>
+                Start Role-Based Interview
+              </button>
+
+             
+            </div>
+
           </section>
 
           {/* Right Column - Candidate Responses / Last Session */}
@@ -145,52 +165,18 @@ function Dashboard() {
 
         </div>
 
-        {/* Bottom Section - Resume Data */}
-        <section className="resume-section glass">
-          <div className="resume-header">
-            <h3 className="section-title" style={{ marginBottom: 0 }}>
-              <span role="img" aria-label="doc">📄</span> Resume Data Analysis
-            </h3>
-            <button className="resume-btn" onClick={() => navigate("/resume")}>
-              Update Resume
-            </button>
-          </div>
+        {/* Bottom Section - dynamic Resume Analyzer */}
+        <div style={{ marginTop: '30px' }}>
+          <ResumeAnalyzer />
+        </div>
+         <button
+                className="primary-btn"
+                onClick={handleStartResumeInterview}
+                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
+              >
+                Start Resume-Based Interview
+              </button>
 
-          <p style={{ color: '#cbd5e1', marginBottom: '25px', fontSize: '14px' }}>
-            System has extracted the following key metrics from your active resume (jamal_resume_ai_v4.pdf). These will be used to generate personalized questions.
-          </p>
-
-          <div className="resume-content">
-            <div className="data-group">
-              <h4>Extracted Skills</h4>
-              <div className="skills-list">
-                <span className="skill-tag">React</span>
-                <span className="skill-tag">Node.js</span>
-                <span className="skill-tag">Python</span>
-                <span className="skill-tag">AWS Cloud</span>
-                <span className="skill-tag">System Design</span>
-                <span className="skill-tag">GraphQL</span>
-              </div>
-            </div>
-
-            <div className="data-group">
-              <h4>Identified Projects</h4>
-              <div className="projects-list">
-                <span className="project-tag">AI Chat System</span>
-                <span className="project-tag">E-Commerce Microservices</span>
-                <span className="project-tag">Real-time Analytics Dashboard</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="data-group">
-            <h4>Experience Highlight</h4>
-            <p style={{ color: '#e2e8f0', fontSize: '14px', lineHeight: '1.6' }}>
-              • Full Stack Developer with 3+ years experience building scalable web applications.<br />
-              • Led the migration to a microservices architecture improving performance by 40%.
-            </p>
-          </div>
-        </section>
 
       </main>
     </div>

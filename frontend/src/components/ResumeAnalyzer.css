@@ -1,0 +1,110 @@
+.resume-analyzer-container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 25px;
+  color: #fff;
+  font-family: inherit;
+}
+
+.ra-header {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.ra-subtitle {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.ra-upload-box {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.ra-file-input {
+  margin-bottom: 15px;
+  color: #cbd5e1;
+}
+
+.ra-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  width: fit-content;
+}
+
+.ra-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.ra-btn:disabled {
+  background: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.ra-error {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Extracted Data Section */
+.ra-results {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ra-section-title {
+  color: #a78bfa;
+  margin: 15px 0 10px 0;
+  font-size: 16px;
+}
+
+.ra-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.ra-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ra-skill-tag {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  color: #60a5fa;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 13px;
+}
+
+.ra-projects-list {
+  padding-left: 20px;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.ra-projects-list li {
+  margin-bottom: 8px;
+}

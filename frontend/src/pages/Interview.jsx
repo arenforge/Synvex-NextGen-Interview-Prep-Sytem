@@ -17,6 +17,9 @@ const Interview = () => {
   const userTopic = queryParams.get("topic") || "React & Node.js";
   const userLevel = queryParams.get("level") || "Medium";
   const userType = queryParams.get("type") || "Technical";
+  const interviewMode = queryParams.get("mode") || "role";
+  const resumeData = JSON.parse(localStorage.getItem('resumeData') || 'null');
+
 
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
@@ -95,7 +98,9 @@ const Interview = () => {
           level: userLevel,
           topic: userTopic,
           type: userType,
-          name: auth.currentUser?.displayName || "Candidate"
+          name: auth.currentUser?.displayName || "Candidate",
+          mode:interviewMode,
+          resumeData:resumeData
         })
       });
 

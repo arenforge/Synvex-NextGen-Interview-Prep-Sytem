@@ -40,10 +40,10 @@ function Dashboard() {
           <h2 className="logo">Synvex</h2>
           <div className="menu">
             <button onClick={() => navigate("/dashboard")} style={{ background: 'rgba(255,255,255,0.2)' }}>Dashboard</button>
-            <button onClick={() => navigate("/resume")}>Resume Data</button>
-            <button onClick={() => navigate("/interview")}>Mock Interviews</button>
+            <button onClick={() => navigate("/resume")}>AI Resume Analyzer</button>
+            {/* <button onClick={() => navigate("/interview")}>Mock Interviews</button> */}
             <button onClick={() => navigate("/reports")}>Performance Reports</button>
-            <button onClick={() => navigate("/profile")}>Settings</button>
+            
           </div>
         </div>
 
@@ -58,7 +58,7 @@ function Dashboard() {
         <nav className="navbar glass">
           <h1>Welcome, {auth.currentUser?.displayName || "User"} 👋</h1>
           <div className="nav-actions">
-            <button onClick={() => navigate("/profile")}>Edit Profile</button>
+            {/* <button onClick={() => navigate("/profile")}>Edit Profile</button> */}
           </div>
         </nav>
 
@@ -126,7 +126,8 @@ function Dashboard() {
           </section>
 
           {/* Right Column - Candidate Responses / Last Session */}
-          <section className="metrics-section glass">
+          {/*I guess we dont need this section now, so temporarily commented it */}
+          {/* <section className="metrics-section glass">
             <h3 className="section-title">
               <span role="img" aria-label="chart">📊</span> Last Session Analytics
             </h3>
@@ -161,7 +162,7 @@ function Dashboard() {
                 <p>Confidence</p>
               </div>
             </div>
-          </section>
+          </section> */}
 
         </div>
 

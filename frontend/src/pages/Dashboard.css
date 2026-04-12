@@ -85,7 +85,8 @@
   gap: 10px;
 }
 
-.nav-actions button, .resume-btn {
+.nav-actions button,
+.resume-btn {
   text-align: center;
   padding: 10px 20px;
   border: 2px solid #000000;
@@ -99,7 +100,8 @@
   color: #000000;
 }
 
-.menu button.active, .menu button:first-child {
+.menu button.active,
+.menu button:first-child {
   background: #b4f056;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0px #000000;
@@ -163,9 +165,10 @@
 /* Page Structure */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns:1fr;
   gap: 25px;
   margin-bottom: 25px;
+  width: 100%;
 }
 
 /* Hero Section (Interview Preferences) */
@@ -174,6 +177,9 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
+
+
 }
 
 .section-title {
@@ -204,7 +210,8 @@
   gap: 20px;
 }
 
-select, input[type="text"] {
+select,
+input[type="text"] {
   width: 100%;
   padding: 12px 16px;
   border-radius: 8px;
@@ -217,10 +224,11 @@ select, input[type="text"] {
   outline: none;
   transition: all 0.2s ease;
   appearance: none;
-  box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
-select:focus, input[type="text"]:focus {
+select:focus,
+input[type="text"]:focus {
   box-shadow: 3px 3px 0px #000000;
 }
 
@@ -259,7 +267,8 @@ select option {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #111827; /* Dark card from image */
+  background: #111827;
+  /* Dark card from image */
   color: #ffffff;
 }
 
@@ -271,7 +280,7 @@ select option {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  background: conic-gradient(#b4f056 91%, rgba(255,255,255,0.2) 0);
+  background: conic-gradient(#b4f056 91%, rgba(255, 255, 255, 0.2) 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -314,10 +323,10 @@ select option {
 }
 
 .metric-item {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 15px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .metric-item h4 {
@@ -354,13 +363,15 @@ select option {
   font-weight: 700;
 }
 
-.skills-list, .projects-list {
+.skills-list,
+.projects-list {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.skill-tag, .project-tag {
+.skill-tag,
+.project-tag {
   background: #ffffff;
   color: #000000;
   padding: 8px 14px;
@@ -403,11 +414,14 @@ select option {
   .dashboard-page {
     flex-direction: column;
   }
+
   .sidebar {
     width: auto;
     margin-bottom: 0;
   }
-  .form-row, .resume-content {
+
+  .form-row,
+  .resume-content {
     grid-template-columns: 1fr;
   }
 }

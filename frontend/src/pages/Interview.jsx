@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
 import { useDeepgram } from '../hooks/useDeepgram';
+import FeedbackCard from '../components/FeedbackCard';
 
 // Auto-detect backend URL
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
@@ -12,6 +13,8 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
 
 const Interview = () => {
   const location = useLocation();
+  const navigate =useNavigate()
+  const sessionStarted = React.useRef(false)
   const queryParams = new URLSearchParams(location.search);
   const userRole = queryParams.get("role") || "Software Engineer";
   const userTopic = queryParams.get("topic") || "React & Node.js";
@@ -29,7 +32,7 @@ const Interview = () => {
   const [feedback, setFeedback] = useState(null);
   const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
   const { isListening, toggleListening } = useDeepgram(setUserInput);
-  
+
   // Reference for stopping audio if needed
   const currentAudioRef = React.useRef(null);
 
@@ -38,7 +41,7 @@ const Interview = () => {
       // 1. Fetch token
       const tokenRes = await fetch(`${API_BASE_URL}/api/speech-token`);
       const { key } = await tokenRes.json();
-      
+
       // 2. Fetch TTS Audio from Deepgram Aura
       const response = await fetch("https://api.deepgram.com/v1/speak?model=aura-asteria-en", {
         method: "POST",
@@ -54,7 +57,7 @@ const Interview = () => {
       const blob = await response.blob();
       const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
-      
+
       // Save to ref and play
       currentAudioRef.current = audio;
       audio.play();
@@ -70,7 +73,7 @@ const Interview = () => {
     setLoading(true);
     setResponse("");
     setUserInput('');
-      
+
 
 
 
@@ -99,8 +102,8 @@ const Interview = () => {
           topic: userTopic,
           type: userType,
           name: auth.currentUser?.displayName || "Candidate",
-          mode:interviewMode,
-          resumeData:resumeData
+          mode: interviewMode,
+          resumeData: resumeData
         })
       });
 
@@ -175,6 +178,8 @@ const Interview = () => {
   // Start as soon as page loads
   // Start session and launch interview as soon as page loads
   React.useEffect(() => {
+    if(sessionStarted.current) return; // if already started , to dobara nhi chalaenge
+    sessionStarted.current = true; // Ab mark karo ki start ho chuka hai
     const startSession = async () => {
       const currentUser = auth.currentUser;
       const realEmail = currentUser ? currentUser.email : "guest@example.com";
@@ -215,13 +220,17 @@ const Interview = () => {
         {feedback ? (
           <div className="feedback-box">
             <h3>Interview Completed! 🎉</h3>
-            <div className="feedback-content">{feedback}</div>
+            <FeedbackCard feedback={feedback} />
+            <button className='back-to-dashboard' onClick={() => navigate("/dashboard")}>
+              Go to Dashboard
+            </button>
           </div>
+
         ) : (
           <div className="chat-content">
             {loading ? (
               <div className="typing-indicator">
-                 <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span> Interviewer is typing
+                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span> Interviewer is typing
               </div>
             ) : response ? (
               <p>{response}</p>
@@ -238,7 +247,7 @@ const Interview = () => {
         )}
       </div>
 
-      <div className="input-area">
+      {!feedback && <div className="input-area">
         <div className="input-wrapper">
           <input
             type="text"
@@ -247,7 +256,7 @@ const Interview = () => {
             placeholder={isListening ? "I'm listening..." : (loading ? "AI is thinking..." : "Type your response...")}
             disabled={loading}
           />
-          <button 
+          <button
             type="button"
             className={`mic-btn ${isListening ? 'listening' : ''}`}
             onClick={toggleListening}
@@ -256,14 +265,14 @@ const Interview = () => {
             {isListening ? "🛑" : "🎤"}
           </button>
         </div>
-        <button 
-          className="submit-btn" 
-          onClick={() => makeApiCall()} 
+        <button
+          className="submit-btn"
+          onClick={() => makeApiCall()}
           disabled={loading || !userInput.trim()}
         >
           {loading ? "..." : "Send"}
         </button>
-      </div>
+      </div>}
     </div>
   );
 };

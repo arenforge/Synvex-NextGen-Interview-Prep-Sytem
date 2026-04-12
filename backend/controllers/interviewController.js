@@ -5,7 +5,8 @@ import {
   startSession,
   addMessage,
   updateFeedback,
-  getSessionMessages
+  getSessionMessages,
+  getUserSessions
 } from '../models/interviewModel.js';
 
 // A. Sync User Data (Login/Signup)
@@ -47,10 +48,10 @@ export const saveInterview = async (req, res, next) => {
 // POST /api/interview/chat
 export const chatWithAI = async (req, res, next) => {
   try {
-    const { message, history, role, level, topic, type, name,mode,resumeData } = req.body;
+    const { message, history, role, level, topic, type, name, mode, resumeData } = req.body;
 
- const systemPrompt = mode === 'resume'
-  ? `You are a senior interviewer conducting a RESUME-BASED technical interview for ${name}.
+    const systemPrompt = mode === 'resume'
+      ? `You are a senior interviewer conducting a RESUME-BASED technical interview for ${name}.
 
 ## Candidate Resume Data
 - Skills: ${resumeData?.skills?.join(', ')}
@@ -78,7 +79,7 @@ Ask exactly 6 questions, one at a time:
 - Second offense: "This interview is now terminated. Goodbye."
 - After termination, do not respond to any further messages.`
 
-  : `You are a senior interviewer at a top tech company conducting a technical job interview for a ${role} position at ${level} level.
+      : `You are a senior interviewer at a top tech company conducting a technical job interview for a ${role} position at ${level} level.
 The primary focus topic is: ${topic}.
 The interview type is: ${type}.
 Candidate Name: ${name}
@@ -149,17 +150,53 @@ export const evaluateInterview = async (req, res, next) => {
     // 2. Format the conversation into a readable string
     const transcript = messages.map(m => `Interviewer: ${m.aique}\nCandidate: ${m.userans}`).join('\n\n');
 
-    const prompt = `You are an expert technical interviewer. Candidate Name is ${name} Evaluate the candidate based on this interview transcript.\n\n${transcript}\n\nProvide constructive feedback on their technical answers and give a final score out of 10. Format the response nicely.`;
+    const prompt = `You are an expert technical interviewer evaluating a candidate named ${name}.
+
+Based on this interview transcript, return a JSON evaluation. No markdown, no backticks, ONLY a raw JSON object.
+
+Transcript:
+${transcript}
+
+Return EXACTLY this JSON structure:
+{
+  "technical_strengths": ["specific strength 1", "specific strength 2"],
+  "technical_weaknesses": ["specific topic to improve 1", "specific topic to improve 2"],
+  "communication": {
+    "rating": "Strong / Moderate / Needs Work",
+    "tip": "One specific actionable tip"
+  },
+  "accuracy": {
+    "rating": "Strong / Moderate / Needs Work",
+    "tip": "One specific actionable tip"
+  },
+  "confidence": {
+    "rating": "Strong / Moderate / Needs Work",
+    "tip": "One specific actionable tip"
+  },
+  "overall_verdict": "Interview Ready / Almost There / Needs More Preparation",
+  "summary": "2-3 sentence honest overall summary of the candidate."
+}
+
+Rules:
+- Be honest and specific — mention actual technologies or topics from the transcript
+- technical_strengths and technical_weaknesses must reference real answers given
+- Do NOT pad with generic advice
+- Return NOTHING except the JSON object`;
+
 
     // 3. Ask Gemini for an evaluation
     const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
     const result = await model.generateContent(prompt);
-    const feedback = result.response.text();
 
-    // 4. Save feedback to database
-    await updateFeedback(sessionId, feedback);
+    // Parse JSON from Gemini (clean up any accidental markdown first)
+    let responseText = result.response.text();
+    responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+    const feedback = JSON.parse(responseText);
 
-    res.json({ success: true, feedback });
+    // 4. Save feedback to database (as string)
+    await updateFeedback(sessionId, JSON.stringify(feedback));
+
+    res.json({ success: true, feedback }); // Send parsed object to frontend
   } catch (err) {
     console.error('Feedback Error:', err);
     next(err);
@@ -179,6 +216,16 @@ export const getSpeechToken = async (req, res) => {
   } catch (err) {
     console.error("Server Error:", err);
     res.status(500).json({ error: err.message });
+  }
+};
+// GET /api/sessions/:email
+export const getSessions = async (req, res, next) => {
+  try {
+    const { email } = req.params; // Gets 'someone@gmail.com' from the URL
+    const sessions = await getUserSessions(email); // Calls the model
+    res.json({ success: true, sessions });
+  } catch (err) {
+    next(err);
   }
 };
 

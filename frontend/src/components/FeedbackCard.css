@@ -1,0 +1,111 @@
+.fc-container {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 25px;
+  color: #fff;
+}
+
+.fc-verdict {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 20px;
+  background: rgba(124, 58, 237, 0.25);
+  border: 1px solid #7c3aed;
+  color: #a78bfa;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.fc-summary {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  border-left: 3px solid #7c3aed;
+  padding-left: 12px;
+}
+
+.fc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.fc-card {
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.fc-strengths {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.fc-weaknesses {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.fc-card h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.fc-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.fc-card ul li {
+  margin-bottom: 6px;
+}
+
+.fc-areas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fc-area-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.fc-area-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.fc-area-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #e2e8f0;
+  text-transform: capitalize;
+}
+
+.fc-area-rating {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.fc-area-tip {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .fc-grid {
+    grid-template-columns: 1fr;
+  }
+}

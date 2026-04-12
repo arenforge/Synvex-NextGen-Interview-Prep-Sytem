@@ -35,6 +35,14 @@ export const getSessionMessages = async (sessionId) => {
   );
   return result.rows;
 };
+export const getUserSessions = async (email) => {
+  const result = await pool.query(
+    'SELECT id, role, level, feedback, created_at FROM interview_sessions WHERE email = $1 ORDER BY id DESC',
+    [email]
+  );
+  return result.rows;
+};
+
 
 
 

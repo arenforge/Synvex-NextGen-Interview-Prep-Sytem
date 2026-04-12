@@ -1,0 +1,104 @@
+/* Reports.css */
+
+/* Override global #root styles for Reports page */
+.reports-page {
+  padding: 40px 20px 100px;
+  max-width: 850px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #0f172a;
+  color: #e2e8f0;
+  text-align: left;
+  /* Full width dark bg — break out of #root padding */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.reports-page h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+  color: #fff;
+  text-align: left;
+}
+
+.reports-page > p {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+/* ============ SESSION CARD ============ */
+.session-card {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  text-align: left;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.session-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.1);
+}
+
+/* ============ SESSION HEADER ============ */
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e2e8f0;
+  transition: background 0.2s;
+  border-radius: 12px;
+}
+
+.session-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.session-header.expanded {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(124, 58, 237, 0.08);
+  border-radius: 12px 12px 0 0;
+}
+
+.session-header span:last-child {
+  color: #7c3aed;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+/* ============ FEEDBACK AREA ============ */
+.session-feedback {
+  padding: 22px;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 0 0 12px 12px;
+  text-align: left;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 600px) {
+  .reports-page {
+    padding: 20px 12px 80px;
+  }
+
+  .session-header {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+
+  .session-feedback {
+    padding: 14px;
+  }
+}

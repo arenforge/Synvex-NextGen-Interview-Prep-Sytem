@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import interviewRoutes from './routes/interviewRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import resumeRoutes from './routes/resumeRoutes.js';
+import queBankRoutes from './routes/queBankRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 // Routes
 app.use('/api', interviewRoutes);
 app.use('/api/resume',resumeRoutes)
+app.use('/api/que-bank',queBankRoutes)
 // Global Error Handler, jo hamne define kiya hai middleware/errorHandler.js me
 app.use(errorHandler);
 

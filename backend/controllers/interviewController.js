@@ -120,7 +120,7 @@ Ask exactly 6 questions, one at a time:
 
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-3.1-flash-lite-preview',
+      model: 'gemini-2.5-flash',
       systemInstruction: systemPrompt
     });
 
@@ -185,7 +185,7 @@ Rules:
 
 
     // 3. Ask Gemini for an evaluation
-    const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const result = await model.generateContent(prompt);
 
     // Parse JSON from Gemini (clean up any accidental markdown first)

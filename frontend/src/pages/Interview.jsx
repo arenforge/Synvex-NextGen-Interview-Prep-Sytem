@@ -218,13 +218,37 @@ const Interview = () => {
 
       <div className="response-area">
         {feedback ? (
-          <div className="feedback-box">
+                   <div className="feedback-box">
             <h3>Interview Completed! 🎉</h3>
             <FeedbackCard feedback={feedback} />
-            <button className='back-to-dashboard' onClick={() => navigate("/dashboard")}>
-              Go to Dashboard
-            </button>
+            
+            {/* The 3 Post-Interview Nav Buttons */}
+            <div className="post-interview-actions" style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '25px' }}>
+              
+              <button 
+                className='back-to-dashboard' 
+                onClick={() => navigate("/dashboard")}
+              >
+                🏠 Go to Dashboard
+              </button>
+              
+              <button  
+                onClick={() => navigate("/reports")}
+                style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'black', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+              >
+                📊 Performance Reports
+              </button>
+              
+              <button 
+                onClick={() => navigate("/que-bank")}
+                style={{ background: 'linear-gradient(135deg, #b122e5 0%, #ff63de 100%)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
+              >
+                🧠 Practice in AI Question Bank
+              </button>
+
+            </div>
           </div>
+
 
         ) : (
           <div className="chat-content">

@@ -1,5 +1,9 @@
 import { useState, useRef } from "react";
 
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:5000"
+  : "https://synvex-backend-ioc4.onrender.com";
+
 export const useDeepgram = (onTranscript) => {
   const [isListening, setIsListening] = useState(false);
   const socket = useRef(null);
@@ -16,7 +20,7 @@ export const useDeepgram = (onTranscript) => {
 
     try {
       // Backend se token lo
-      const res = await fetch("http://localhost:5000/api/speech-token").then(r => r.json());
+      const res = await fetch(`${API_BASE_URL}/api/speech-token`).then(r => r.json());
       
       // Raw WebSocket use kar rahe hain (No SDK needed!)
       // Deepgram ko direct URL pe audio bhejenge

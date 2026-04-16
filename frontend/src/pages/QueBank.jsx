@@ -3,6 +3,10 @@ import QueBankGenerator from '../components/QueBankGenerator';
 import { auth } from '../firebase';
 import './QueBank.css';
 
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:5000"
+  : "https://synvex-backend-ioc4.onrender.com";
+
 const QuestionCard = ({ q, index }) => {
     const [show, setShow] = useState(false);
 
@@ -36,7 +40,7 @@ const QueBank = () => {
         setQuestions([]);
 
         try {
-            const res = await fetch(`http://localhost:5000/api/que-bank/${url}`, {
+            const res = await fetch(`${API_BASE_URL}/api/que-bank/${url}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bodyParams)

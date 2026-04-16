@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import './ResumeAnalyzer.css';
 import { FaCloudUploadAlt, FaFileAlt, FaSpinner } from 'react-icons/fa';
 
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:5000"
+  : "https://synvex-backend-ioc4.onrender.com";
+
 function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +28,7 @@ function ResumeAnalyzer() {
       const formData = new FormData();
       formData.append('resume', file);
 
-      const res = await fetch('http://localhost:5000/api/resume/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/resume/upload`, {
         method: 'POST',
         body: formData,
       });

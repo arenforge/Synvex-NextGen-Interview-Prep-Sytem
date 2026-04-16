@@ -4,6 +4,10 @@ import { auth } from '../firebase';
 import FeedbackCard from '../components/FeedbackCard';
 import './Reports.css';
 
+const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:5000"
+  : "https://synvex-backend-ioc4.onrender.com";
+
 function Reports() {
   const [sessions, setSessions] = useState([]);
   const [openId, setOpenId] = useState(null);
@@ -18,7 +22,7 @@ function Reports() {
       return;
     }
 
-    fetch(`http://localhost:5000/api/sessions/${user.email}`)
+    fetch(`${API_BASE_URL}/api/sessions/${user.email}`)
       .then(r => r.json())
       .then(data => {
         console.log('All sessions from API:', data.sessions);

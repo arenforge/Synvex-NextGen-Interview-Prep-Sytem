@@ -43,6 +43,7 @@ function Dashboard() {
             <button onClick={() => navigate("/resume")}>AI Resume Analyzer</button>
             {/* <button onClick={() => navigate("/interview")}>Mock Interviews</button> */}
             <button onClick={() => navigate("/reports")}>Performance Reports</button>
+            <button onClick={()=>navigate("/que-bank")}>🧠 AI Question Bank</button>
             
           </div>
         </div>

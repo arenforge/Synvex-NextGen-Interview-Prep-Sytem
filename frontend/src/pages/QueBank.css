@@ -1,0 +1,105 @@
+/* Override global #root styles for QueBank page */
+.que-bank {
+  padding: 40px 20px 100px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #0f172a; /* Deep Slate Background */
+  text-align: left;
+  
+  /* Break out of #root just like Reports.css */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.que-bank h1 { text-align: center; color: #4facfe; margin-bottom: 0.5rem; }
+.que-bank > p { text-align: center; color: #94a3b8; margin-bottom: 2rem; }
+
+/* Dashboard Generator Panel */
+.generator-panel {
+  background: #1e293b;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Soft matching border */
+}
+
+.generator-panel h3 { margin-bottom: 10px; font-size: 1rem; color: #e2e8f0; }
+
+/* Form Controls */
+.manual-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2rem; }
+.qb-input, .qb-select, .qb-btn {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+.qb-input, .qb-select { 
+  background: rgba(0,0,0,0.2); 
+  color: white; 
+  flex: 1; 
+  border: 1px solid rgba(255,255,255,0.1); 
+}
+.count-input { flex: 0.3; } 
+
+.qb-btn { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: black; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.qb-btn:hover:not(:disabled) { opacity: 0.9; }
+.qb-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.personalized-btn { background: linear-gradient(135deg, #b122e5 0%, #ff63de 100%); color: white; width: 100%; }
+.personalized-btn:hover:not(:disabled) { opacity: 0.9; }
+.error-text { color: #ff6b6b; margin-top: 10px; font-size: 0.9rem; }
+
+/* Generated Question Cards */
+.q-list { display: grid; gap: 1rem; padding-bottom: 50px; }
+
+.card {
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s, box-shadow 0.2s; /* Hover transition from Reports */
+}
+
+.card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.1);
+}
+
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.card-header h4 { margin: 0; line-height: 1.4; color: #e2e8f0; }
+.q-badge { background: rgba(79, 172, 254, 0.2); color: #4facfe; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.8rem; }
+.hints { color: #94a3b8; font-size: 0.9rem; margin-top: 10px; }
+
+/* The Expanding Solution Box */
+.toggle-btn {
+  background: transparent;
+  color: #4facfe;
+  border: 1px dashed #4facfe;
+  padding: 10px;
+  width: 100%;
+  margin-top: 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.toggle-btn:hover { background: rgba(79, 172, 254, 0.1); }
+.solution {
+  margin-top: 10px;
+  padding: 15px;
+  background: rgba(0,0,0,0.15);
+  border-left: 4px solid #4facfe;
+  border-radius: 0 8px 8px 0;
+  white-space: pre-wrap;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.loading { text-align: center; color: #4facfe; font-size: 1.2rem; margin: 3rem 0; }

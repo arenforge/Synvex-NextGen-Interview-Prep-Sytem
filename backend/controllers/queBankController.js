@@ -3,7 +3,7 @@ import { getUserSessions } from '../models/interviewModel.js';
 
 // Helper function to keep our Gemini code clean and reusable
 const getGeminiResponse = async (prompt) => {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
   const result = await model.generateContent(prompt);
   let text = result.response.text().replace(/```json/g, '').replace(/```/g, '').trim();
   return JSON.parse(text);

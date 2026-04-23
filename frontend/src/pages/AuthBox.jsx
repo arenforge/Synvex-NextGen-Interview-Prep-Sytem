@@ -95,6 +95,10 @@ function AuthBox() {
 
   return (
     <div className="auth-page">
+      {/* Background Orbs to match Landing Page Hero */}
+      <div className="auth-bg-orb auth-orb-1"></div>
+      <div className="auth-bg-orb auth-orb-2"></div>
+
       <div className="auth-overlay"></div>
 
       <div className="auth-box">

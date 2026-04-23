@@ -13,13 +13,11 @@ function Dashboard() {
   const [topic, setTopic] = useState("React & Node.js");
   const [difficulty, setDifficulty] = useState("Medium");
   const [type, setType] = useState("Technical");
+  const [duration, setDuration] = useState("10 min");
 
   const handleStartInterview = () => {
     // Navigate with preferences
-    navigate(`/interview?mode=role&role=${encodeURIComponent(role)}
-     &topic=${encodeURIComponent(topic)}
-     &level=${encodeURIComponent(difficulty)}&
-     type=${encodeURIComponent(type)}`);
+    navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
   };
   const handleStartResumeInterview = () => {
     // First, check if the user actually uploaded a resume!
@@ -28,7 +26,7 @@ function Dashboard() {
       alert("Please upload and parse your resume using the Analyzer below before starting a Resume-Based interview.");
       return;
     }
-    navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}`);
+    navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}&duration=${encodeURIComponent(duration)}`);
   };
 
 
@@ -112,6 +110,20 @@ function Dashboard() {
                   <option value="Technical">Technical (Coding & System)</option>
                   <option value="HR">HR / Behavioral</option>
                   <option value="Mixed">Mixed Rounds</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-row" style={{ marginTop: '15px' }}>
+              <div className="form-group">
+                <label>Interview Duration</label>
+                <select value={duration} onChange={(e) => setDuration(e.target.value)}>
+                  <option value="3 min">3 min</option>
+                  <option value="5 min">5 min</option>
+                  <option value="8 min">8 min</option>
+                  <option value="10 min">10 min</option>
+                  <option value="15 min">15 min</option>
+                  <option value="20 min">20 min</option>
                 </select>
               </div>
             </div>

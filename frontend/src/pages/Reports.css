@@ -1,4 +1,4 @@
-/* Reports.css */
+/* Reports.css — Premium SaaS Theme */
 
 /* Override global #root styles for Reports page */
 .reports-page {
@@ -6,10 +6,10 @@
   max-width: 850px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: var(--bg);
+  color: var(--text-primary);
   text-align: left;
-  /* Full width dark bg — break out of #root padding */
+  
   position: fixed;
   top: 0;
   left: 0;
@@ -21,31 +21,34 @@
 
 .reports-page h1 {
   font-size: 28px;
-  margin-bottom: 6px;
-  color: #fff;
+  margin-bottom: 8px;
+  color: var(--text-primary);
   text-align: left;
+  letter-spacing: -0.02em;
 }
 
 .reports-page > p {
-  color: #64748b;
-  font-size: 14px;
-  margin-bottom: 30px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-bottom: 32px;
   text-align: left;
 }
 
 /* ============ SESSION CARD ============ */
 .session-card {
-  background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  margin-bottom: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
   text-align: left;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .session-card:hover {
-  border-color: rgba(167, 139, 250, 0.4);
-  box-shadow: 0 0 12px rgba(124, 58, 237, 0.1);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 /* ============ SESSION HEADER ============ */
@@ -53,52 +56,57 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 22px;
+  padding: 20px 24px;
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
-  color: #e2e8f0;
-  transition: background 0.2s;
-  border-radius: 12px;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+  border-radius: var(--radius-lg);
 }
 
 .session-header:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-alt);
 }
 
 .session-header.expanded {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(124, 58, 237, 0.08);
-  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .session-header span:last-child {
-  color: #7c3aed;
+  color: var(--primary);
   font-size: 14px;
   flex-shrink: 0;
   margin-left: 16px;
+  font-weight: 700;
 }
 
 /* ============ FEEDBACK AREA ============ */
 .session-feedback {
-  padding: 22px;
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 0 0 12px 12px;
+  padding: 24px;
+  background: var(--surface-alt);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   text-align: left;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 600px) {
   .reports-page {
-    padding: 20px 12px 80px;
+    padding: 24px 16px 80px;
   }
 
   .session-header {
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 16px 20px;
+    font-size: 14px;
   }
 
   .session-feedback {
-    padding: 14px;
+    padding: 16px 20px;
   }
 }

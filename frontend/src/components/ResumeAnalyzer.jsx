@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './ResumeAnalyzer.css';
-import { FaCloudUploadAlt, FaFileAlt, FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaLock, FaFilePdf } from 'react-icons/fa';
 
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:5000"
@@ -10,16 +10,47 @@ function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef(null);
   
-  // Lazy load from local storage (one-liner instead of useEffect)
+  // Lazy load from local storage
   const [resumeData, setResumeData] = useState(() => {
     const saved = localStorage.getItem('resumeData');
     return saved ? JSON.parse(saved) : null;
   });
 
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleFileChange = (e) => {
+    const selected = e.target.files[0];
+    if (selected) {
+      setFile(selected);
+      setError('');
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+      setError('');
+    }
+  };
+
   // Simplified API Call
   const uploadResume = async () => {
-    if (!file) return setError('Please select a PDF first.');
+    if (!file) return setError('Please select a PDF or DOCX file first.');
     
     setLoading(true);
     setError('');
@@ -49,42 +80,81 @@ function ResumeAnalyzer() {
     }
   };
 
+  const handleMainButtonClick = () => {
+    if (!file) {
+      fileInputRef.current.click();
+    } else {
+      uploadResume();
+    }
+  };
+
   return (
     <div className="resume-analyzer-container">
-      <h3 className="ra-header"><FaFileAlt style={{ marginRight: '8px' }} /> AI Resume Analyzer</h3>
-      <p className="ra-subtitle">Upload your resume to personalize your mock interview.</p>
+      <div className="ra-header-badge">RESUME-BASED INTERVIEWS</div>
+      <h1 className="ra-main-title">Turn your resume into a personalized mock interview.</h1>
+      <p className="ra-subtitle">
+        Upload your resume and our AI will generate tailored interview questions based on your actual experience, skills, and projects to ensure you're ready to perform and get callbacks.
+      </p>
 
       {/* Upload Section */}
-      <div className="ra-upload-box">
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="ra-file-input"
-        />
-
-        <button className="ra-btn" onClick={uploadResume} disabled={loading || !file}>
-          {loading ? (
-            <><FaSpinner className="spinner" style={{ marginRight: '8px' }} /> Analyzing...</>
+      <div className="ra-upload-wrapper">
+        <div 
+          className={`ra-upload-box ${isDragging ? 'drag-active' : ''}`} 
+          onClick={() => fileInputRef.current.click()}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <input
+            type="file"
+            accept=".pdf,.docx"
+            onChange={handleFileChange}
+            className="ra-file-input-hidden"
+            ref={fileInputRef}
+          />
+          {file ? (
+            <div className="ra-file-selected">
+              <FaFilePdf className="ra-file-icon" />
+              <span>{file.name}</span>
+            </div>
           ) : (
-            <><FaCloudUploadAlt style={{ marginRight: '8px' }} /> Upload PDF</>
+            <div className="ra-upload-prompt">
+              <p>Drop your resume here or <strong>choose a file</strong>.</p>
+              <p className="ra-upload-limits">PDF & DOCX only. Max 5MB file size.</p>
+            </div>
+          )}
+        </div>
+
+        <button 
+          className={`btn-primary ra-upload-btn ${!file ? 'needs-file' : ''}`} 
+          onClick={handleMainButtonClick} 
+          disabled={loading}
+        >
+          {loading ? (
+            <><FaSpinner className="spinner" style={{ marginRight: '8px' }} /> Generating Interview...</>
+          ) : (
+            <>{!file ? "Select a File to Upload" : "Upload & Generate Interview"}</>
           )}
         </button>
+        <div className="ra-privacy-note">
+          <FaLock className="ra-lock-icon" /> Privacy guaranteed
+        </div>
+        
         {error && <p className="ra-error">{error}</p>}
       </div>
 
       {/* Results Section */}
       {resumeData && (
         <div className="ra-results">
-          <h4 className="ra-section-title">Experience Summary</h4>
+          <h4 className="ra-section-title">Extracted Experience</h4>
           <p className="ra-text">{resumeData.experience_summary}</p>
 
-          <h4 className="ra-section-title">Skills</h4>
+          <h4 className="ra-section-title">Identified Skills</h4>
           <div className="ra-skills-list">
             {resumeData.skills?.map((skill, i) => <span key={i} className="ra-skill-tag">{skill}</span>)}
           </div>
 
-          <h4 className="ra-section-title">Projects</h4>
+          <h4 className="ra-section-title">Key Projects</h4>
           <ul className="ra-projects-list">
             {resumeData.projects?.map((proj, i) => <li key={i}>{proj}</li>)}
           </ul>

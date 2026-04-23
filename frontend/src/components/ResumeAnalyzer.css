@@ -1,110 +1,166 @@
 .resume-analyzer-container {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 25px;
-  color: #fff;
-  font-family: inherit;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  text-align: left;
 }
 
-.ra-header {
-  margin: 0 0 10px 0;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.ra-subtitle {
-  color: #cbd5e1;
+.ra-header-badge {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 700;
   font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   margin-bottom: 20px;
 }
 
+.ra-main-title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.ra-subtitle {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 700px;
+}
+
+.ra-upload-wrapper {
+  background: rgba(249, 115, 22, 0.05); /* Very light primary tint */
+  border: 2px dashed rgba(249, 115, 22, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 60px 20px;
+  text-align: center;
+  transition: var(--transition-fast);
+  margin-bottom: 40px;
+}
+
+.ra-upload-wrapper:hover {
+  background: rgba(249, 115, 22, 0.08);
+  border-color: var(--primary);
+}
+
 .ra-upload-box {
+  cursor: pointer;
+  margin-bottom: 30px;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  border: 2px dashed transparent;
+  transition: var(--transition-fast);
+}
+
+.ra-upload-box.drag-active {
+  border-color: var(--primary);
+  background: rgba(249, 115, 22, 0.1);
+}
+
+.ra-file-input-hidden {
+  display: none;
+}
+
+.ra-upload-prompt p {
+  color: var(--text-primary);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.ra-upload-limits {
+  color: var(--text-secondary) !important;
+  font-size: 15px !important;
+}
+
+.ra-file-selected {
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-}
-
-.ra-file-input {
-  margin-bottom: 15px;
-  color: #cbd5e1;
-}
-
-.ra-btn {
-  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary);
   font-weight: 600;
-  display: inline-flex;
+  font-size: 20px;
+}
+
+.ra-file-icon {
+  font-size: 56px;
+}
+
+.ra-upload-btn {
+  font-size: 18px;
+  padding: 16px 32px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 20px;
+}
+
+.ra-privacy-note {
+  display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
-  width: fit-content;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
 }
 
-.ra-btn:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.ra-btn:disabled {
-  background: #475569;
-  color: #94a3b8;
-  cursor: not-allowed;
+.ra-lock-icon {
+  color: var(--text-secondary);
 }
 
 .ra-error {
   color: #ef4444;
-  font-size: 13px;
-  margin-top: 10px;
+  font-size: 15px;
+  margin-top: 20px;
+  font-weight: 600;
 }
 
 /* Extracted Data Section */
 .ra-results {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
 }
 
 .ra-section-title {
-  color: #a78bfa;
-  margin: 15px 0 10px 0;
-  font-size: 16px;
+  color: var(--primary);
+  margin: 20px 0 12px 0;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .ra-text {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
-  color: #e2e8f0;
+  color: var(--text-secondary);
 }
 
 .ra-skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .ra-skill-tag {
-  background: rgba(59, 130, 246, 0.2);
-  border: 1px solid rgba(59, 130, 246, 0.5);
-  color: #60a5fa;
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 13px;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: var(--primary);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .ra-projects-list {
-  padding-left: 20px;
-  color: #e2e8f0;
-  font-size: 14px;
+  padding-left: 24px;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .ra-projects-list li {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }

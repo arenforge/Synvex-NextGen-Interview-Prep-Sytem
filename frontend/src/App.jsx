@@ -1,9 +1,7 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 
-import Header from './components/Header'
-import MainComp from './components/MainComp'
-import Footer from './components/Footer'
+import LandingPage from './pages/LandingPage'
 
 import Dashboard from './pages/Dashboard'
 import AuthBox from './pages/AuthBox'
@@ -22,13 +20,7 @@ function App() {
        
       <Route
         path="/"
-        element={
-          <>
-            <Header />
-            <MainComp />
-            <Footer />
-          </>
-        }
+        element={<LandingPage />}
       />
 
       

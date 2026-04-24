@@ -7,7 +7,7 @@ import FeedbackCard from '../components/FeedbackCard';
 
 // Auto-detect backend URL
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
+  ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
 
@@ -31,6 +31,7 @@ const Interview = () => {
   const [sessionId, setSessionId] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
+  const [questionNumber, setQuestionNumber] = useState(1); // Explicitly track question count
   const { isListening, toggleListening } = useDeepgram(setUserInput);
 
   // Reference for stopping audio if needed
@@ -144,13 +145,17 @@ const Interview = () => {
       }
       // ------------------------------------------
 
-      // 2. Update the history so next question remembers what was said
+      // 2. Update the history and question count
       const currentMessage = msg || userInput;
       setHistory(prev => [
         ...prev,
         { role: 'user', parts: [{ text: currentMessage }] },
         { role: 'model', parts: [{ text: text }] }
       ]);
+
+      if (history.length > 0) {
+        setQuestionNumber(prev => prev + 1);
+      }
 
       // 3. Save the interaction to the database
       // SKIP saving if it's the initial "Hi" (msg is "Hi") to avoid empty entries
@@ -214,89 +219,133 @@ const Interview = () => {
   }, []);
   return (
     <div className="interview-container">
-      <h2>Synvex Interview Engine</h2>
+      {/* Background Orbs to match Landing Page theme */}
+      <div className="bg-orb orb-1"></div>
+      <div className="bg-orb orb-2"></div>
 
-      <div className="response-area">
-        {feedback ? (
-                   <div className="feedback-box">
-            <h3>Interview Completed! 🎉</h3>
-            <FeedbackCard feedback={feedback} />
-            
-            {/* The 3 Post-Interview Nav Buttons */}
-            <div className="post-interview-actions" style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '25px' }}>
-              
-              <button 
-                className='back-to-dashboard' 
-                onClick={() => navigate("/dashboard")}
-              >
-                🏠 Go to Dashboard
-              </button>
-              
-              <button  
-                onClick={() => navigate("/reports")}
-                style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'black', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
-              >
-                📊 Performance Reports
-              </button>
-              
-              <button 
-                onClick={() => navigate("/que-bank")}
-                style={{ background: 'linear-gradient(135deg, #b122e5 0%, #ff63de 100%)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
-              >
-                🧠 Practice in AI Question Bank
-              </button>
+      <header className="engine-header">
+        <span>Synvex Interview Engine</span>
+      </header>
 
+      {!feedback ? (
+        <div className="interview-panels">
+          {/* Left Panel: AI Response (Restored) */}
+          <div className="panel ai-panel">
+            <div className="panel-title">
+              <span className="icon">✨</span> AI Response
+            </div>
+
+            <div className="panel-content">
+              {loading ? (
+                <div className="typing-status">
+                  <span>•••</span> Interviewer is typing...
+                </div>
+              ) : response ? (
+                <div className="ai-question">
+                  <strong>Q{questionNumber} &rarr;</strong> {response}
+                </div>
+              ) : (
+                <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
+              )}
+
+              {evaluating && (
+                <div className="typing-status">
+                  <span>•••</span> Preparing your performance feedback...
+                </div>
+              )}
             </div>
           </div>
+          {/* Right Panel: Your Response (Swapped to Right) */}
+          <div className="panel user-panel">
+            <div className="panel-title">
+              <span className="icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+                  <circle cx="12" cy="12" r="12" fill="#FFF5F2"/>
+                  <rect x="7" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
+                  <rect x="10" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
+                  <rect x="13" y="9" width="1.5" height="6" rx="0.75" fill="#FF5722"/>
+                  <rect x="16" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
+                  <rect x="19" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
+                </svg>
+              </span> 
+              Your Response
+            </div>
+            
+            <div className="panel-content user-input-container">
+              <textarea
+                className="response-textarea"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey && userInput.trim() && !loading) {
+                    e.preventDefault();
+                    makeApiCall();
+                  }
+                }}
+                placeholder={isListening ? "Listening to your voice..." : (loading ? "AI is processing..." : "Start speaking or type your response here...")}
+                disabled={loading}
+              />
 
+              <div className="panel-footer">
+                <button 
+                  className="send-btn" 
+                  onClick={() => makeApiCall()}
+                  disabled={loading || !userInput.trim()}
+                >
+                  {loading ? "Sending..." : "Submit Response"}
+                </button>
+              </div>
+            </div>
 
-        ) : (
-          <div className="chat-content">
-            {loading ? (
-              <div className="typing-indicator">
-                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span> Interviewer is typing
-              </div>
-            ) : response ? (
-              <p>{response}</p>
-            ) : (
-              <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
-            )}
-            {evaluating && (
-              <div className="evaluating-loader">
-                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
-                Preparing your performance feedback...
-              </div>
-            )}
+            <button
+              className={`floating-mic-btn ${isListening ? 'listening-active' : ''}`}
+              onClick={toggleListening}
+              disabled={loading}
+              title={isListening ? "Stop listening" : "Start speaking"}
+            >
+              {isListening ? (
+                <div className="mic-active-content">
+                  <div className="tiny-wave">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <span className="end-text">End</span>
+                </div>
+              ) : (
+                <div className="mic-idle-icon">
+                  <div className="idle-wave">
+                    <span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              )}
+            </button>
           </div>
-        )}
-      </div>
-
-      {!feedback && <div className="input-area">
-        <div className="input-wrapper">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder={isListening ? "I'm listening..." : (loading ? "AI is thinking..." : "Type your response...")}
-            disabled={loading}
-          />
-          <button
-            type="button"
-            className={`mic-btn ${isListening ? 'listening' : ''}`}
-            onClick={toggleListening}
-            disabled={loading}
-          >
-            {isListening ? "🛑" : "🎤"}
-          </button>
         </div>
-        <button
-          className="submit-btn"
-          onClick={() => makeApiCall()}
-          disabled={loading || !userInput.trim()}
-        >
-          {loading ? "..." : "Send"}
-        </button>
-      </div>}
+      ) : (
+        <div className="completion-container">
+          <div className="completion-card">
+            <div className="completion-header">
+              <h2>Interview Completed! 🎉</h2>
+              <p>Well done! Here is your AI-powered performance analysis.</p>
+            </div>
+            
+            <div className="completion-feedback-wrap">
+              <FeedbackCard feedback={feedback} />
+            </div>
+
+            <div className="completion-footer">
+              <button className="btn-finish-alt dashboard" onClick={() => navigate("/dashboard")}>
+                🏠 Dashboard
+              </button>
+              <button className="btn-finish-alt reports" onClick={() => navigate("/reports")}>
+                📊 Performance Reports
+              </button>
+              <button className="btn-finish-alt btn-quebank" onClick={() => navigate("/que-bank")}>
+                🧠 Question Bank
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

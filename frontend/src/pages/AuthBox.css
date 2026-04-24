@@ -6,21 +6,51 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--bg, #f8fafc);
+  background: var(--bg);
   font-family: 'Inter', sans-serif;
   padding: 24px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Orbs */
+.auth-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-orb-1 {
+  width: 600px;
+  height: 600px;
+  background: rgba(249, 115, 22, 0.15); /* Orange */
+  top: -100px;
+  left: -200px;
+}
+
+.auth-orb-2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(244, 63, 94, 0.1); /* Peach/Rose */
+  bottom: -100px;
+  right: -150px;
 }
 
 /* Auth card */
 .auth-box {
   width: 100%;
   max-width: 440px;
-  background: var(--surface, #ffffff);
-  border: 1.5px solid var(--border, #e2e8f0);
+  /* Dark warm card — clearly visible on peach background */
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 2px solid rgba(249, 115, 22, 0.55);
   border-radius: var(--radius-xl, 24px);
   padding: 48px 40px 40px;
-  box-shadow: var(--shadow-lg, 0 12px 40px rgba(0, 0, 0, 0.08));
-  color: var(--text-primary, #1e293b);
+  box-shadow: 0 20px 60px rgba(249, 115, 22, 0.18), 0 8px 24px rgba(0, 0, 0, 0.25);
+  color: #fff7ed;
+  position: relative;
+  z-index: 10;
 }
 
 /* Header area */
@@ -45,14 +75,14 @@
 .auth-header h2 {
   font-size: 24px;
   font-weight: 800;
-  color: var(--text-primary, #1e293b);
+  color: #fff7ed;
   margin-bottom: 8px;
   letter-spacing: -0.3px;
 }
 
 .auth-header p {
   font-size: 14px;
-  color: var(--text-muted, #94a3b8);
+  color: #fed7aa;
   line-height: 1.5;
 }
 
@@ -68,7 +98,7 @@
   left: 15px;
   transform: translateY(-50%);
   font-size: 16px;
-  color: var(--text-muted, #94a3b8);
+  color: #fb923c;
   pointer-events: none;
 }
 
@@ -76,9 +106,9 @@
   width: 100%;
   padding: 13px 16px 13px 44px;
   border-radius: var(--radius-md, 12px);
-  border: 1.5px solid var(--border, #e2e8f0);
-  background: var(--surface-alt, #f8fafc);
-  color: var(--text-primary, #1e293b);
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff7ed;
   font-size: 14px;
   font-weight: 500;
   outline: none;
@@ -86,14 +116,14 @@
 }
 
 .input-group input::placeholder {
-  color: var(--text-muted, #94a3b8);
+  color: #a16207;
   font-weight: 400;
 }
 
 .input-group input:focus {
-  background: var(--surface, #ffffff);
-  border-color: var(--primary, #6366f1);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.20);
 }
 
 /* Button row */
@@ -116,26 +146,27 @@
 }
 
 .signup-btn {
-  background: var(--surface-alt, #f1f5f9);
-  color: var(--text-secondary, #475569);
-  border: 1.5px solid var(--border, #e2e8f0);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fed7aa;
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
 }
 
 .signup-btn:hover {
-  background: var(--border, #e2e8f0);
-  color: var(--text-primary, #1e293b);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff7ed;
+  border-color: rgba(249, 115, 22, 0.6);
 }
 
 .login-btn {
-  background: var(--primary, #6366f1);
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
 }
 
 .login-btn:hover {
-  background: var(--primary-dark, #4f46e5);
+  box-shadow: 0 8px 22px rgba(249, 115, 22, 0.50);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+  filter: brightness(1.06);
 }
 
 .login-btn:active,
@@ -152,7 +183,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--text-muted, #94a3b8);
+  color: #fb923c;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -165,7 +196,7 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--border, #e2e8f0);
+  background: rgba(249, 115, 22, 0.25);
 }
 
 /* Social buttons */
@@ -184,9 +215,9 @@
   gap: 10px;
   padding: 12px;
   border-radius: var(--radius-md, 12px);
-  border: 1.5px solid var(--border, #e2e8f0);
-  background: var(--surface, #ffffff);
-  color: var(--text-secondary, #475569);
+  border: 1.5px solid rgba(249, 115, 22, 0.30);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fed7aa;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -195,11 +226,11 @@
 
 .google-btn:hover,
 .github-btn:hover {
-  background: var(--surface-alt, #f8fafc);
-  color: var(--text-primary, #1e293b);
-  border-color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff7ed;
+  border-color: rgba(249, 115, 22, 0.55);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.15);
 }
 
 .google-btn:active,

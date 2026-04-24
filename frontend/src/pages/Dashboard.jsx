@@ -1,188 +1,227 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../firebase'
+import { auth } from '../firebase';
 import ResumeAnalyzer from "../components/ResumeAnalyzer";
 
-
 function Dashboard() {
-  const navigate = useNavigate();
+   const navigate = useNavigate();
+   const [role, setRole] = useState("Software Engineer");
+   const [topic, setTopic] = useState("React & Node.js");
+   const [difficulty, setDiff] = useState("Medium");
+   const [type, setType] = useState("Technical");
+   const [duration, setDuration] = useState("10 min");
 
-  // State for Interview Preferences
-  const [role, setRole] = useState("Software Engineer");
-  const [topic, setTopic] = useState("React & Node.js");
-  const [difficulty, setDifficulty] = useState("Medium");
-  const [type, setType] = useState("Technical");
+   const handleStartInterview = () => {
+      navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
+   };
 
-  const handleStartInterview = () => {
-    // Navigate with preferences
-    navigate(`/interview?mode=role&role=${encodeURIComponent(role)}
-     &topic=${encodeURIComponent(topic)}
-     &level=${encodeURIComponent(difficulty)}&
-     type=${encodeURIComponent(type)}`);
-  };
-  const handleStartResumeInterview = () => {
-    // First, check if the user actually uploaded a resume!
-    const savedResume = localStorage.getItem('resumeData');
-    if (!savedResume) {
-      alert("Please upload and parse your resume using the Analyzer below before starting a Resume-Based interview.");
-      return;
-    }
-    navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}`);
-  };
+   const handleStartResumeInterview = () => {
+      const savedResume = localStorage.getItem('resumeData');
+      if (!savedResume) {
+         alert("Please upload and parse your resume in the section below first.");
+         document.getElementById('resume-card')?.scrollIntoView({ behavior: 'smooth' });
+         return;
+      }
+      navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}&duration=${encodeURIComponent(duration)}`);
+   };
 
+   const userName = auth.currentUser?.displayName || "User";
 
-  return (
-    <div className="dashboard-page">
-      {/* Sidebar */}
-      <aside className="sidebar glass">
-        <div>
-          <h2 className="logo">Synvex</h2>
-          <div className="menu">
-            <button onClick={() => navigate("/dashboard")} style={{ background: 'rgba(255,255,255,0.2)' }}>Dashboard</button>
-            <button onClick={() => navigate("/resume")}>AI Resume Analyzer</button>
-            {/* <button onClick={() => navigate("/interview")}>Mock Interviews</button> */}
-            <button onClick={() => navigate("/reports")}>Performance Reports</button>
-            <button onClick={()=>navigate("/que-bank")}>🧠 AI Question Bank</button>
+   return (
+      <div className="dash-v5-container">
+
+         {/* ── Sidebar (Fixed & Dark) ── */}
+         <aside className="dash-v5-sidebar">
+            <nav className="sidebar-nav">
+               <div className="nav-section">
+                  <button className="nav-item active" onClick={() => navigate("/dashboard")}>
+                     🏠 Dashboard
+                  </button>
+                  <button className="nav-item" onClick={() => navigate("/que-bank")}>
+                     🧠 Question Bank
+                  </button>
+                  <button className="nav-item" onClick={() => navigate("/reports")}>
+                     📊 Analysis Reports
+                  </button>
+               </div>
+            </nav>
+
+            <div className="sidebar-bottom">
+               <button className="nav-item" onClick={() => navigate("/")}>🚪 Sign Out</button>
+            </div>
+         </aside>
+
+         {/* ── Main Content Area ── */}
+         <main className="dash-v5-main">
             
-          </div>
-        </div>
+            <header className="dash-header-section">
+               <div className="dash-header-left">
+                  <span className="v5-subtitle">SYNVEX AI PLATFORM</span>
+                  <h1 className="v5-title">Good Day, {userName}</h1>
+               </div>
+               
+               {/* NEW: Big Logo and Name on Top Right */}
+               <div className="dash-header-right-brand">
+                  <img src="/images/logo2.png" alt="Synvex" className="header-right-logo" />
+                  <span className="header-right-name">SYNVEX</span>
+               </div>
+            </header>
 
-        <button className="logout" onClick={() => navigate("/")}>
-          Logout
-        </button>
-      </aside>
+            <div className="v5-scroll-stack">
 
-      {/* Main Content */}
-      <main className="main">
-        {/* Navbar */}
-        <nav className="navbar glass">
-          <h1>Welcome, {auth.currentUser?.displayName || "User"} 👋</h1>
-          <div className="nav-actions">
-            {/* <button onClick={() => navigate("/profile")}>Edit Profile</button> */}
-          </div>
-        </nav>
+               {/* Card 1: Role-Based Practice */}
+               <section className="v5-feature-card">
+                  <div className="card-header-row">
+                     <div className="card-title-area">
+                        <h2>✨ Role-Based Practice</h2>
+                        <p>Pick any topic, set difficulty, and get instant AI questions tailored to your goals.</p>
+                     </div>
+                  </div>
 
-        {/* Dashboard Grid Container */}
-        <div className="dashboard-grid">
+                  <div className="card-sub-grid">
+                     <div className="sub-item">
+                        <span className="sub-item-icon">🎯</span>
+                        <div className="sub-item-text">
+                           <h4>Targeted Prep</h4>
+                           <p>Engineered for specific job roles and seniority levels.</p>
+                        </div>
+                     </div>
+                     <div className="sub-item">
+                        <span className="sub-item-icon">⚡</span>
+                        <div className="sub-item-text">
+                           <h4>Real-time Adaptive</h4>
+                           <p>Difficulty shifts dynamically based on your answer quality.</p>
+                        </div>
+                     </div>
+                  </div>
 
-          {/* Left Column - Interview Preferences */}
-          <section className="preferences-section glass">
-            <h3 className="section-title">
-              <span role="img" aria-label="target">🎯</span> Interview Preferences
-            </h3>
-            <p style={{ color: '#cbd5e1', marginBottom: '20px', fontSize: '14px' }}>
-              Configure your next AI interview session. The system will curate tailored questions based on your selections.
-            </p>
+                  <div className="card-action-area">
+                     <div className="dash-input-row">
+                        <div className="dash-field">
+                           <label>Job Title</label>
+                           <input type="text" value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Frontend Dev" />
+                        </div>
+                        <div className="dash-field">
+                           <label>Key Topics</label>
+                           <input type="text" value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. React, CSS" />
+                        </div>
+                        <div className="dash-field">
+                           <label>Difficulty</label>
+                           <select value={difficulty} onChange={e => setDiff(e.target.value)}>
+                              <option>Beginner</option>
+                              <option>Medium</option>
+                              <option>Hard</option>
+                           </select>
+                        </div>
+                        <div className="dash-field">
+                           <label>Session Type</label>
+                           <select value={type} onChange={e => setType(e.target.value)}>
+                              <option>Technical</option>
+                              <option>HR</option>
+                           </select>
+                        </div>
+                     </div>
+                     <button className="v5-btn-gradient" onClick={handleStartInterview}>
+                        ✨ Launch Role-Based Interview
+                     </button>
+                  </div>
+               </section>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Target Job Role</label>
-                <input
-                  type="text"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  placeholder="e.g. Frontend Developer"
-                />
-              </div>
-              <div className="form-group">
-                <label>Key Topic / Tech Stack</label>
-                <input
-                  type="text"
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  placeholder="e.g. System Design, React"
-                />
-              </div>
+               {/* Card 2: Resume Intelligence */}
+               <section id="resume-card" className="v5-feature-card">
+                  <div className="card-header-row">
+                     <div className="card-title-area">
+                        <h2>✨ Personalized Practice</h2>
+                        <p>AI analyzes your resume and targets your unique weak spots for maximum growth.</p>
+                     </div>
+                     <div className="v5-badge-flame">
+                        🔥 Recommended
+                     </div>
+                  </div>
+
+                  <div className="card-sub-grid">
+                     <div className="sub-item">
+                        <span className="sub-item-icon">📊</span>
+                        <div className="sub-item-text">
+                           <h4>Resume Context</h4>
+                           <p>Pulls data directly from your uploaded experience.</p>
+                        </div>
+                     </div>
+                     <div className="sub-item">
+                        <span className="sub-item-icon">🎯</span>
+                        <div className="sub-item-text">
+                           <h4>Weak Point Targeting</h4>
+                           <p>Focuses on topics you need to defend with confidence.</p>
+                        </div>
+                     </div>
+                     <div className="sub-item">
+                        <span className="sub-item-icon">🤖</span>
+                        <div className="sub-item-text">
+                           <h4>Gemini AI Powered</h4>
+                           <p>Adaptive questions cross-verified against your profile.</p>
+                        </div>
+                     </div>
+                     <div className="sub-item">
+                        <span className="sub-item-icon">📈</span>
+                        <div className="sub-item-text">
+                           <h4>Progress Tracking</h4>
+                           <p>See how you improve over multiple sessions.</p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="card-action-area">
+                     <div className="resume-mockup-area">
+                        <ResumeAnalyzer />
+                     </div>
+                     <button className="v5-btn-gradient" style={{ marginTop: '24px' }} onClick={handleStartResumeInterview}>
+                        ✨ Generate Based on My Weaknesses
+                     </button>
+                  </div>
+               </section>
+
+               {/* Card 3: Question Bank */}
+               <section className="v5-feature-card">
+                  <div className="card-header-row">
+                     <div className="card-title-area">
+                        <h2>🧠 AI Question Library</h2>
+                        <p>Over 500+ hand-picked technical questions covering everything from OS fundamentals to System Design.</p>
+                     </div>
+                  </div>
+
+                  <div className="card-sub-grid">
+                     <div className="sub-item">
+                        <span className="sub-item-icon">📚</span>
+                        <div className="sub-item-text">
+                           <h4>Concept Mastery</h4>
+                           <p>Daily drills and deep-dives into core engineering concepts.</p>
+                        </div>
+                     </div>
+                     <div className="sub-item">
+                        <span className="sub-item-icon">🔍</span>
+                        <div className="sub-item-text">
+                           <h4>Curated Collections</h4>
+                           <p>Questions from top tech companies like Google and Amazon.</p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="card-action-area">
+                     <button className="v5-btn-gradient" style={{ background: 'rgba(255,255,255,0.1)', border: '1.5px solid rgba(255,255,255,0.2)' }} onClick={() => navigate("/que-bank")}>
+                        Go to Question Bank
+                     </button>
+                  </div>
+               </section>
+
             </div>
 
-            <div className="form-row" style={{ marginTop: '15px' }}>
-              <div className="form-group">
-                <label>Difficulty Level</label>
-                <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Medium">Medium (Standard)</option>
-                  <option value="Hard">Hard (Senior Level)</option>
-                  <option value="Expert">Expert (Staff Level)</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Interview Type</label>
-                <select value={type} onChange={(e) => setType(e.target.value)}>
-                  <option value="Technical">Technical (Coding & System)</option>
-                  <option value="HR">HR / Behavioral</option>
-                  <option value="Mixed">Mixed Rounds</option>
-                </select>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '15px', marginTop: '20px', flexWrap: 'wrap' }}>
-              <button className="primary-btn" onClick={handleStartInterview}>
-                Start Role-Based Interview
-              </button>
-
-             
-            </div>
-
-          </section>
-
-          {/* Right Column - Candidate Responses / Last Session */}
-          {/*I guess we dont need this section now, so temporarily commented it */}
-          {/* <section className="metrics-section glass">
-            <h3 className="section-title">
-              <span role="img" aria-label="chart">📊</span> Last Session Analytics
-            </h3>
-
-            <div className="score-circle">
-              <span>91%</span>
-            </div>
-
-            <div className="feedback-pill">
-              Excellent Progress 🚀
-            </div>
-
-            <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '15px' }}>
-              AI Feedback: "Strong grasp of architectural principles, but needs more confidence when explaining edge cases."
-            </p>
-
-            <div className="metrics-grid">
-              <div className="metric-item">
-                <h4>94%</h4>
-                <p>Accuracy</p>
-              </div>
-              <div className="metric-item">
-                <h4>88%</h4>
-                <p>Communication</p>
-              </div>
-              <div className="metric-item">
-                <h4>90%</h4>
-                <p>Relevance</p>
-              </div>
-              <div className="metric-item">
-                <h4>92%</h4>
-                <p>Confidence</p>
-              </div>
-            </div>
-          </section> */}
-
-        </div>
-
-        {/* Bottom Section - dynamic Resume Analyzer */}
-        <div style={{ marginTop: '30px' }}>
-          <ResumeAnalyzer />
-        </div>
-         <button
-                className="primary-btn"
-                onClick={handleStartResumeInterview}
-                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
-              >
-                Start Resume-Based Interview
-              </button>
-
-
-      </main>
-    </div>
-  );
+            <footer className="v5-footer">
+               <p>© 2026 SYNVEX AI. All rights reserved. Premium Professional Suite.</p>
+            </footer>
+         </main>
+      </div>
+   );
 }
 
 export default Dashboard;

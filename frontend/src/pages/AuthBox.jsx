@@ -13,7 +13,7 @@ import "./AuthBox.css";
 
 // Auto-detect backend URL
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
+  ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
 function AuthBox() {
@@ -95,6 +95,10 @@ function AuthBox() {
 
   return (
     <div className="auth-page">
+      {/* Background Orbs to match Landing Page Hero */}
+      <div className="auth-bg-orb auth-orb-1"></div>
+      <div className="auth-bg-orb auth-orb-2"></div>
+
       <div className="auth-overlay"></div>
 
       <div className="auth-box">

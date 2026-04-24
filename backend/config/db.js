@@ -19,7 +19,10 @@ pool.on('error', (err) => {
 
 // It will check like database ka url sahi hai ya nhi , nhi hua to it wil return error
 pool.connect()
-  .then(() => console.log('Connected to PostgreSQL successfully!'))
+  .then(client => {
+    console.log('Connected to PostgreSQL successfully!');
+    client.release(); // IMPORTANT: Release the connection back to the pool to prevent unhandled Client errors if the connection drops!
+  })
   .catch(err => console.error('Database connection error:', err.stack));
 
 // Export it so other files can use it (jaise hamne ise controllers me use kiya)

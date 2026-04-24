@@ -1,0 +1,32 @@
+/* ========================================================
+   Resume Page Shell — Landing page gradient + orbs
+   ======================================================== */
+
+.resume-page {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #fff7ed 55%, #ffedd5 100%);
+  padding: 80px 24px 120px;
+  position: relative;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Ambient orbs */
+.resume-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+.resume-orb-1 {
+  width: 600px; height: 600px;
+  background: rgba(249, 115, 22, 0.13);
+  top: -120px; left: -180px;
+}
+.resume-orb-2 {
+  width: 500px; height: 500px;
+  background: rgba(244, 63, 94, 0.09);
+  bottom: -100px; right: -150px;
+}

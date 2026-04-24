@@ -31,6 +31,7 @@ const Interview = () => {
   const [sessionId, setSessionId] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [evaluating, setEvaluating] = useState(false); // To show a loading state while Gemini grades
+  const [questionNumber, setQuestionNumber] = useState(1); // Explicitly track question count
   const { isListening, toggleListening } = useDeepgram(setUserInput);
 
   // Reference for stopping audio if needed
@@ -144,13 +145,17 @@ const Interview = () => {
       }
       // ------------------------------------------
 
-      // 2. Update the history so next question remembers what was said
+      // 2. Update the history and question count
       const currentMessage = msg || userInput;
       setHistory(prev => [
         ...prev,
         { role: 'user', parts: [{ text: currentMessage }] },
         { role: 'model', parts: [{ text: text }] }
       ]);
+
+      if (history.length > 0) {
+        setQuestionNumber(prev => prev + 1);
+      }
 
       // 3. Save the interaction to the database
       // SKIP saving if it's the initial "Hi" (msg is "Hi") to avoid empty entries
@@ -214,94 +219,130 @@ const Interview = () => {
   }, []);
   return (
     <div className="interview-container">
-      <h2>Synvex Interview Engine</h2>
+      <header className="engine-header">
+        <span>Synvex Interview Engine</span>
+      </header>
 
-      <div className="response-area">
-        {feedback ? (
-                   <div className="feedback-box">
-            <h3>Interview Completed! 🎉</h3>
-            <FeedbackCard feedback={feedback} />
-            
-            {/* The 3 Post-Interview Nav Buttons */}
-            <div className="post-interview-actions" style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '25px' }}>
-              
-              <button 
-                className='back-to-dashboard' 
-                onClick={() => navigate("/dashboard")}
-              >
-                🏠 Go to Dashboard
-              </button>
-              
-              <button  
-                onClick={() => navigate("/reports")}
-                style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'black', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
-              >
-                📊 Performance Reports
-              </button>
-              
-              <button 
-                onClick={() => navigate("/que-bank")}
-                style={{ background: 'linear-gradient(135deg, #b122e5 0%, #ff63de 100%)', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' }}
-              >
-                🧠 Practice in AI Question Bank
-              </button>
+      <div className="interview-panels">
+        {/* Left Panel: Your Response */}
+        <div className="panel user-panel">
+          <div className="panel-title">
+            <span className="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+                <circle cx="12" cy="12" r="12" fill="#FFF5F2"/>
+                <rect x="7" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
+                <rect x="10" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
+                <rect x="13" y="9" width="1.5" height="6" rx="0.75" fill="#FF5722"/>
+                <rect x="16" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
+                <rect x="19" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
+              </svg>
+            </span> 
+            Your Response
+          </div>
+          
+          <div className="panel-content user-input-container">
+            <textarea
+              className="response-textarea"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey && userInput.trim() && !loading) {
+                  e.preventDefault();
+                  makeApiCall();
+                }
+              }}
+              placeholder={isListening ? "Listening to your voice..." : (loading ? "AI is processing..." : "Start speaking or type your response here...")}
+              disabled={loading}
+            />
 
-            </div>
+            {!feedback && (
+              <div className="panel-footer">
+                <button 
+                  className="send-btn" 
+                  onClick={() => makeApiCall()}
+                  disabled={loading || !userInput.trim()}
+                >
+                  {loading ? "Sending..." : "Submit Response"}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Panel: AI Response */}
+        <div className="panel ai-panel">
+          <div className="panel-title">
+            <span className="icon">✨</span> AI Response
           </div>
 
-
-        ) : (
-          <div className="chat-content">
+          <div className="panel-content">
             {loading ? (
-              <div className="typing-indicator">
-                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span> Interviewer is typing
+              <div className="typing-status">
+                <span>•••</span> Interviewer is typing...
               </div>
             ) : response ? (
-              <p>{response}</p>
+              <div className="ai-question">
+                <strong>Q{questionNumber} &rarr;</strong> {response}
+              </div>
             ) : (
               <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
             )}
+
             {evaluating && (
-              <div className="evaluating-loader">
-                <span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
-                Preparing your performance feedback...
+              <div className="typing-status">
+                <span>•••</span> Preparing your performance feedback...
               </div>
             )}
           </div>
-        )}
-      </div>
 
-      {!feedback && <div className="input-area">
-        <div className="input-wrapper">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyDown={(e) => {
-              if ((e.key === 'Enter' || e.key === 'Return') && userInput.trim() && !loading) {
-                makeApiCall();
-              }
-            }}
-            placeholder={isListening ? "I'm listening..." : (loading ? "AI is thinking..." : "Type your response...")}
-            disabled={loading}
-          />
-          <button
-            type="button"
-            className={`mic-btn ${isListening ? 'listening' : ''}`}
-            onClick={toggleListening}
-            disabled={loading}
-          >
-            {isListening ? "🛑" : "🎤"}
-          </button>
+          {!feedback && (
+            <button
+              className={`floating-mic-btn ${isListening ? 'listening-active' : ''}`}
+              onClick={toggleListening}
+              disabled={loading}
+              title={isListening ? "Stop listening" : "Start speaking"}
+            >
+              {isListening ? (
+                <div className="mic-active-content">
+                  <div className="tiny-wave">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <span className="end-text">End</span>
+                </div>
+              ) : (
+                <div className="mic-idle-icon">
+                  <div className="idle-wave">
+                    <span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              )}
+            </button>
+          )}
+
+          {/* Feedback Overlay when interview is complete */}
+          {feedback && (
+            <div className="feedback-overlay">
+              <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Interview Completed! 🎉</h3>
+              <FeedbackCard feedback={feedback} />
+              
+              <div className="post-interview-actions">
+                <button 
+                  style={{ padding: '12px 24px', borderRadius: '12px', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}
+                  onClick={() => navigate("/dashboard")}
+                >
+                  🏠 Dashboard
+                </button>
+                <button 
+                  style={{ padding: '12px 24px', borderRadius: '12px', border: 'none', background: 'var(--accent-orange)', color: 'white', cursor: 'pointer' }}
+                  onClick={() => navigate("/reports")}
+                >
+                  📊 Reports
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-        <button
-          className="submit-btn"
-          onClick={() => makeApiCall()}
-          disabled={loading || !userInput.trim()}
-        >
-          {loading ? "..." : "Send"}
-        </button>
-      </div>}
+      </div>
     </div>
   );
 };

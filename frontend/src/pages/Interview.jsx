@@ -198,7 +198,6 @@ const Interview = () => {
             role: userRole,
             level: userLevel,
             topic: userTopic,
-            topic: userTopic,
             type: userType
           })
         });
@@ -230,7 +229,33 @@ const Interview = () => {
 
       {!feedback ? (
         <div className="interview-panels">
-          {/* Left Panel: Your Response */}
+          {/* Left Panel: AI Response (Restored) */}
+          <div className="panel ai-panel">
+            <div className="panel-title">
+              <span className="icon">✨</span> AI Response
+            </div>
+
+            <div className="panel-content">
+              {loading ? (
+                <div className="typing-status">
+                  <span>•••</span> Interviewer is typing...
+                </div>
+              ) : response ? (
+                <div className="ai-question">
+                  <strong>Q{questionNumber} &rarr;</strong> {response}
+                </div>
+              ) : (
+                <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
+              )}
+
+              {evaluating && (
+                <div className="typing-status">
+                  <span>•••</span> Preparing your performance feedback...
+                </div>
+              )}
+            </div>
+          </div>
+          {/* Right Panel: Your Response (Swapped to Right) */}
           <div className="panel user-panel">
             <div className="panel-title">
               <span className="icon">
@@ -270,33 +295,6 @@ const Interview = () => {
                   {loading ? "Sending..." : "Submit Response"}
                 </button>
               </div>
-            </div>
-          </div>
-
-          {/* Right Panel: AI Response */}
-          <div className="panel ai-panel">
-            <div className="panel-title">
-              <span className="icon">✨</span> AI Response
-            </div>
-
-            <div className="panel-content">
-              {loading ? (
-                <div className="typing-status">
-                  <span>•••</span> Interviewer is typing...
-                </div>
-              ) : response ? (
-                <div className="ai-question">
-                  <strong>Q{questionNumber} &rarr;</strong> {response}
-                </div>
-              ) : (
-                <p className="welcome-text">The interview will begin shortly. Please stay professional.</p>
-              )}
-
-              {evaluating && (
-                <div className="typing-status">
-                  <span>•••</span> Preparing your performance feedback...
-                </div>
-              )}
             </div>
 
             <button

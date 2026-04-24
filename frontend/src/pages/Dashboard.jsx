@@ -1,179 +1,207 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import ResumeAnalyzer from "../components/ResumeAnalyzer";
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const [role, setRole]         = useState("Software Engineer");
-  const [topic, setTopic]       = useState("React & Node.js");
-  const [difficulty, setDiff]   = useState("Medium");
-  const [type, setType]         = useState("Technical");
-  const [duration, setDuration] = useState("10 min");
+   const navigate = useNavigate();
+   const [role, setRole] = useState("Software Engineer");
+   const [topic, setTopic] = useState("React & Node.js");
+   const [difficulty, setDiff] = useState("Medium");
+   const [type, setType] = useState("Technical");
+   const [duration, setDuration] = useState("10 min");
 
-  const handleStartInterview = () => {
-    navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
-  };
-  const handleStartResumeInterview = () => {
-    const savedResume = localStorage.getItem('resumeData');
-    if (!savedResume) {
-      alert("Please upload and parse your resume using the Analyzer below first.");
-      return;
-    }
-    navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}&duration=${encodeURIComponent(duration)}`);
-  };
+   const handleStartInterview = () => {
+      navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
+   };
 
-  const userName = auth.currentUser?.displayName || "User";
+   const handleStartResumeInterview = () => {
+      const savedResume = localStorage.getItem('resumeData');
+      if (!savedResume) {
+         alert("Please upload and parse your resume in the section below first.");
+         document.getElementById('resume-card')?.scrollIntoView({ behavior: 'smooth' });
+         return;
+      }
+      navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}&duration=${encodeURIComponent(duration)}`);
+   };
 
-  return (
-    <div className="dashboard-page">
-      {/* Ambient orbs */}
-      <div className="dash-orb dash-orb-1" />
-      <div className="dash-orb dash-orb-2" />
+   const userName = auth.currentUser?.displayName || "User";
 
-      {/* ── Sidebar ── */}
-      <aside className="sidebar">
-        <div>
-          <h2 className="logo">Synvex</h2>
-          <nav className="menu">
-            <button className="menu-btn active" onClick={() => navigate("/dashboard")}>
-              <span>🏠</span> Dashboard
-            </button>
-            <button className="menu-btn" onClick={() => navigate("/resume")}>
-              <span>📄</span> AI Resume Analyzer
-            </button>
-            <button className="menu-btn" onClick={() => navigate("/reports")}>
-              <span>📊</span> Performance Reports
-            </button>
-            <button className="menu-btn" onClick={() => navigate("/que-bank")}>
-              <span>🧠</span> AI Question Bank
-            </button>
-          </nav>
-        </div>
-        <button className="logout-btn" onClick={() => navigate("/")}>
-          🚪 Logout
-        </button>
-      </aside>
-
-      {/* ── Main ── */}
-      <main className="dash-main">
-
-        {/* Welcome bar */}
-        <div className="dash-welcome">
-          <div>
-            <p className="dash-greeting">Good to see you back,</p>
-            <h1 className="dash-name">{userName} 👋</h1>
-          </div>
-          <div className="dash-quick-stats">
-            <div className="quick-stat">
-              <span className="qs-icon">🎯</span>
-              <div><strong>Role-Based</strong><p>Interview</p></div>
+   return (
+      <div className="dash-v5-container">
+         {/* ── Sidebar (Fixed & Dark) ── */}
+         <aside className="dash-v5-sidebar">
+            <div className="sidebar-header" onClick={() => navigate("/")}>
+               <img src="/images/logo2.png" alt="Synvex" className="sidebar-logo" />
+               <span className="sidebar-brand-name">SYNVEX</span>
             </div>
-            <div className="quick-stat">
-              <span className="qs-icon">📄</span>
-              <div><strong>Resume</strong><p>Interview</p></div>
-            </div>
-            <div className="quick-stat">
-              <span className="qs-icon">🧠</span>
-              <div><strong>Question</strong><p>Bank</p></div>
-            </div>
-          </div>
-        </div>
 
-        {/* ── Interview Preferences card ── */}
-        <div className="dash-card">
-          <div className="dash-card-header">
-            <div className="dash-card-icon">🎯</div>
-            <div>
-              <h2 className="dash-card-title">Interview Preferences</h2>
-              <p className="dash-card-sub">Configure your next AI session — the AI adapts every question to your selections.</p>
-            </div>
-          </div>
+            <nav className="sidebar-nav">
+               <div className="nav-section">
+                  <h4 className="nav-section-title">Main Dashboard</h4>
+                  <button className="nav-item active" onClick={() => navigate("/dashboard")}>
+                     <span className="nav-icon">🏠</span> Dashboard
+                  </button>
+                  <button className="nav-item" onClick={() => navigate("/que-bank")}>
+                     <span className="nav-icon">🧠</span> Question Bank
+                  </button>
+                  <button className="nav-item" onClick={() => navigate("/reports")}>
+                     <span className="nav-icon">📊</span> Analysis Reports
+                  </button>
+               </div>
+            </nav>
 
-          <div className="dash-form-grid">
-            <div className="dash-field">
-              <label>Target Job Role</label>
-              <input type="text" value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Frontend Developer" />
+            <div className="sidebar-bottom">
+               <button className="nav-logout-btn" onClick={() => navigate("/")}>Sign Out</button>
             </div>
-            <div className="dash-field">
-              <label>Key Topic / Tech Stack</label>
-              <input type="text" value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. System Design, React" />
-            </div>
-            <div className="dash-field">
-              <label>Difficulty Level</label>
-              <select value={difficulty} onChange={e => setDiff(e.target.value)}>
-                <option value="Beginner">Beginner</option>
-                <option value="Medium">Medium (Standard)</option>
-                <option value="Hard">Hard (Senior Level)</option>
-                <option value="Expert">Expert (Staff Level)</option>
-              </select>
-            </div>
-            <div className="dash-field">
-              <label>Interview Type</label>
-              <select value={type} onChange={e => setType(e.target.value)}>
-                <option value="Technical">Technical (Coding & System)</option>
-                <option value="HR">HR / Behavioral</option>
-                <option value="Mixed">Mixed Rounds</option>
-              </select>
-            </div>
-            <div className="dash-field">
-              <label>Interview Duration</label>
-              <select value={duration} onChange={e => setDuration(e.target.value)}>
-                <option>5 min</option>
-                <option>10 min</option>
-                <option>15 min</option>
-                <option>20 min</option>
-                <option>30 min</option>
-                <option>1 hr</option>
-              </select>
-            </div>
-          </div>
+         </aside>
 
-          <div className="dash-btn-row">
-            <button className="dash-btn primary-dash-btn" onClick={handleStartInterview}>
-              🚀 Start Role-Based Interview
-            </button>
-            <button className="dash-btn resume-dash-btn" onClick={handleStartResumeInterview}>
-              📄 Start Resume-Based Interview
-            </button>
-          </div>
-        </div>
+         {/* ── Main Content Area ── */}
+         <main className="dash-v5-main">
+            <header className="v5-page-header">
+               <div className="v5-header-content">
+                  <span className="v5-subtitle">SYNVEX AI PLATFORM</span>
+                  <h1 className="v5-title">Good Day, {userName}</h1>
+               </div>
+               <div className="v5-header-actions">
+                  <div className="v5-status">Engine Ready</div>
+               </div>
+            </header>
 
-        {/* ── Feature tiles ── */}
-        <div className="dash-tiles">
-          <div className="dash-tile" onClick={() => navigate("/que-bank")}>
-            <span className="tile-icon">🧠</span>
-            <strong>AI Question Bank</strong>
-            <p>Practice 500+ topics</p>
-          </div>
-          <div className="dash-tile" onClick={() => navigate("/reports")}>
-            <span className="tile-icon">📊</span>
-            <strong>Performance Reports</strong>
-            <p>Track your progress</p>
-          </div>
-          <div className="dash-tile" onClick={() => navigate("/resume")}>
-            <span className="tile-icon">📄</span>
-            <strong>Resume Analyzer</strong>
-            <p>AI-tailored questions</p>
-          </div>
-        </div>
+            <div className="v5-scroll-stack">
 
-        {/* ── Resume Analyzer ── */}
-        <div className="dash-card" style={{ marginTop: 0 }}>
-          <div className="dash-card-header">
-            <div className="dash-card-icon">📄</div>
-            <div>
-              <h2 className="dash-card-title">Resume Analyzer</h2>
-              <p className="dash-card-sub">Upload your resume and get a fully personalized mock interview.</p>
+               {/* Card 1: Role-Based Practice */}
+               <section className="v5-feature-card">
+                  <div className="v5-card-inner">
+                     <div className="v5-card-content">
+                        <div className="v5-badge">TARGETED PREP</div>
+                        <h2 className="v5-card-title">Role-Based Interview</h2>
+                        <p className="v5-card-description">
+                           Practice with an AI trained on the latest industry standards for your specific job title. Our engine adapts to your depth of knowledge in real-time.
+                        </p>
+
+                        <div className="v5-feature-grid">
+                           <div className="v5-feature-item">
+                              <span className="check">✓</span>
+                              <div>
+                                 <strong>Adaptive Logic</strong>
+                                 <p>Difficulty shifts based on answer quality.</p>
+                              </div>
+                           </div>
+                           <div className="v5-feature-item">
+                              <span className="check">✓</span>
+                              <div>
+                                 <strong>Core Skills Focus</strong>
+                                 <p>Deep-dives into your chosen tech stack.</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className="v5-card-action-box">
+                        <div className="v5-form-layout">
+                           <div className="v5-input-row">
+                              <div className="v5-field">
+                                 <label>Job Title</label>
+                                 <input type="text" value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Backend Dev" />
+                              </div>
+                              <div className="v5-field">
+                                 <label>Key Topics</label>
+                                 <input type="text" value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. Python, SQL" />
+                              </div>
+                           </div>
+                           <div className="v5-input-row">
+                              <div className="v5-field">
+                                 <label>Difficulty</label>
+                                 <select value={difficulty} onChange={e => setDiff(e.target.value)}>
+                                    <option>Beginner</option>
+                                    <option>Medium</option>
+                                    <option>Hard</option>
+                                 </select>
+                              </div>
+                              <div className="v5-field">
+                                 <label>Session Type</label>
+                                 <select value={type} onChange={e => setType(e.target.value)}>
+                                    <option>Technical</option>
+                                    <option>HR</option>
+                                 </select>
+                              </div>
+                           </div>
+                           <button className="v5-btn-primary" onClick={handleStartInterview}>
+                              Launch Interview Session
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </section>
+
+               {/* Card 2: Resume intelligence */}
+               <section id="resume-card" className="v5-feature-card alternate">
+                  <div className="v5-card-inner">
+                     <div className="v5-card-content">
+                        <div className="v5-badge brown">DYNAMIC ANALYSIS</div>
+                        <h2 className="v5-card-title">Resume Intelligence</h2>
+                        <p className="v5-card-description">
+                           Upload your resume to let our AI cross-verify your claims. This session prepares you to defend your projects and skills with confidence.
+                        </p>
+
+                        <div className="v5-info-box">
+                           <strong>Best Use Case:</strong>
+                           <p>Defending project architectural decisions listed on your profile.</p>
+                        </div>
+
+                        <button className="v5-btn-outline" onClick={handleStartResumeInterview}>
+                           Start Session from Resume
+                        </button>
+                     </div>
+
+                     <div className="v5-card-action-box no-bg">
+                        <div className="v5-resume-integration">
+                           <ResumeAnalyzer />
+                        </div>
+                     </div>
+                  </div>
+               </section>
+
+               {/* Card 3: Question Bank */}
+               <section className="v5-feature-card">
+                  <div className="v5-card-inner">
+                     <div className="v5-card-content">
+                        <div className="v5-badge purple">MASTERY BANK</div>
+                        <h2 className="v5-card-title">AI Question Library</h2>
+                        <p className="v5-card-description">
+                           Over 500+ hand-picked technical questions covering everything from OS fundamentals to System Design patterns.
+                        </p>
+
+                        <div className="v5-tags">
+                           <span>React</span>
+                           <span>Algorithms</span>
+                           <span>Databases</span>
+                           <span>API Design</span>
+                        </div>
+                     </div>
+
+                     <div className="v5-card-action-box dark">
+                        <div className="v5-bank-cta">
+                           <h3>Hone your technical edge.</h3>
+                           <p>Daily drills and conceptual deep-dives.</p>
+                           <button className="v5-btn-dark" onClick={() => navigate("/que-bank")}>
+                              Go to Question Bank
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </section>
+
             </div>
-          </div>
-          <ResumeAnalyzer />
-        </div>
 
-      </main>
-    </div>
-  );
+            <footer className="v5-footer">
+               <p>© 2024 SYNVEX AI. All rights reserved. Premium Professional Suite.</p>
+            </footer>
+         </main>
+      </div>
+   );
 }
 
 export default Dashboard;

@@ -34,10 +34,10 @@ function LandingPage() {
 
           <h2 className="hero-title" style={{ marginTop: '30px' }}>
             Master Interview Workflows, with <br/>
-            <span className="text-gradient">Real-Time AI Assistant</span>
+            <span className="text-gradient">AI-Powered Analysis</span>
           </h2>
           <p className="hero-subtitle">
-            An intelligent platform that helps you prepare, analyze, and conquer your technical interviews with confidence. Get personalized feedback instantly.
+            An intelligent platform that helps you prepare, analyze, and conquer your technical interviews with confidence. Receive detailed performance reports after every session.
           </p>
           <button className="btn-cta-large" onClick={() => navigate('/AuthBox')}>
             Start your free trial <span>&rarr;</span>
@@ -47,13 +47,13 @@ function LandingPage() {
           <div className="cta-banner">
             <div className="cta-banner-content">
               <h2>Start Preparing Smarter</h2>
-              <p>Ready to transform your interview performance. Download our Next-Gen Interview Platform and unlock invisible, real-time AI support.</p>
+              <p>Ready to transform your interview performance. Practice with our Next-Gen Interview Platform and unlock deep, post-session AI insights.</p>
               <button className="btn-black" onClick={() => navigate('/AuthBox')}>Get Started</button>
             </div>
             <div className="cta-banner-image-wrapper">
               <img 
-                src="/images/video_interview_mockup_1776963851485.png" 
-                alt="Video Interview AI Support" 
+                src="/images/performance_report_summary_mockup_1777032314018.png" 
+                alt="AI Interview Report Summary" 
                 className="cta-banner-image" 
               />
             </div>
@@ -70,7 +70,7 @@ function LandingPage() {
               </div>
               <div className="fc-content">
                 <h3 className="fc-title">AI Mock Interviews</h3>
-                <p className="fc-desc">Immersive interview simulation and practice with real-time feedback. Synvex provides an experience tailored to real-world technical interviews, pinpointing exact areas for improvement.</p>
+                <p className="fc-desc">Immersive interview simulation and practice with post-interview feedback. Synvex provides an experience tailored to real-world technical interviews, pinpointing exact areas for improvement.</p>
                 <div className="fc-actions">
                   <button className="fc-btn fc-btn-primary" onClick={() => navigate('/AuthBox')}>Get Started Free</button>
                 </div>
@@ -80,7 +80,7 @@ function LandingPage() {
             {/* Card 2: Content Left, Image Right (Reverse) */}
             <div className="fc-card reverse">
               <div className="fc-image-wrapper">
-                <img src="/images/video_interview_mockup_1776963851485.png" alt="Resume-Based Interviews" />
+                <img src="/images/resume_upload_mockup_1777030915190.png" alt="Resume-Based Interviews" />
               </div>
               <div className="fc-content">
                 <h3 className="fc-title">Resume-Based Interviews</h3>
@@ -94,7 +94,7 @@ function LandingPage() {
             {/* Card 3: Image Left, Content Right */}
             <div className="fc-card">
               <div className="fc-image-wrapper">
-                <img src="/images/feature_assistant_mockup_1776958536817.png" alt="Question Bank & Reports" />
+                <img src="/images/question_bank_mockup_1777031135968.png" alt="Question Bank & Reports" />
               </div>
               <div className="fc-content">
                 <h3 className="fc-title">Question Bank & Reports</h3>
@@ -107,23 +107,23 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* 2. Feature Section - Real-time Insights */}
+        {/* 2. Feature Section - Post-Interview Analysis */}
         <section className="feature-section left-align">
           <div className="feature-content">
-            <h2 className="feature-title">Real-time Feedback & <br/> AI Insights</h2>
+            <h2 className="feature-title">Post-Interview <br/> AI Analysis</h2>
             <p className="feature-desc">
-              Synvex listens to your responses during practice interviews and provides instant, actionable feedback. Identify filler words, tone variations, and areas for improvement on the fly.
+              Synvex analyzes your recording after the session to provide deep, actionable feedback. Identify areas for improvement in your technical accuracy and communication style.
             </p>
             <ul className="feature-list">
-              <li><span>✓</span> Instant tone analysis</li>
-              <li><span>✓</span> Vocabulary suggestions</li>
-              <li><span>✓</span> Pacing and clarity tracking</li>
+              <li><span>✓</span> Technical gap identification</li>
+              <li><span>✓</span> Communication style reports</li>
+              <li><span>✓</span> Personalised improvement tips</li>
             </ul>
           </div>
           <div className="feature-image-wrapper">
             <img 
-              src="/images/feature_assistant_mockup_1776958536817.png" 
-              alt="AI Assistant UI Mockup" 
+              src="/images/user_dashboard_report.png" 
+              alt="Interview Dashboard Report" 
               className="feature-image" 
             />
             {/* Decorative blur behind image */}
@@ -131,24 +131,19 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* 2.5 Feature Section - Instant Evaluation */}
+        {/* 2.5 Feature Section - Detailed Reports */}
         <section className="feature-section evaluation-section">
           <div className="evaluation-card-outer">
-            <h2 className="evaluation-title">Instant Evaluation</h2>
+            <h2 className="evaluation-title">Deep Performance Insights</h2>
             <p className="evaluation-desc">
-              Our AI tool provides immediate scoring—green for a pass, red for a retry—and detailed feedback on your communication, This enhances your overall interview presentation and performance.
+              Our AI tool provides a comprehensive breakdown of your performance—rating your communication, accuracy, and confidence to help you master every aspect of the interview.
             </p>
-            <div className="evaluation-inner-card">
-              <div className="eval-photo-wrapper">
-                <img src="/images/video_candidate_photo_1776964537193.png" alt="Candidate Video Feed" className="eval-photo" />
-              </div>
-              <div className="eval-score-wrapper">
-                <h3>Total Score</h3>
-                <div className="eval-ring">
-                  <span className="eval-score">8 / 10</span>
-                  <span className="eval-status">Fair B</span>
-                </div>
-              </div>
+            <div className="evaluation-inner-card" style={{ padding: '0', background: 'transparent', boxShadow: 'none' }}>
+              <img 
+                src="/images/user_session_report.png" 
+                alt="Detailed Session Report" 
+                style={{ width: '100%', borderRadius: '20px', display: 'block' }} 
+              />
             </div>
           </div>
         </section>

@@ -47,39 +47,48 @@ function MainComp() {
         </div>
       </section>
 
-      {/* 1.5 Feature Cards Section */}
+      {/* 1.5 Feature Cards Section (Split Cards Layout) */}
       <section className="feature-cards-section">
-        <div className="fc-container">
-          {/* Card 1 */}
+        <div className="fc-stacked-container">
+          {/* Card 1: Image Left, Content Right */}
           <div className="fc-card">
-            <div className="fc-icon"><FaDesktop /></div>
-            <h3 className="fc-title">AI Mock Interviews</h3>
-            <p className="fc-desc">Immersive interview simulation and practice with real-time feedback.</p>
-            <div className="fc-actions">
-              <button className="fc-btn fc-btn-primary" onClick={() => navigate('/AuthBox')}>Get Started for Free</button>
-              <button className="fc-btn fc-btn-outline" onClick={() => navigate('/interview')}>Learn More</button>
+            <div className="fc-image-wrapper">
+              <img src="/images/video_candidate_photo_1776964537193.png" alt="AI Mock Interview" />
+            </div>
+            <div className="fc-content">
+              <h3 className="fc-title">AI Mock Interviews</h3>
+              <p className="fc-desc">Immersive interview simulation and practice with real-time feedback. Synvex provides an experience tailored to real-world technical interviews, pinpointing exact areas for improvement.</p>
+              <div className="fc-actions">
+                <button className="fc-btn fc-btn-primary" onClick={() => navigate('/AuthBox')}>Get Started Free</button>
+              </div>
             </div>
           </div>
 
-          {/* Card 2 - Highlighted */}
-          <div className="fc-card fc-card-highlighted">
-            <div className="fc-icon"><FaFileAlt /></div>
-            <h3 className="fc-title">Resume-Based Interviews</h3>
-            <p className="fc-desc">Turn your resume into a personalized mock interview instantly.</p>
-            <div className="fc-actions">
-              <button className="fc-btn fc-btn-white" onClick={() => navigate('/resume')}>Get Started for Free</button>
-              <button className="fc-btn fc-btn-outline-white" onClick={() => navigate('/resume')}>Learn More</button>
+          {/* Card 2: Content Left, Image Right (Reverse) */}
+          <div className="fc-card reverse">
+            <div className="fc-image-wrapper">
+              <img src="/images/video_interview_mockup_1776963851485.png" alt="Resume-Based Interviews" />
+            </div>
+            <div className="fc-content">
+              <h3 className="fc-title">Resume-Based Interviews</h3>
+              <p className="fc-desc">Turn your resume into a personalized mock interview instantly. The AI dynamically generates rigorous questions specifically based on your unique skills and project history.</p>
+              <div className="fc-actions">
+                <button className="fc-btn fc-btn-primary" onClick={() => navigate('/resume')}>Try Resume Analyzer</button>
+              </div>
             </div>
           </div>
 
-          {/* Card 3 */}
+          {/* Card 3: Image Left, Content Right */}
           <div className="fc-card">
-            <div className="fc-icon"><FaChartBar /></div>
-            <h3 className="fc-title">Question Bank & Reports</h3>
-            <p className="fc-desc">Access tailored questions and actionable performance insights.</p>
-            <div className="fc-actions">
-              <button className="fc-btn fc-btn-primary" onClick={() => navigate('/que-bank')}>Get Started for Free</button>
-              <button className="fc-btn fc-btn-outline" onClick={() => navigate('/reports')}>Learn More</button>
+            <div className="fc-image-wrapper">
+              <img src="/images/feature_assistant_mockup_1776958536817.png" alt="Question Bank & Reports" />
+            </div>
+            <div className="fc-content">
+              <h3 className="fc-title">Question Bank & Reports</h3>
+              <p className="fc-desc">Access tailored questions and actionable performance insights. Track your proficiency over time with deep analytics on your communication, technical accuracy, and confidence.</p>
+              <div className="fc-actions">
+                <button className="fc-btn fc-btn-primary" onClick={() => navigate('/que-bank')}>Explore Question Bank</button>
+              </div>
             </div>
           </div>
         </div>

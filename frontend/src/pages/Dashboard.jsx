@@ -1,196 +1,175 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
-import { auth } from '../firebase'
+import { auth } from '../firebase';
 import ResumeAnalyzer from "../components/ResumeAnalyzer";
-
 
 function Dashboard() {
   const navigate = useNavigate();
-
-  // State for Interview Preferences
-  const [role, setRole] = useState("Software Engineer");
-  const [topic, setTopic] = useState("React & Node.js");
-  const [difficulty, setDifficulty] = useState("Medium");
-  const [type, setType] = useState("Technical");
+  const [role, setRole]         = useState("Software Engineer");
+  const [topic, setTopic]       = useState("React & Node.js");
+  const [difficulty, setDiff]   = useState("Medium");
+  const [type, setType]         = useState("Technical");
   const [duration, setDuration] = useState("10 min");
 
   const handleStartInterview = () => {
-    // Navigate with preferences
     navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
   };
   const handleStartResumeInterview = () => {
-    // First, check if the user actually uploaded a resume!
     const savedResume = localStorage.getItem('resumeData');
     if (!savedResume) {
-      alert("Please upload and parse your resume using the Analyzer below before starting a Resume-Based interview.");
+      alert("Please upload and parse your resume using the Analyzer below first.");
       return;
     }
     navigate(`/interview?mode=resume&level=${encodeURIComponent(difficulty)}&duration=${encodeURIComponent(duration)}`);
   };
 
+  const userName = auth.currentUser?.displayName || "User";
 
   return (
     <div className="dashboard-page">
-      {/* Sidebar */}
-      <aside className="sidebar glass">
+      {/* Ambient orbs */}
+      <div className="dash-orb dash-orb-1" />
+      <div className="dash-orb dash-orb-2" />
+
+      {/* ── Sidebar ── */}
+      <aside className="sidebar">
         <div>
           <h2 className="logo">Synvex</h2>
-          <div className="menu">
-            <button onClick={() => navigate("/dashboard")} style={{ background: 'rgba(255,255,255,0.2)' }}>Dashboard</button>
-            <button onClick={() => navigate("/resume")}>AI Resume Analyzer</button>
-            {/* <button onClick={() => navigate("/interview")}>Mock Interviews</button> */}
-            <button onClick={() => navigate("/reports")}>Performance Reports</button>
-            <button onClick={()=>navigate("/que-bank")}>🧠 AI Question Bank</button>
-            
-          </div>
+          <nav className="menu">
+            <button className="menu-btn active" onClick={() => navigate("/dashboard")}>
+              <span>🏠</span> Dashboard
+            </button>
+            <button className="menu-btn" onClick={() => navigate("/resume")}>
+              <span>📄</span> AI Resume Analyzer
+            </button>
+            <button className="menu-btn" onClick={() => navigate("/reports")}>
+              <span>📊</span> Performance Reports
+            </button>
+            <button className="menu-btn" onClick={() => navigate("/que-bank")}>
+              <span>🧠</span> AI Question Bank
+            </button>
+          </nav>
         </div>
-
-        <button className="logout" onClick={() => navigate("/")}>
-          Logout
+        <button className="logout-btn" onClick={() => navigate("/")}>
+          🚪 Logout
         </button>
       </aside>
 
-      {/* Main Content */}
-      <main className="main">
-        {/* Navbar */}
-        <nav className="navbar glass">
-          <h1>Welcome, {auth.currentUser?.displayName || "User"} 👋</h1>
-          <div className="nav-actions">
-            {/* <button onClick={() => navigate("/profile")}>Edit Profile</button> */}
+      {/* ── Main ── */}
+      <main className="dash-main">
+
+        {/* Welcome bar */}
+        <div className="dash-welcome">
+          <div>
+            <p className="dash-greeting">Good to see you back,</p>
+            <h1 className="dash-name">{userName} 👋</h1>
           </div>
-        </nav>
-
-        {/* Dashboard Grid Container */}
-        <div className="dashboard-grid">
-
-          {/* Left Column - Interview Preferences */}
-          <section className="preferences-section glass">
-            <h3 className="section-title">
-              <span role="img" aria-label="target">🎯</span> Interview Preferences
-            </h3>
-            <p style={{ color: '#cbd5e1', marginBottom: '20px', fontSize: '14px' }}>
-              Configure your next AI interview session. The system will curate tailored questions based on your selections.
-            </p>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Target Job Role</label>
-                <input
-                  type="text"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  placeholder="e.g. Frontend Developer"
-                />
-              </div>
-              <div className="form-group">
-                <label>Key Topic / Tech Stack</label>
-                <input
-                  type="text"
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  placeholder="e.g. System Design, React"
-                />
-              </div>
+          <div className="dash-quick-stats">
+            <div className="quick-stat">
+              <span className="qs-icon">🎯</span>
+              <div><strong>Role-Based</strong><p>Interview</p></div>
             </div>
-
-            <div className="form-row" style={{ marginTop: '15px' }}>
-              <div className="form-group">
-                <label>Difficulty Level</label>
-                <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Medium">Medium (Standard)</option>
-                  <option value="Hard">Hard (Senior Level)</option>
-                  <option value="Expert">Expert (Staff Level)</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Interview Type</label>
-                <select value={type} onChange={(e) => setType(e.target.value)}>
-                  <option value="Technical">Technical (Coding & System)</option>
-                  <option value="HR">HR / Behavioral</option>
-                  <option value="Mixed">Mixed Rounds</option>
-                </select>
-              </div>
+            <div className="quick-stat">
+              <span className="qs-icon">📄</span>
+              <div><strong>Resume</strong><p>Interview</p></div>
             </div>
-
-            <div className="form-row" style={{ marginTop: '15px' }}>
-              <div className="form-group">
-                <label>Interview Duration</label>
-                <select value={duration} onChange={(e) => setDuration(e.target.value)}>
-                  <option value="3 min">3 min</option>
-                  <option value="5 min">5 min</option>
-                  <option value="8 min">8 min</option>
-                  <option value="10 min">10 min</option>
-                  <option value="15 min">15 min</option>
-                  <option value="20 min">20 min</option>
-                </select>
-              </div>
+            <div className="quick-stat">
+              <span className="qs-icon">🧠</span>
+              <div><strong>Question</strong><p>Bank</p></div>
             </div>
-
-            <div style={{ display: 'flex', gap: '15px', marginTop: '20px', flexWrap: 'wrap' }}>
-              <button className="primary-btn" onClick={handleStartInterview}>
-                Start Role-Based Interview
-              </button>
-
-             
-            </div>
-
-          </section>
-
-          {/* Right Column - Candidate Responses / Last Session */}
-          {/*I guess we dont need this section now, so temporarily commented it */}
-          {/* <section className="metrics-section glass">
-            <h3 className="section-title">
-              <span role="img" aria-label="chart">📊</span> Last Session Analytics
-            </h3>
-
-            <div className="score-circle">
-              <span>91%</span>
-            </div>
-
-            <div className="feedback-pill">
-              Excellent Progress 🚀
-            </div>
-
-            <p style={{ color: '#cbd5e1', fontSize: '13px', marginBottom: '15px' }}>
-              AI Feedback: "Strong grasp of architectural principles, but needs more confidence when explaining edge cases."
-            </p>
-
-            <div className="metrics-grid">
-              <div className="metric-item">
-                <h4>94%</h4>
-                <p>Accuracy</p>
-              </div>
-              <div className="metric-item">
-                <h4>88%</h4>
-                <p>Communication</p>
-              </div>
-              <div className="metric-item">
-                <h4>90%</h4>
-                <p>Relevance</p>
-              </div>
-              <div className="metric-item">
-                <h4>92%</h4>
-                <p>Confidence</p>
-              </div>
-            </div>
-          </section> */}
-
+          </div>
         </div>
 
-        {/* Bottom Section - dynamic Resume Analyzer */}
-        <div style={{ marginTop: '30px' }}>
+        {/* ── Interview Preferences card ── */}
+        <div className="dash-card">
+          <div className="dash-card-header">
+            <div className="dash-card-icon">🎯</div>
+            <div>
+              <h2 className="dash-card-title">Interview Preferences</h2>
+              <p className="dash-card-sub">Configure your next AI session — the AI adapts every question to your selections.</p>
+            </div>
+          </div>
+
+          <div className="dash-form-grid">
+            <div className="dash-field">
+              <label>Target Job Role</label>
+              <input type="text" value={role} onChange={e => setRole(e.target.value)} placeholder="e.g. Frontend Developer" />
+            </div>
+            <div className="dash-field">
+              <label>Key Topic / Tech Stack</label>
+              <input type="text" value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. System Design, React" />
+            </div>
+            <div className="dash-field">
+              <label>Difficulty Level</label>
+              <select value={difficulty} onChange={e => setDiff(e.target.value)}>
+                <option value="Beginner">Beginner</option>
+                <option value="Medium">Medium (Standard)</option>
+                <option value="Hard">Hard (Senior Level)</option>
+                <option value="Expert">Expert (Staff Level)</option>
+              </select>
+            </div>
+            <div className="dash-field">
+              <label>Interview Type</label>
+              <select value={type} onChange={e => setType(e.target.value)}>
+                <option value="Technical">Technical (Coding & System)</option>
+                <option value="HR">HR / Behavioral</option>
+                <option value="Mixed">Mixed Rounds</option>
+              </select>
+            </div>
+            <div className="dash-field">
+              <label>Interview Duration</label>
+              <select value={duration} onChange={e => setDuration(e.target.value)}>
+                <option>5 min</option>
+                <option>10 min</option>
+                <option>15 min</option>
+                <option>20 min</option>
+                <option>30 min</option>
+                <option>1 hr</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="dash-btn-row">
+            <button className="dash-btn primary-dash-btn" onClick={handleStartInterview}>
+              🚀 Start Role-Based Interview
+            </button>
+            <button className="dash-btn resume-dash-btn" onClick={handleStartResumeInterview}>
+              📄 Start Resume-Based Interview
+            </button>
+          </div>
+        </div>
+
+        {/* ── Feature tiles ── */}
+        <div className="dash-tiles">
+          <div className="dash-tile" onClick={() => navigate("/que-bank")}>
+            <span className="tile-icon">🧠</span>
+            <strong>AI Question Bank</strong>
+            <p>Practice 500+ topics</p>
+          </div>
+          <div className="dash-tile" onClick={() => navigate("/reports")}>
+            <span className="tile-icon">📊</span>
+            <strong>Performance Reports</strong>
+            <p>Track your progress</p>
+          </div>
+          <div className="dash-tile" onClick={() => navigate("/resume")}>
+            <span className="tile-icon">📄</span>
+            <strong>Resume Analyzer</strong>
+            <p>AI-tailored questions</p>
+          </div>
+        </div>
+
+        {/* ── Resume Analyzer ── */}
+        <div className="dash-card" style={{ marginTop: 0 }}>
+          <div className="dash-card-header">
+            <div className="dash-card-icon">📄</div>
+            <div>
+              <h2 className="dash-card-title">Resume Analyzer</h2>
+              <p className="dash-card-sub">Upload your resume and get a fully personalized mock interview.</p>
+            </div>
+          </div>
           <ResumeAnalyzer />
         </div>
-         <button
-                className="primary-btn"
-                onClick={handleStartResumeInterview}
-                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
-              >
-                Start Resume-Based Interview
-              </button>
-
 
       </main>
     </div>

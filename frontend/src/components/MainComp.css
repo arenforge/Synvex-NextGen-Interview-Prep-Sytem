@@ -251,134 +251,109 @@
   position: relative;
 }
 
-.fc-container {
-  max-width: 1200px;
+.fc-stacked-container {
+  max-width: 1100px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 }
 
 .fc-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 40px 30px;
-  text-align: center;
-  transition: var(--transition-normal);
+  background: #ffffff;
+  border: 1.5px solid rgba(249, 115, 22, 0.15);
+  border-radius: 24px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Image left, content right */
   align-items: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-  height: 100%;
+  box-shadow: 0 8px 30px rgba(249,115,22,0.08);
+  height: auto;
+  min-height: 380px;
+  overflow: hidden;
+}
+
+.fc-card.reverse {
+  flex-direction: row-reverse; /* Content left, image right */
 }
 
 .fc-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 16px 40px rgba(249,115,22,0.15);
+  border-color: rgba(249, 115, 22, 0.35);
 }
 
-.fc-card-highlighted {
+.fc-image-wrapper {
+  flex: 1;
+  height: 100%;
+  min-height: 380px;
+  overflow: hidden;
   background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-  color: white;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.fc-card:hover .fc-image-wrapper img {
   transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(234, 88, 12, 0.25);
-  padding: 50px 30px; /* slightly taller */
 }
 
-.fc-card-highlighted:hover {
-  transform: scale(1.05) translateY(-5px);
-}
-
-.fc-icon {
-  font-size: 40px;
-  color: var(--primary);
-  margin-bottom: 20px;
-}
-
-.fc-card-highlighted .fc-icon {
-  color: white;
+.fc-content {
+  flex: 1;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .fc-title {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: var(--text-primary);
-}
-
-.fc-card-highlighted .fc-title {
-  color: white;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #1c1107;
+  line-height: 1.2;
 }
 
 .fc-desc {
-  font-size: 16px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 30px;
-  flex-grow: 1; /* Pushes buttons to bottom */
-}
-
-.fc-card-highlighted .fc-desc {
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 17px;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 40px;
 }
 
 .fc-actions {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
+  width: max-content;
 }
 
 .fc-btn {
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
-  width: 100%;
+  transition: all 0.3s ease;
 }
 
 .fc-btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   color: white;
   border: none;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
 }
 .fc-btn-primary:hover {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
 }
 
-.fc-btn-outline {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-}
-.fc-btn-outline:hover {
-  background: rgba(0,0,0,0.02);
-  border-color: var(--text-secondary);
-}
-
-.fc-btn-white {
-  background: white;
-  color: var(--primary);
-  border: none;
-}
-.fc-btn-white:hover {
-  background: #f8fafc;
-}
-
-.fc-btn-outline-white {
-  background: transparent;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-.fc-btn-outline-white:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: white;
-}
 
 /* =========================================
    FEATURE SECTIONS
@@ -1016,16 +991,18 @@
 }
 
 @media (max-width: 768px) {
-  .fc-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .fc-stacked-container {
+    gap: 30px;
   }
-  .fc-card-highlighted {
-    transform: none;
-    padding: 40px 30px;
+  .fc-card, .fc-card.reverse {
+    flex-direction: column;
   }
-  .fc-card-highlighted:hover {
-    transform: translateY(-5px);
+  .fc-image-wrapper {
+    min-height: 240px;
+    height: 240px;
+  }
+  .fc-content {
+    padding: 30px 20px;
   }
 
   .floating-avatar { display: none; }

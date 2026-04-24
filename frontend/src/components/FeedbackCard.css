@@ -1,111 +1,198 @@
-.fc-container {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 25px;
-  color: #fff;
+/* ========================================================
+   FeedbackCard — Dark Charcoal, High-Contrast, Easy to Read
+   ======================================================== */
+
+.fc-plain {
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
 }
 
-.fc-verdict {
-  display: inline-block;
-  padding: 6px 18px;
-  border-radius: 20px;
-  background: rgba(124, 58, 237, 0.25);
-  border: 1px solid #7c3aed;
-  color: #a78bfa;
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 15px;
+.fc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  color: #f1f5f9;
 }
+
+/* ── Section Label ──────────────────────────────────── */
+.fc-section-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f97316;
+  margin-bottom: 12px;
+}
+
+/* ── Divider ────────────────────────────────────────── */
+.fc-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 22px 0;
+}
+
+/* ── TOP ROW: Verdict + Summary ─────────────────────── */
+.fc-top-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.fc-verdict-wrap { flex-shrink: 0; }
+
+.fc-verdict-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f97316;
+  margin-bottom: 10px;
+}
+
+.fc-verdict-badge {
+  display: inline-block;
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: 1.5px solid;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.fc-summary-wrap { flex: 1; }
 
 .fc-summary {
-  color: #cbd5e1;
   font-size: 14px;
-  line-height: 1.7;
-  margin-bottom: 20px;
-  border-left: 3px solid #7c3aed;
-  padding-left: 12px;
+  line-height: 1.80;
+  /* Clean light grey — easy to scan */
+  color: #e2e8f0;
+  margin: 0;
+  padding-left: 16px;
+  border-left: 3px solid #f97316;
 }
+
+/* ── Strengths / Weaknesses ─────────────────────────── */
+.fc-sw-label-row { margin-bottom: 4px; }
 
 .fc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-top: 4px;
 }
 
 .fc-card {
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 20px 22px;
+  border: 1px solid;
 }
 
 .fc-strengths {
   background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-color: rgba(16, 185, 129, 0.30);
 }
 
 .fc-weaknesses {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.07);
+  border-color: rgba(239, 68, 68, 0.28);
 }
 
-.fc-card h4 {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  color: #e2e8f0;
+.fc-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
 }
+.fc-card-head h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.fc-card-head.green h4 { color: #34d399; }
+.fc-card-head.red   h4 { color: #f87171; }
 
 .fc-card ul {
   margin: 0;
   padding-left: 18px;
-  color: #cbd5e1;
-  font-size: 13px;
+  font-size: 13.5px;
+  line-height: 1.70;
+  /* Pure crisp white — maximum readability */
+  color: #f1f5f9;
+}
+.fc-card ul li { margin-bottom: 7px; }
+.fc-empty-item {
+  color: rgba(241,245,249,0.35);
+  font-style: italic;
+  list-style: none;
+  padding-left: 0;
 }
 
-.fc-card ul li {
-  margin-bottom: 6px;
-}
-
+/* ── Skill Breakdown ────────────────────────────────── */
 .fc-areas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .fc-area-item {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid;
+  transition: transform 0.18s ease;
+  /* Slightly lighter dark so it reads as a "card inside card" */
+  background: rgba(255, 255, 255, 0.05);
 }
+.fc-area-item:hover { transform: translateX(4px); }
 
 .fc-area-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
+.fc-area-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.fc-area-icon { font-size: 16px; }
+
 .fc-area-name {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
-  color: #e2e8f0;
-  text-transform: capitalize;
+  /* Pure white for maximum contrast */
+  color: #ffffff;
 }
 
 .fc-area-rating {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1px solid;
+  letter-spacing: 0.03em;
 }
 
 .fc-area-tip {
-  color: #94a3b8;
-  font-size: 13px;
+  font-size: 13.5px;
+  /* Comfortable light grey — not glaring, not dim */
+  color: #cbd5e1;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.60;
 }
 
+/* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 600px) {
-  .fc-grid {
-    grid-template-columns: 1fr;
-  }
+  .fc-top-row { grid-template-columns: 1fr; gap: 16px; }
+  .fc-grid    { grid-template-columns: 1fr; }
 }

@@ -1,76 +1,79 @@
-// frontend/src/pages/Reports.jsx
 import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import FeedbackCard from '../components/FeedbackCard';
 import './Reports.css';
 
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
+  ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
 function Reports() {
   const [sessions, setSessions] = useState([]);
   const [openId, setOpenId] = useState(null);
-  const[loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  // auth.currentUser directly lene ke bajay Firebase ka event sunenge
-  // kyunki Firebase async hai — currentUser shuru mein null ho sakta hai
-  const unsubscribe = auth.onAuthStateChanged((user) => {
-    if (!user) {
-      setLoading(false); // Login nahi hai
-      return;
-    }
-
-    fetch(`${API_BASE_URL}/api/sessions/${user.email}`)
-      .then(r => r.json())
-      .then(data => {
-        console.log('All sessions from API:', data.sessions);
-        if (data.success) {
-          // Sirf woh sessions dikhao jinka feedback hai — baaki incomplete hain
-          const completed = data.sessions.filter(s => s.feedback !== null);
-          console.log('Sessions with feedback:', completed);
-          setSessions(completed);
-        }
-      })
-      .finally(() => setLoading(false));
-  });
-
-  return () => unsubscribe(); // Cleanup — memory leak avoid karo
-}, []);
-
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) { setLoading(false); return; }
+      fetch(`${API_BASE_URL}/api/sessions/${user.email}`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            const completed = data.sessions.filter(s => s.feedback !== null);
+            setSessions(completed);
+          }
+        })
+        .finally(() => setLoading(false));
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="reports-page">
-      <h1>Performance Reports</h1>
-      <p>Click on any Session to see the feedback.</p>
 
-      {loading ? <p>Loading sessions...</p> : sessions.length === 0 && 
-      <p>You have not given any Interview yet!</p>}
+      {/* Hero */}
+      <div className="reports-hero">
+        <div className="reports-eyebrow">📊 AI Analysis</div>
+        <h1>Performance <span>Reports</span></h1>
+        <p>Review your past interview sessions and track your improvement over time.</p>
+      </div>
 
-      {sessions.map((session, index) => (
-        <div key={session.id} className="session-card">
+      {/* Loading */}
+      {loading && (
+        <p className="reports-loading">⏳ Loading your sessions…</p>
+      )}
 
-          {/* Click karo to open/close */}
-          <div
-            className={`session-header ${openId === session.id ? 'expanded' : ''}`}
-            onClick={() => setOpenId(openId === session.id ? null : session.id)}
-          >
-            <span>Session {sessions.length - index} — {session.role} — {session.level}</span>
-            <span>{openId === session.id ? '▲' : '▼'}</span>
-          </div>
-
-          {/* Feedback sirf tab dikhao jab session khula ho */}
-          {openId === session.id && (
-            <div className="session-feedback">
-              {session.feedback
-                ? <FeedbackCard feedback={session.feedback} />
-                : <p>Feedback not available</p>}
-            </div>
-          )}
-
+      {/* Empty state */}
+      {!loading && sessions.length === 0 && (
+        <div className="reports-empty">
+          <div className="empty-icon">🎯</div>
+          <p>You haven't completed any interviews yet.<br />Start a session to see your performance here!</p>
         </div>
-      ))}
+      )}
+
+      {/* Session list */}
+      <div className="reports-list">
+        {sessions.map((session, index) => (
+          <div key={session.id} className="session-card">
+            <div
+              className={`session-header ${openId === session.id ? 'expanded' : ''}`}
+              onClick={() => setOpenId(openId === session.id ? null : session.id)}
+            >
+              <span>Session {sessions.length - index} — {session.role} — {session.level}</span>
+              <span>{openId === session.id ? '▲' : '▼'}</span>
+            </div>
+
+            {openId === session.id && (
+              <div className="session-feedback">
+                {session.feedback
+                  ? <FeedbackCard feedback={session.feedback} />
+                  : <p>Feedback not available</p>}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 }

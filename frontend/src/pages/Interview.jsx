@@ -7,7 +7,7 @@ import FeedbackCard from '../components/FeedbackCard';
 
 // Auto-detect backend URL
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
+  ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
 
@@ -277,6 +277,11 @@ const Interview = () => {
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
+            onKeyDown={(e) => {
+              if ((e.key === 'Enter' || e.key === 'Return') && userInput.trim() && !loading) {
+                makeApiCall();
+              }
+            }}
             placeholder={isListening ? "I'm listening..." : (loading ? "AI is thinking..." : "Type your response...")}
             disabled={loading}
           />

@@ -1,166 +1,219 @@
+/* ========================================================
+   ResumeAnalyzer — Dark warm brown card theme
+   Matches Login page & Question Bank
+   ======================================================== */
+
+/* ── Container ───────────────────────────────────────── */
 .resume-analyzer-container {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 60px 20px;
-  text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
+/* ── Hero ────────────────────────────────────────────── */
 .ra-header-badge {
-  display: inline-block;
-  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffedd5;
+  color: #ea580c;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 999px;
+  padding: 8px 22px;
+  font-size: 15px;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1px;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   margin-bottom: 20px;
 }
 
 .ra-main-title {
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(32px, 5vw, 50px);
   font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.1;
-  margin-bottom: 24px;
+  color: #1c1107;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
 }
+.ra-main-title span { color: #f97316; }
 
 .ra-subtitle {
-  font-size: 20px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 40px;
-  max-width: 700px;
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.75;
+  margin-bottom: 48px;
+  max-width: 680px;
 }
 
+/* ── Upload Card ─────────────────────────────────────── */
 .ra-upload-wrapper {
-  background: rgba(249, 115, 22, 0.05); /* Very light primary tint */
-  border: 2px dashed rgba(249, 115, 22, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 60px 20px;
-  text-align: center;
-  transition: var(--transition-fast);
-  margin-bottom: 40px;
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.40);
+  border-radius: 20px;
+  padding: 40px 44px;
+  margin-bottom: 36px;
+  box-shadow: 0 10px 32px rgba(249, 115, 22, 0.12), 0 2px 8px rgba(0,0,0,0.18);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
-
 .ra-upload-wrapper:hover {
-  background: rgba(249, 115, 22, 0.08);
-  border-color: var(--primary);
+  border-color: rgba(249, 115, 22, 0.65);
+  box-shadow: 0 18px 48px rgba(249, 115, 22, 0.18), 0 4px 12px rgba(0,0,0,0.22);
 }
 
+/* Drop zone */
 .ra-upload-box {
   cursor: pointer;
-  margin-bottom: 30px;
-  border-radius: var(--radius-md);
-  padding: 20px;
-  border: 2px dashed transparent;
-  transition: var(--transition-fast);
+  margin-bottom: 28px;
+  border-radius: 14px;
+  padding: 36px 20px;
+  border: 2px dashed rgba(249, 115, 22, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-
+.ra-upload-box:hover,
 .ra-upload-box.drag-active {
-  border-color: var(--primary);
-  background: rgba(249, 115, 22, 0.1);
+  border-color: #f97316;
+  background: rgba(249, 115, 22, 0.08);
 }
 
-.ra-file-input-hidden {
-  display: none;
-}
+.ra-file-input-hidden { display: none; }
 
+/* Upload prompt text */
 .ra-upload-prompt p {
-  color: var(--text-primary);
-  font-size: 20px;
-  margin-bottom: 8px;
+  color: #fde8c8;
+  font-size: 16px;
+  margin-bottom: 6px;
+  line-height: 1.5;
 }
-
+.ra-upload-prompt strong { color: #f97316; }
 .ra-upload-limits {
-  color: var(--text-secondary) !important;
-  font-size: 15px !important;
+  color: rgba(253, 232, 200, 0.55) !important;
+  font-size: 13px !important;
 }
 
+/* File selected state */
 .ra-file-selected {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  color: var(--primary);
-  font-weight: 600;
-  font-size: 20px;
+  gap: 10px;
+  color: #f97316;
+  font-weight: 700;
+  font-size: 16px;
 }
+.ra-file-icon { font-size: 52px; color: #f97316; }
 
-.ra-file-icon {
-  font-size: 56px;
-}
-
+/* Button */
 .ra-upload-btn {
-  font-size: 18px;
-  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 32px;
   width: 100%;
-  max-width: 360px;
-  margin-bottom: 20px;
+  max-width: 380px;
+  display: block;
+  margin: 0 auto 18px;
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.32);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.2s ease;
+}
+.ra-upload-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.46);
+  filter: brightness(1.05);
+}
+.ra-upload-btn:disabled {
+  background: rgba(255,255,255,0.12);
+  color: rgba(253,232,200,0.4);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
+/* Privacy note */
 .ra-privacy-note {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: var(--text-secondary);
-  font-size: 15px;
+  color: rgba(253, 232, 200, 0.55);
+  font-size: 13px;
   font-weight: 500;
 }
+.ra-lock-icon { color: rgba(249, 115, 22, 0.60); }
 
-.ra-lock-icon {
-  color: var(--text-secondary);
-}
-
+/* Error */
 .ra-error {
-  color: #ef4444;
-  font-size: 15px;
-  margin-top: 20px;
+  color: #f87171;
+  font-size: 14px;
+  margin-top: 16px;
   font-weight: 600;
+  text-align: center;
 }
 
-/* Extracted Data Section */
+/* ── Results Section ─────────────────────────────────── */
 .ra-results {
-  margin-top: 40px;
-  padding-top: 40px;
-  border-top: 1px solid var(--border);
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  border-radius: 20px;
+  padding: 36px 40px;
+  box-shadow: 0 8px 28px rgba(249, 115, 22, 0.10), 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .ra-section-title {
-  color: var(--primary);
-  margin: 20px 0 12px 0;
-  font-size: 18px;
-  font-weight: 700;
+  color: #f97316;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin: 24px 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.18);
 }
+.ra-section-title:first-child { margin-top: 0; }
 
 .ra-text {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  color: #fde8c8;
 }
 
 .ra-skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
+  margin-top: 4px;
 }
-
 .ra-skill-tag {
-  background: rgba(249, 115, 22, 0.1);
-  border: 1px solid rgba(249, 115, 22, 0.3);
-  color: var(--primary);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 14px;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.30);
+  color: #fb923c;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 600;
+  transition: background 0.2s ease;
+}
+.ra-skill-tag:hover {
+  background: rgba(249, 115, 22, 0.22);
 }
 
 .ra-projects-list {
-  padding-left: 24px;
-  color: var(--text-secondary);
-  font-size: 16px;
-  line-height: 1.6;
+  padding-left: 22px;
+  color: #fde8c8;
+  font-size: 14px;
+  line-height: 1.75;
+  margin-top: 4px;
 }
+.ra-projects-list li { margin-bottom: 10px; }
 
-.ra-projects-list li {
-  margin-bottom: 12px;
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .ra-upload-wrapper { padding: 28px 20px; }
+  .ra-results        { padding: 24px 20px; }
 }

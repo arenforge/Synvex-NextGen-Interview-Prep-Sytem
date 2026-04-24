@@ -1,33 +1,47 @@
-/* Dashboard.css — Premium SaaS Theme */
+/* ========================================================
+   Dashboard.css — Landing Page / Login / QueBank Theme
+   Dark warm brown cards + peach/orange background
+   ======================================================== */
 
-/* ── Layout Shell ──────────────────────────────────────────── */
+/* ── Page shell ──────────────────────────────────────── */
 .dashboard-page {
   min-height: 100vh;
   width: 100%;
   display: flex;
-  background: var(--bg);
-  color: var(--text-primary);
+  background: linear-gradient(135deg, #ffffff 0%, #fff7ed 55%, #ffedd5 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* ── Surface card ──────────────────────────────────────────── */
-.glass {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
+/* Ambient orbs */
+.dash-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+.dash-orb-1 {
+  width: 600px; height: 600px;
+  background: rgba(249, 115, 22, 0.13);
+  top: -120px; left: -180px;
+}
+.dash-orb-2 {
+  width: 500px; height: 500px;
+  background: rgba(244, 63, 94, 0.09);
+  bottom: -100px; right: -150px;
 }
 
-.glass:hover {
-  box-shadow: var(--shadow-lg);
-}
-
-/* ── Sidebar ───────────────────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────────────────── */
 .sidebar {
-  width: 260px;
-  min-width: 260px;
-  padding: 24px 20px;
+  width: 240px;
+  min-width: 240px;
+  padding: 28px 16px;
   margin: 20px 0 20px 20px;
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(249, 115, 22, 0.12), 0 2px 8px rgba(0,0,0,0.20);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,294 +50,291 @@
   align-self: flex-start;
   height: calc(100vh - 40px);
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  z-index: 1;
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(135deg, #f97316, #fb923c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  padding: 12px 16px;
-  display: block;
   text-align: center;
   margin-bottom: 32px;
   letter-spacing: -0.02em;
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.menu { display: flex; flex-direction: column; gap: 6px; }
 
-.menu button {
+.menu-btn {
   width: 100%;
   text-align: left;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  border-radius: 12px;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: #fde8c8;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: background 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   box-shadow: none;
 }
-
-.menu button:hover {
-  background: var(--surface-alt);
-  color: var(--text-primary);
-  transform: none;
-  box-shadow: none;
+.menu-btn:hover {
+  background: rgba(249, 115, 22, 0.12);
+  color: #fff7ed;
+}
+.menu-btn.active {
+  background: rgba(249, 115, 22, 0.18);
+  color: #fff7ed;
+  font-weight: 700;
+  border: 1px solid rgba(249, 115, 22, 0.35);
 }
 
-/* Simulated active state for first button or specific class */
-.menu button[style*="rgba(255,255,255,0.2)"],
-.menu button.active {
-  background: var(--primary-light) !important;
-  color: var(--primary-dark);
-  font-weight: 600;
-}
-
-/* logout */
-.logout {
+.logout-btn {
   width: 100%;
-  padding: 12px 16px;
-  border: none;
-  border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--error);
+  padding: 12px 14px;
+  border: 1px solid rgba(239, 68, 68, 0.30);
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
-  transition: var(--transition-fast);
+  transition: background 0.2s ease;
   box-shadow: none;
 }
-
-.logout:hover {
-  background: var(--error-light);
-  color: #b91c1c;
-  transform: none;
-  box-shadow: none;
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.16);
+  color: #fca5a5;
 }
 
-/* ── Main Content ──────────────────────────────────────────── */
-.main {
+/* ── Main content ────────────────────────────────────── */
+.dash-main {
   flex: 1;
   min-width: 0;
-  padding: 20px 24px 40px;
+  padding: 28px 28px 60px 24px;
   display: flex;
   flex-direction: column;
+  gap: 24px;
   overflow-y: auto;
   max-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
-/* ── Navbar ────────────────────────────────────────────────── */
-.navbar {
-  padding: 20px 24px;
-  margin-bottom: 24px;
+/* ── Welcome bar ─────────────────────────────────────── */
+.dash-welcome {
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  border-radius: 18px;
+  padding: 24px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 8px 24px rgba(249,115,22,0.10);
+}
+.dash-greeting {
+  font-size: 13px;
+  color: rgba(253,232,200,0.6);
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.dash-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff7ed;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.navbar h1 {
-  font-size: clamp(20px, 2.5vw, 26px);
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.nav-actions {
+/* Quick stats */
+.dash-quick-stats {
   display: flex;
-  gap: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
-
-/* ── Dashboard Grid ────────────────────────────────────────── */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
-  width: 100%;
-}
-
-/* ── Interview Preferences Section ─────────────────────────── */
-.preferences-section {
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+.quick-stat {
   display: flex;
   align-items: center;
   gap: 10px;
+  background: rgba(249,115,22,0.10);
+  border: 1px solid rgba(249,115,22,0.25);
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.quick-stat:hover { background: rgba(249,115,22,0.18); }
+.qs-icon { font-size: 22px; }
+.quick-stat strong { display: block; font-size: 13px; color: #fff7ed; font-weight: 700; }
+.quick-stat p { margin: 0; font-size: 11px; color: rgba(253,232,200,0.55); }
+
+/* ── Card ────────────────────────────────────────────── */
+.dash-card {
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.35);
+  border-radius: 20px;
+  padding: 32px 36px;
+  box-shadow: 0 8px 28px rgba(249, 115, 22, 0.10), 0 2px 8px rgba(0,0,0,0.15);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.dash-card:hover {
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow: 0 14px 40px rgba(249, 115, 22, 0.16);
 }
 
-.preferences-section > p {
-  color: var(--text-secondary) !important;
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-
-.form-group {
+.dash-card-header {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.dash-card-icon { font-size: 30px; flex-shrink: 0; margin-top: 2px; }
+.dash-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff7ed;
+  margin: 0 0 5px;
+}
+.dash-card-sub {
+  font-size: 13px;
+  color: rgba(253,232,200,0.60);
+  margin: 0;
+  line-height: 1.5;
 }
 
-.form-group label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.form-row {
+/* ── Form grid ───────────────────────────────────────── */
+.dash-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 16px;
 }
-
-/* Inputs & selects inside dashboard */
-.preferences-section select,
-.preferences-section input[type="text"] {
+.dash-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dash-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f97316;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.dash-field input,
+.dash-field select {
   width: 100%;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 15px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(249, 115, 22, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fde8c8;
+  font-size: 14px;
+  font-family: inherit;
   outline: none;
-  transition: var(--transition-fast);
-  appearance: none;
-  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
-
-.preferences-section select:focus,
-.preferences-section input[type="text"]:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-glow), var(--shadow-sm);
+.dash-field input:focus,
+.dash-field select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+  background: rgba(255, 255, 255, 0.10);
 }
+.dash-field input::placeholder { color: rgba(253,232,200,0.35); }
+.dash-field select option { background: #2d1a0a; color: #fde8c8; }
 
-/* Primary action button */
-.primary-btn {
-  padding: 14px 32px;
+/* ── Buttons ─────────────────────────────────────────── */
+.dash-btn-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.dash-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 14px 24px;
+  border-radius: 12px;
   border: none;
-  border-radius: var(--radius-lg);
-  background: var(--primary);
-  color: #ffffff;
   font-size: 15px;
   font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  transition: var(--transition-fast);
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
-  margin-top: 24px;
-  width: 100%;
+  transition: all 0.22s ease;
 }
-
-.primary-btn:hover {
-  background: var(--primary-dark);
+.primary-dash-btn {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.32);
+}
+.primary-dash-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 8px 22px rgba(249, 115, 22, 0.46);
+  filter: brightness(1.05);
+}
+.resume-dash-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
+}
+.resume-dash-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.42);
 }
 
-.primary-btn:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+/* ── Feature tiles ───────────────────────────────────── */
+.dash-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
+.dash-tile {
+  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.28);
+  border-radius: 16px;
+  padding: 24px 20px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.dash-tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow: 0 12px 32px rgba(249, 115, 22, 0.14);
+}
+.tile-icon { font-size: 32px; display: block; margin-bottom: 10px; }
+.dash-tile strong { display: block; font-size: 14px; color: #fff7ed; font-weight: 700; margin-bottom: 4px; }
+.dash-tile p { font-size: 12px; color: rgba(253,232,200,0.55); margin: 0; }
 
-/* Custom Green Button Gradient override */
-button[style*="#10b981"] {
-  background: linear-gradient(135deg, var(--success), #059669) !important;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3) !important;
-  margin-top: 20px;
-}
-button[style*="#10b981"]:hover {
-  background: linear-gradient(135deg, #059669, #047857) !important;
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 1100px) {
-  .sidebar {
-    width: 240px;
-    min-width: 240px;
-  }
-}
-
+/* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
-  .dashboard-page {
-    flex-direction: column;
-  }
-
+  .dashboard-page { flex-direction: column; }
   .sidebar {
-    width: 100%;
-    min-width: unset;
-    height: auto;
-    margin: 0;
-    position: static;
+    width: 100%; min-width: unset;
+    height: auto; margin: 0;
+    position: static; border-radius: 0;
     padding: 16px 20px;
-    border-radius: 0;
-    border-bottom: 1px solid var(--border);
   }
-  
-  .logo {
-    margin-bottom: 20px;
-  }
-
-  .menu {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .menu button {
-    width: auto;
-    flex: 1 1 auto;
-    text-align: center;
-    justify-content: center;
-    padding: 10px 16px;
-  }
-
-  .logout {
-    width: auto;
-    text-align: center;
-    padding: 10px 16px;
-    margin-top: 16px;
-  }
-
-  .main {
-    max-height: unset;
-    padding: 16px;
-  }
+  .menu { flex-direction: row; flex-wrap: wrap; }
+  .menu-btn { width: auto; flex: 1 1 auto; justify-content: center; }
+  .dash-main { max-height: unset; padding: 16px; }
+  .dash-tiles { grid-template-columns: 1fr 1fr; }
+  .dash-welcome { flex-direction: column; align-items: flex-start; }
 }
-
 @media (max-width: 600px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .navbar h1 {
-    font-size: 18px;
-  }
+  .dash-form-grid { grid-template-columns: 1fr; }
+  .dash-tiles { grid-template-columns: 1fr; }
+  .dash-btn-row { flex-direction: column; }
 }

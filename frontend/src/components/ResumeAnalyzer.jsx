@@ -3,7 +3,7 @@ import './ResumeAnalyzer.css';
 import { FaSpinner, FaLock, FaFilePdf } from 'react-icons/fa';
 
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
+  ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
 function ResumeAnalyzer() {

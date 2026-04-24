@@ -11,7 +11,7 @@ function ResumeAnalyzer() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
-  
+
   // Lazy load from local storage
   const [resumeData, setResumeData] = useState(() => {
     const saved = localStorage.getItem('resumeData');
@@ -51,7 +51,7 @@ function ResumeAnalyzer() {
   // Simplified API Call
   const uploadResume = async () => {
     if (!file) return setError('Please select a PDF or DOCX file first.');
-    
+
     setLoading(true);
     setError('');
 
@@ -69,7 +69,7 @@ function ResumeAnalyzer() {
       if (data.success) {
         setResumeData(data.analysis);
         localStorage.setItem('resumeData', JSON.stringify(data.analysis));
-        setFile(null); 
+        setFile(null);
       } else {
         setError(data.message || 'Analysis failed.');
       }
@@ -98,8 +98,8 @@ function ResumeAnalyzer() {
 
       {/* Upload Section */}
       <div className="ra-upload-wrapper">
-        <div 
-          className={`ra-upload-box ${isDragging ? 'drag-active' : ''}`} 
+        <div
+          className={`ra-upload-box ${isDragging ? 'drag-active' : ''}`}
           onClick={() => fileInputRef.current.click()}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -125,9 +125,9 @@ function ResumeAnalyzer() {
           )}
         </div>
 
-        <button 
-          className={`btn-primary ra-upload-btn ${!file ? 'needs-file' : ''}`} 
-          onClick={handleMainButtonClick} 
+        <button
+          className={`btn-primary ra-upload-btn ${!file ? 'needs-file' : ''}`}
+          onClick={handleMainButtonClick}
           disabled={loading}
         >
           {loading ? (
@@ -139,7 +139,7 @@ function ResumeAnalyzer() {
         <div className="ra-privacy-note">
           <FaLock className="ra-lock-icon" /> Privacy guaranteed
         </div>
-        
+
         {error && <p className="ra-error">{error}</p>}
       </div>
 

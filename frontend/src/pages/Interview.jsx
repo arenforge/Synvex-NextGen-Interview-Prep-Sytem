@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Interview.css'; // Your original CSS!
 import { auth } from '../firebase';
 import { useDeepgram } from '../hooks/useDeepgram';
@@ -13,7 +13,7 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
 
 const Interview = () => {
   const location = useLocation();
-  const navigate =useNavigate()
+  const navigate = useNavigate()
   const sessionStarted = React.useRef(false)
   const queryParams = new URLSearchParams(location.search);
   const userRole = queryParams.get("role") || "Software Engineer";
@@ -183,7 +183,7 @@ const Interview = () => {
   // Start as soon as page loads
   // Start session and launch interview as soon as page loads
   React.useEffect(() => {
-    if(sessionStarted.current) return; // if already started , to dobara nhi chalaenge
+    if (sessionStarted.current) return; // if already started , to dobara nhi chalaenge
     sessionStarted.current = true; // Ab mark karo ki start ho chuka hai
     const startSession = async () => {
       const currentUser = auth.currentUser;
@@ -260,17 +260,17 @@ const Interview = () => {
             <div className="panel-title">
               <span className="icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
-                  <circle cx="12" cy="12" r="12" fill="#FFF5F2"/>
-                  <rect x="7" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
-                  <rect x="10" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
-                  <rect x="13" y="9" width="1.5" height="6" rx="0.75" fill="#FF5722"/>
-                  <rect x="16" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722"/>
-                  <rect x="19" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722"/>
+                  <circle cx="12" cy="12" r="12" fill="#FFF5F2" />
+                  <rect x="7" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722" />
+                  <rect x="10" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722" />
+                  <rect x="13" y="9" width="1.5" height="6" rx="0.75" fill="#FF5722" />
+                  <rect x="16" y="7" width="1.5" height="10" rx="0.75" fill="#FF5722" />
+                  <rect x="19" y="10" width="1.5" height="4" rx="0.75" fill="#FF5722" />
                 </svg>
-              </span> 
+              </span>
               Your Response
             </div>
-            
+
             <div className="panel-content user-input-container">
               <textarea
                 className="response-textarea"
@@ -287,8 +287,8 @@ const Interview = () => {
               />
 
               <div className="panel-footer">
-                <button 
-                  className="send-btn" 
+                <button
+                  className="send-btn"
                   onClick={() => makeApiCall()}
                   disabled={loading || !userInput.trim()}
                 >
@@ -327,7 +327,7 @@ const Interview = () => {
               <h2>Interview Completed! 🎉</h2>
               <p>Well done! Here is your AI-powered performance analysis.</p>
             </div>
-            
+
             <div className="completion-feedback-wrap">
               <FeedbackCard feedback={feedback} />
             </div>

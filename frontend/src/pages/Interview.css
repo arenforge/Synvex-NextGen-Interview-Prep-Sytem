@@ -9,7 +9,7 @@
 
 .interview-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff 0%, #fff7ed 55%, #ffedd5 100%);
+  background: #fff7ed; /* Premium light peach background */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -80,7 +80,7 @@
 
 .panel {
   flex: 1;
-  background: linear-gradient(145deg, #1c1107 0%, #2d1a0a 100%);
+  background: #1c1107; /* Premium dark brown panel */
   border-radius: 32px;
   border: 2px solid rgba(249, 115, 22, 0.55);
   box-shadow: 0 20px 60px rgba(249, 115, 22, 0.18), 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -171,15 +171,23 @@
 .response-textarea {
   flex: 1;
   width: 100%;
-  border: none;
-  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #fff7ed;
   resize: none;
   font-size: 18px;
   line-height: 1.6;
-  color: #fff7ed;
   outline: none;
-  padding: 0;
+  padding: 15px;
   margin-bottom: 20px;
+  border-radius: 16px;
+  transition: all 0.2s;
+}
+
+.response-textarea:focus {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 20px rgba(255, 87, 34, 0.1);
 }
 
 .response-textarea::placeholder {
@@ -213,8 +221,9 @@
 }
 
 .panel-footer .send-btn:disabled {
-  background: #eee;
-  color: #aaa;
+  background: #1a1a1a;
+  color: #444;
+  border: 1px solid #333;
   box-shadow: none;
   cursor: not-allowed;
 }

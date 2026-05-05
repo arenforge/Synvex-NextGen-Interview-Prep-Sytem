@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
+// Questions generate karne ka form aur logic yahan handled hai
 const QueBankGenerator = ({ onGenerateManual, onGeneratePersonalized, loading, error }) => {
+  // Topic aur difficulty input yahan collect hote hain
   const [topic, setTopic] = useState('');
   const [diff, setDiff] = useState('Medium');
   const [count, setCount] = useState(5);

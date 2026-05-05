@@ -6,16 +6,19 @@ import ResumeAnalyzer from "../components/ResumeAnalyzer";
 
 function Dashboard() {
    const navigate = useNavigate();
+   // Saare input values yahan state mein store ho rahe hain taaki interview start ho sake
    const [role, setRole] = useState("Software Engineer");
    const [topic, setTopic] = useState("React & Node.js");
    const [difficulty, setDiff] = useState("Medium");
    const [type, setType] = useState("Technical");
    const [duration, setDuration] = useState("10 min");
 
+   // Normal mode wala interview shuru karne ke liye function
    const handleStartInterview = () => {
       navigate(`/interview?mode=role&role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&level=${encodeURIComponent(difficulty)}&type=${encodeURIComponent(type)}&duration=${encodeURIComponent(duration)}`);
    };
 
+   // Pehle check karo resume hai ya nahi, phir customized interview start karo
    const handleStartResumeInterview = () => {
       const savedResume = localStorage.getItem('resumeData');
       if (!savedResume) {
@@ -52,7 +55,7 @@ function Dashboard() {
             </div>
          </aside>
 
-         {/* ── Main Content Area ── */}
+         {/* ── Main Content Area (Yahan dashboard ka main view dikhega) ── */}
          <main className="dash-v5-main">
             
             <header className="dash-header-section">
@@ -61,7 +64,7 @@ function Dashboard() {
                   <h1 className="v5-title">Good Day, {userName}</h1>
                </div>
                
-               {/* NEW: Big Logo and Name on Top Right */}
+               {/* NAYA: Top right mein bada logo aur naam dikhane ke liye */}
                <div className="dash-header-right-brand">
                   <img src="/images/logo2.png" alt="Synvex" className="header-right-logo" />
                   <span className="header-right-name">SYNVEX</span>
@@ -70,7 +73,7 @@ function Dashboard() {
 
             <div className="v5-scroll-stack">
 
-               {/* Card 1: Role-Based Practice */}
+               {/* Card 1: Role-Based Practice (Candidate ka profession aur level select karne ke liye) */}
                <section className="v5-feature-card">
                   <div className="card-header-row">
                      <div className="card-title-area">
@@ -157,8 +160,9 @@ function Dashboard() {
                      </div>
                      <div className="sub-item">
                         <span className="sub-item-icon">🤖</span>
+                        {/* Yahan AI engine ka naam update kiya hai */}
                         <div className="sub-item-text">
-                           <h4>Gemini AI Powered</h4>
+                           <h4>GPT AI Powered</h4>
                            <p>Adaptive questions cross-verified against your profile.</p>
                         </div>
                      </div>

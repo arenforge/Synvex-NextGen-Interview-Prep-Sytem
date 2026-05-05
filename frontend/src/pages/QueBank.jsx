@@ -24,11 +24,13 @@ const QuestionCard = ({ q, index }) => {
     );
 };
 
+// AI se questions generate karne aur display karne ka page yahan hai
 const QueBank = () => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    // Backend API call karke questions fetch karne ka main function
     const fetchQuestions = async (url, bodyParams) => {
         setLoading(true);
         setError(null);

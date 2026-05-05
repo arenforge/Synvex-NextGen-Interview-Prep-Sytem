@@ -1,9 +1,11 @@
 import React from 'react';
 import './FeedbackCard.css';
 
+// Interview ke baad jo AI feedback milta hai, uska design yahan hai
 function FeedbackCard({ feedback }) {
   let data = null;
   try {
+    // JSON data ko safely parse kar rahe hain yahan
     data = typeof feedback === 'string' ? JSON.parse(feedback) : feedback;
   } catch {
     data = null;
@@ -15,12 +17,14 @@ function FeedbackCard({ feedback }) {
     </div>
   );
 
+  // Rating ke hisab se colors aur badges calculate ho rahe hain
   const ratingConfig = (rating) => {
     if (rating === 'Strong')   return { color: '#10b981', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.30)', icon: '✅' };
     if (rating === 'Moderate') return { color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.30)', icon: '⚠️' };
     return                            { color: '#ef4444', bg: 'rgba(239,68,68,0.10)',  border: 'rgba(239,68,68,0.28)',  icon: '❌' };
   };
 
+  // Verdict ke base par result ka color decide kar rahe hain
   const verdictConfig = () => {
     const v = (data.overall_verdict || '').toLowerCase();
     if (v.includes('strong') || v.includes('ready'))  return { color: '#10b981', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.35)' };

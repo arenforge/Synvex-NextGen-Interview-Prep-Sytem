@@ -7,6 +7,7 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
   ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
+// GitHub repositories fetch karne aur select karne ka logic yahan hai
 function RepoSelector() {
   const [repos, setRepos] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState("");
@@ -18,7 +19,7 @@ function RepoSelector() {
 
   const token = localStorage.getItem("github_token");
 
-  // Fetch repositories on load if token exists
+  // GitHub token check karte hain taaki repositories fetch ho sake
   useEffect(() => {
     if (token) {
       fetchRepos();
@@ -42,6 +43,7 @@ function RepoSelector() {
     }
   };
 
+  // Repository select hone par backend se context fetch hota hai
   const handleStartRepoInterview = async () => {
     if (!selectedRepo) return alert("Please select a repository first!");
 

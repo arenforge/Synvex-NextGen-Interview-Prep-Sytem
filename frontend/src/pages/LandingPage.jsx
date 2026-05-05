@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { FaDesktop, FaFileAlt, FaChartBar, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 import './LandingPage.css';
 
+// Landing page ka main design aur sections yahan se handle hote hain
 function LandingPage() {
   const navigate = useNavigate();
 
   return (
     <>
+      {/* Header mein brand logo aur navigation buttons hain */}
       <header className="site-header">
         <div className="header-brand">
           <span className="header-logo" onClick={() => navigate('/')}>Synvex</span>
@@ -30,6 +32,7 @@ function LandingPage() {
         <div className="bg-orb orb-2"></div>
 
         {/* 1. Hero Section */}
+        {/* Hero section user ko welcome karta hai features ke saath */}
         <section className="hero-section">
 
           {/* Floating Icons from Reference Image */}

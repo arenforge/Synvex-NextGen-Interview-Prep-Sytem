@@ -7,11 +7,13 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
   ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
+// Purane interview sessions ki history aur feedback reports yahan dikhte hain
 function Reports() {
   const [sessions, setSessions] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // User ki login state check karke sessions fetch karte hain
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) { setLoading(false); return; }

@@ -6,6 +6,7 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
   ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
+// Resume upload handle karne aur AI se analyze karwane ka logic
 function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,6 +21,7 @@ function ResumeAnalyzer() {
 
   const [isDragging, setIsDragging] = useState(false);
 
+  // PDF aur DOCX files accept karte hain yahan
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
     if (selected) {
@@ -67,6 +69,7 @@ function ResumeAnalyzer() {
       const data = await res.json();
 
       if (data.success) {
+        // Upload ke baad results state mein save hote hain
         setResumeData(data.analysis);
         localStorage.setItem('resumeData', JSON.stringify(data.analysis));
         setFile(null);

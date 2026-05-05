@@ -16,6 +16,7 @@ const API_BASE_URL = (window.location.hostname === "localhost" || window.locatio
   ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
 
+// Login aur Signup ka saara logic yahan handled hai (Firebase used)
 function AuthBox() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ function AuthBox() {
   const [isLogin, setIsLogin] = useState(true);
 
   const navigate = useNavigate();
-  // NEW: Helper function to save the user to PostgreSQL
+  // Naye user ko database mein sync karne ke liye helper function
   const syncUserToDB = async (user, fallbackName = "") => {
     try {
       const nameToSave = user.displayName || fallbackName || "Guest User";

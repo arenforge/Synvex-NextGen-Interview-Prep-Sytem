@@ -6,6 +6,7 @@ import { useDeepgram } from '../hooks/useDeepgram';
 import FeedbackCard from '../components/FeedbackCard';
 
 // Auto-detect backend URL
+// Backend ka url automatically detect kar rhe hain context ke hisab se
 const API_BASE_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
   ? "http://localhost:3000"
   : "https://synvex-backend-ioc4.onrender.com";
@@ -37,6 +38,7 @@ const Interview = () => {
   // Reference for stopping audio if needed
   const currentAudioRef = React.useRef(null);
 
+  // AI ki awaaz sunne ke liye Deepgram use kar rhe hain
   const playDeepgramVoice = async (text) => {
     try {
       // 1. Fetch token
@@ -67,6 +69,7 @@ const Interview = () => {
     }
   };
 
+  // Backend se chat karne aur response handle karne ka main logic
   const makeApiCall = async (msg, forcedSessionId = null) => {
     if (!msg && !userInput) return; // Check if BOTH are empty
 
@@ -182,6 +185,7 @@ const Interview = () => {
   };
   // Start as soon as page loads
   // Start session and launch interview as soon as page loads
+  // Page load hote hi session create ho jayega automatically
   React.useEffect(() => {
     if (sessionStarted.current) return; // if already started , to dobara nhi chalaenge
     sessionStarted.current = true; // Ab mark karo ki start ho chuka hai
